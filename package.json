@@ -1,0 +1,16 @@
+{
+  "name": "riffy-show",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "app:server": "pnpm run --dir apps/api",
+    "app:server:add": "pnpm add --dir apps/api",
+    "app:web": "pnpm run --dir apps/web",
+    "app:web:add": "pnpm add --dir apps/web",
+    "app:dev": "pnpm run -r --parallel dev"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
