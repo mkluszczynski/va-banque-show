@@ -1,4 +1,4 @@
-import { Question } from "./Question";
+import { Question } from "../question/Question";
 
 export class FinalRound {
   public id: string;
