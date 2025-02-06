@@ -1,4 +1,4 @@
-import { QuestionValue } from "../types/QuestionValue";
+import { QuestionValue } from "../types/question-value";
 
 export class Question {
   public id: string;

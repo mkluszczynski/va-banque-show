@@ -1,7 +1,7 @@
 import { Socket } from "socket.io";
-import { RegisterPlayerDto } from "./dto/register-player.dto";
-import { Player } from "./Player";
-import { PlayerService } from "./PlayerService";
+import { RegisterPlayerDto } from "./dto/register-player-dto";
+import { Player } from "./player";
+import { PlayerService } from "./player-service";
 
 export const playerController = (
   socket: Socket,

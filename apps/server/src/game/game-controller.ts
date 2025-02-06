@@ -1,7 +1,7 @@
 import { Socket } from "socket.io";
-import { JoinGameDto } from "./dto/join-game.dto";
-import { Game } from "./Game";
-import { GameService } from "./GameService";
+import { JoinGameDto } from "./dto/join-game-dto";
+import { Game } from "./game";
+import { GameService } from "./game-service";
 
 export const gameController = (socket: Socket, gameService: GameService) => {
   const joinGame = (data: JoinGameDto) => {

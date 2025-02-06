@@ -1,5 +1,5 @@
-import { Round } from "../round/Round";
-import { Team } from "../team/Team";
+import { Round } from "../round/round";
+import { Team } from "../team/team";
 
 export class Game {
   public id: string;

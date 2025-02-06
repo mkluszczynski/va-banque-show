@@ -1,6 +1,6 @@
 import { genId } from "../../utils/gen-id";
-import { RegisterPlayerDto } from "./dto/register-player.dto";
-import { Player } from "./Player";
+import { RegisterPlayerDto } from "./dto/register-player-dto";
+import { Player } from "./player";
 
 export class PlayerService {
   public players: Player[] = [];

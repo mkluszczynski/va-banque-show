@@ -1,6 +1,6 @@
-import { PlayerService } from "../player/PlayerService";
-import { JoinGameDto } from "./dto/join-game.dto";
-import { Game } from "./Game";
+import { PlayerService } from "../player/player-service";
+import { JoinGameDto } from "./dto/join-game-dto";
+import { Game } from "./game";
 
 export class GameService {
   private games: Game[] = [];

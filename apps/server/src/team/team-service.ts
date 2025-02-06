@@ -1,4 +1,4 @@
-import { Team } from "./Team";
+import { Team } from "./team";
 
 export class TeamService {
   public teams: Team[] = [];

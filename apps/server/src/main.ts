@@ -1,10 +1,10 @@
 import { Server, Socket } from "socket.io";
-import { PlayerService } from "./player/PlayerService";
-import { GameService } from "./game/GameService";
-import { playerController } from "./player/PlayerController";
-import { gameController } from "./game/GameController";
-import { teamController } from "./team/TeamController";
-import { TeamService } from "./team/TeamService";
+import { PlayerService } from "./player/player-service";
+import { GameService } from "./game/game-service";
+import { playerController } from "./player/player-controller";
+import { gameController } from "./game/game-controller";
+import { teamController } from "./team/team-controller";
+import { TeamService } from "./team/team-service";
 
 const server = new Server(3000);
 

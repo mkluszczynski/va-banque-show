@@ -1,4 +1,4 @@
-import { Category } from "../category/Category";
+import { Category } from "../category/category";
 
 export class Round {
   public id: string;

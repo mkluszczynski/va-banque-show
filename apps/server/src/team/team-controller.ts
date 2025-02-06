@@ -1,8 +1,8 @@
 import { Socket } from "socket.io";
-import { JoinTeamDto } from "./dto/join-team";
-import { GameService } from "../game/GameService";
-import { PlayerService } from "../player/PlayerService";
-import { TeamService } from "./TeamService";
+import { JoinTeamDto } from "./dto/join-team-dto";
+import { GameService } from "../game/game-service";
+import { PlayerService } from "../player/player-service";
+import { TeamService } from "./team-service";
 
 export const teamController = (
   socket: Socket,
