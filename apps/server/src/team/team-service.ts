@@ -3,6 +3,12 @@ import { Team } from "./team";
 export class TeamService {
   public teams: Team[] = [];
 
+  createTeam(name: string) {
+    const team = new Team(name);
+    this.addTeam(team);
+    return team;
+  }
+
   addTeam(team: Team) {
     this.teams.push(team);
   }
@@ -13,6 +19,10 @@ export class TeamService {
 
   getTeams() {
     return this.teams;
+  }
+
+  doseTeamExist(id: string) {
+    return this.teams.some((team) => team.id === id);
   }
 
   removeTeamById(id: string) {

@@ -3,6 +3,8 @@ import { JoinTeamDto } from "./dto/join-team-dto";
 import { GameService } from "../game/game-service";
 import { PlayerService } from "../player/player-service";
 import { TeamService } from "./team-service";
+import { createTeamDto } from "./dto/create-team-dto";
+import { RemoveTeamDto } from "./dto/remove-team-dto";
 
 export const teamController = (
   socket: Socket,
@@ -10,7 +12,52 @@ export const teamController = (
   playerService: PlayerService,
   teamService: TeamService
 ) => {
-  const joinTeam = (dto: JoinTeamDto) => {
+  socket.on("team:create", createTeam);
+  function createTeam(dto: createTeamDto) {
+    if (!dto.gameId || !dto.name) {
+      console.log("[Server][teamController] Invalid game data.");
+      socket.emit("error", { message: "Invalid data" });
+      return;
+    }
+
+    const game = gameService.getGameById(dto.gameId);
+
+    if (!game) {
+      console.log("[Server][teamController] Game not found.");
+      socket.emit("gameNotFound", { gameId: dto.gameId });
+      return;
+    }
+
+    const team = teamService.createTeam(dto.name);
+
+    game.addTeam(team);
+    socket.emit("team:create:success", { team });
+  }
+
+  socket.on("team:remove", removeTeam);
+  function removeTeam(dto: RemoveTeamDto) {
+    const { gameId, teamId } = dto;
+
+    if (!gameId || !teamId) {
+      console.log("[Server][teamController] Invalid team data.");
+      socket.emit("error", { message: "Invalid data" });
+      return;
+    }
+
+    const game = gameService.getGameById(dto.gameId);
+    if (!game) {
+      console.log("[Server][teamController] Game not found.");
+      socket.emit("gameNotFound", { gameId: dto.gameId });
+      return;
+    }
+
+    if (game.doseTeamExist(teamId)) game.removeTeamById(teamId);
+    if (teamService.doseTeamExist(teamId)) teamService.removeTeamById(teamId);
+    socket.emit("team:remove:success");
+  }
+
+  socket.on("team:join", joinTeam);
+  function joinTeam(dto: JoinTeamDto) {
     if (!dto.gameId || !dto.playerId || !dto.teamId) {
       console.log("[Server][teamController] Invalid team data.");
       socket.emit("error", { message: "Invalid data" });
@@ -39,7 +86,6 @@ export const teamController = (
     }
 
     team.addPlayer(player);
-    socket.emit("teamJoined", { team });
-  };
-  socket.on("team:join", joinTeam);
+    socket.emit("team:join:success", { team });
+  }
 };

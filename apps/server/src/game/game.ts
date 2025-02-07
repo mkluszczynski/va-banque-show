@@ -1,3 +1,4 @@
+import { genId } from "../../utils/gen-id";
 import { Round } from "../round/round";
 import { Team } from "../team/team";
 
@@ -6,11 +7,8 @@ export class Game {
   public teams: Team[] = [];
   public rounds: Round[] = [];
 
-  constructor(id: string) {
-    this.id = id;
-
-    this.addTeam(new Team("team-1", "blue"));
-    this.addTeam(new Team("team-2", "red"));
+  constructor() {
+    this.id = genId();
   }
 
   addTeam(team: Team) {
@@ -23,5 +21,9 @@ export class Game {
 
   doseTeamExist(teamId: string) {
     return this.teams.some((team) => team.id === teamId);
+  }
+
+  removeTeamById(teamId: string) {
+    this.teams = this.teams.filter((team) => team.id !== teamId);
   }
 }

@@ -7,8 +7,8 @@ export class GameService {
 
   constructor(private readonly playerService: PlayerService) {}
 
-  createGame(id: string) {
-    const game = new Game(id);
+  createGame() {
+    const game = new Game();
     this.games.push(game);
     return game;
   }
@@ -24,6 +24,10 @@ export class GameService {
 
   deleteGame(id: string) {
     this.games = this.games.filter((game) => game.id !== id);
+  }
+
+  doseGameExist(id: string) {
+    return !!this.games.some((game) => game.id === id);
   }
 
   joinGame(dto: JoinGameDto): Game {

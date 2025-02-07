@@ -1,3 +1,4 @@
+import { genId } from "../../utils/gen-id";
 import { Player } from "../player/player";
 
 export class Team {
@@ -6,12 +7,17 @@ export class Team {
   public players: Player[] = [];
   public score: number = 0;
 
-  constructor(id: string, name: string) {
-    this.id = id;
+  constructor(name: string) {
+    this.id = genId();
     this.name = name;
   }
 
   addPlayer(player: Player) {
     this.players.push(player);
   }
+
+  // static fromDto(dto: TeamDto): Team {
+  //   const id = dto.id || genId();
+  //   return new Team(id, dto.name);
+  // }
 }

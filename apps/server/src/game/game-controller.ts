@@ -4,7 +4,8 @@ import { Game } from "./game";
 import { GameService } from "./game-service";
 
 export const gameController = (socket: Socket, gameService: GameService) => {
-  const joinGame = (data: JoinGameDto) => {
+  socket.on("game:join", joinGame);
+  function joinGame(data: JoinGameDto) {
     if (!data.gameId || !data.playerId) {
       console.log("[Server][gameController] Invalid game data.");
       socket.emit("error", { message: "Invalid data" });
@@ -12,7 +13,12 @@ export const gameController = (socket: Socket, gameService: GameService) => {
     }
 
     const game: Game = gameService.joinGame(data);
-    socket.emit("gameJoined", { game });
-  };
-  socket.on("game:join", joinGame);
+    socket.emit("game:join:success", { game });
+  }
+
+  socket.on("game:create", createGame);
+  function createGame() {
+    const game: Game = gameService.createGame();
+    socket.emit("game:create:success", { game });
+  }
 };

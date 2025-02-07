@@ -15,7 +15,7 @@ export const playerController = (
     }
 
     const registeredPlayer: Player = playerService.registerPlayer(data);
-    socket.emit("playerRegistered", { player: registeredPlayer });
+    socket.emit("player:register:success", { player: registeredPlayer });
   };
   socket.on("player:register", registerPlayer);
 };
