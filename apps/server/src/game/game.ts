@@ -47,4 +47,8 @@ export class Game {
   joinPlayer(player: Player) {
     this.players.push(player);
   }
+
+  dosePlayerExist(playerId: string) {
+    return this.players.some((player) => player.id === playerId);
+  }
 }

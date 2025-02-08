@@ -10,13 +10,15 @@ import { CategoryService } from "../category/category-service";
 import { AddCategoryDto } from "./dto/add-category-dto";
 import { PlayerService } from "../player/player-service";
 import { CreateGameDto } from "./dto/cerate-game-dto";
+import { TeamService } from "../team/team-service";
 
 export const gameController = (
   socket: Socket,
   gameService: GameService,
   roundService: RoundService,
   categoryService: CategoryService,
-  playerService: PlayerService
+  playerService: PlayerService,
+  teamService: TeamService
 ) => {
   socket.on("game:join", joinGame);
   function joinGame(data: JoinGameDto, callback: CallableFunction) {
@@ -63,12 +65,15 @@ export const gameController = (
     const game: Game = gameService.createGame(admin);
 
     game.addRound(roundService.createRound(1));
+    game.addRound(roundService.createRound(2));
+
+    game.addTeam(teamService.createTeam("Team 1"));
+    game.addTeam(teamService.createTeam("Team 2"));
 
     console.log(`[Server][gameController] Game created: ${game.id}`);
     callback({ game });
     socket.join(game.id);
     socket.broadcast.to(game.id).emit("update", { game });
-    // socket.emit("game:create:success", { game });
   }
 
   socket.on("game:round:add", addRound);

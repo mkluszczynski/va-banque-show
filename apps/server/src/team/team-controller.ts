@@ -24,7 +24,7 @@ export const teamController = (
 
     if (!game) {
       console.log("[Server][teamController] Game not found.");
-      socket.emit("gameNotFound", { gameId: dto.gameId });
+      socket.emit("error", { gameId: dto.gameId });
       return;
     }
 
@@ -79,13 +79,28 @@ export const teamController = (
     }
 
     const team = teamService.getTeamById(dto.teamId);
-    if (!team || game.doseTeamExist(team.id)) {
+    if (!team || !game.doseTeamExist(team.id)) {
       console.log("[Server][teamController] Team not found.");
       socket.emit("teamNotFound", { teamId: dto.teamId });
       return;
     }
 
+    if (team.dosePlayerExist(player.id)) {
+      console.log("[Server][teamController] Player already joined a team.");
+      socket.emit("playerAlreadyJoined", { playerId: player.id });
+      return;
+    }
+
+    if (!game.doseTeamExist(team.id)) {
+      console.log("[Server][teamController] Team already joined a game.");
+      socket.emit("teamAlreadyJoined", { teamId: team.id });
+      return;
+    }
+
     team.addPlayer(player);
-    socket.emit("team:join:success", { team });
+    console.log(
+      `[Server][teamController] Player ${player.nickname}#${player.id} joined team: ${team.id}`
+    );
+    socket.to(game.id).emit("update", { game });
   }
 };

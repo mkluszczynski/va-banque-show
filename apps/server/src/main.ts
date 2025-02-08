@@ -26,7 +26,8 @@ const onConnection = (socket: Socket) => {
     gameService,
     roundService,
     categoryService,
-    playerService
+    playerService,
+    teamService
   );
   teamController(socket, gameService, playerService, teamService);
   categoryController(socket, categoryService);

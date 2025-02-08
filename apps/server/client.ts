@@ -4,13 +4,14 @@ import { Player } from "./src/player/player";
 import readline from "readline";
 import { JoinGameDto } from "./src/game/dto/join-game-dto";
 import { CreateGameDto } from "./src/game/dto/cerate-game-dto";
+import { JoinTeamDto } from "./src/team/dto/join-team-dto";
+
+let game: Game | null = null;
+let player: Player | null = null;
 
 const socket = io("http://localhost:3000/", {
   transports: ["websocket"],
 });
-
-let game: Game | null = null;
-let player: Player | null = null;
 
 socket.on("connect", () => {
   console.log("Connected to server.");
@@ -18,20 +19,6 @@ socket.on("connect", () => {
 
 socket.on("error", (error: unknown) => {
   console.error("Error:", error);
-});
-
-const rl = readline.createInterface({
-  input: process.stdin,
-  output: process.stdout,
-});
-
-rl.on("line", (input: string) => {
-  const [command, prop] = input.split(" ");
-  if (command === "join" && prop) joinGameCommand(prop);
-
-  if (command === "player" && prop) registerPlayerCommand(prop);
-
-  if (command === "create") createGameCommand();
 });
 
 socket.on(`update`, (data: { game: Game }) => {
@@ -53,8 +40,6 @@ function createGameCommand() {
   }
   const dto: CreateGameDto = {
     adminId: player.id,
-    teams: [], // TODO: remove
-    rounds: [],
   };
   socket.emit("game:create", dto, (data: { game: Game }) => {
     game = data.game;
@@ -73,3 +58,32 @@ function joinGameCommand(gameId: string) {
     console.log("Joined game successfully:", data.game);
   });
 }
+
+function joinTeamCommand(teamId: string) {
+  if (!game || !player) return;
+  const dto: JoinTeamDto = {
+    gameId: game.id,
+    playerId: player.id,
+    teamId,
+  };
+  socket.emit("team:join", dto, (data: { game: Game }) => {
+    game = data.game;
+    console.log("Joined team successfully:", data.game.teams);
+  });
+}
+
+const rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+rl.on("line", (input: string) => {
+  const [command, prop] = input.split(" ");
+  if (command === "join" && prop) joinGameCommand(prop);
+
+  if (command === "player" && prop) registerPlayerCommand(prop);
+
+  if (command === "create") createGameCommand();
+
+  if (command === "team" && prop) joinTeamCommand(prop);
+});

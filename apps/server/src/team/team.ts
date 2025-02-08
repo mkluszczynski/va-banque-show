@@ -16,6 +16,10 @@ export class Team {
     this.players.push(player);
   }
 
+  dosePlayerExist(playerId: string) {
+    return this.players.some((player) => player.id === playerId);
+  }
+
   // static fromDto(dto: TeamDto): Team {
   //   const id = dto.id || genId();
   //   return new Team(id, dto.name);
