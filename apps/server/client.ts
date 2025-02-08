@@ -5,6 +5,7 @@ import readline from "readline";
 import { JoinGameDto } from "./src/game/dto/join-game-dto";
 import { CreateGameDto } from "./src/game/dto/cerate-game-dto";
 import { JoinTeamDto } from "./src/team/dto/join-team-dto";
+import { Team } from "./src/team/team";
 
 let game: Game | null = null;
 let player: Player | null = null;
@@ -72,6 +73,14 @@ function joinTeamCommand(teamId: string) {
   });
 }
 
+function showTeamCommand() {
+  if (!game) return;
+  const id = game.id;
+  socket.emit("team:show", { gameId: game.id }, (data: { teams: Team[] }) => {
+    console.log(`[Game][${id}] Teams:`, data.teams);
+  });
+}
+
 const rl = readline.createInterface({
   input: process.stdin,
   output: process.stdout,
@@ -86,4 +95,6 @@ rl.on("line", (input: string) => {
   if (command === "create") createGameCommand();
 
   if (command === "team" && prop) joinTeamCommand(prop);
+
+  if (command === "team") showTeamCommand();
 });

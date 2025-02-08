@@ -20,6 +20,10 @@ export class Team {
     return this.players.some((player) => player.id === playerId);
   }
 
+  removePlayerById(playerId: string) {
+    this.players = this.players.filter((player) => player.id !== playerId);
+  }
+
   // static fromDto(dto: TeamDto): Team {
   //   const id = dto.id || genId();
   //   return new Team(id, dto.name);

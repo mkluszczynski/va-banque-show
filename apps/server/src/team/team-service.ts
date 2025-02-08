@@ -28,4 +28,12 @@ export class TeamService {
   removeTeamById(id: string) {
     this.teams = this.teams.filter((team) => team.id !== id);
   }
+
+  isPlayerAlreadyInTeam(playerId: string) {
+    return this.teams.some((team) => team.dosePlayerExist(playerId));
+  }
+
+  getTeamByPlayerId(playerId: string) {
+    return this.teams.find((team) => team.dosePlayerExist(playerId));
+  }
 }

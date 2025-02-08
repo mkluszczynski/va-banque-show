@@ -5,6 +5,7 @@ import { PlayerService } from "../player/player-service";
 import { TeamService } from "./team-service";
 import { createTeamDto } from "./dto/create-team-dto";
 import { RemoveTeamDto } from "./dto/remove-team-dto";
+import { ShowTeamDto } from "./dto/show-team-dto";
 
 export const teamController = (
   socket: Socket,
@@ -56,6 +57,25 @@ export const teamController = (
     socket.emit("team:remove:success");
   }
 
+  socket.on("team:show", showTeam);
+  function showTeam(dto: ShowTeamDto, callback: CallableFunction) {
+    if (!dto.gameId) {
+      console.log("[Server][teamController] Invalid team data.");
+      socket.emit("error", { message: "Invalid data" });
+      return;
+    }
+
+    const game = gameService.getGameById(dto.gameId);
+    if (!game) {
+      console.log("[Server][teamController] Game not found.");
+      socket.emit("gameNotFound", { gameId: dto.gameId });
+      return;
+    }
+
+    callback({ teams: game.teams });
+    // socket.to(game.id).emit("update", { game });
+  }
+
   socket.on("team:join", joinTeam);
   function joinTeam(dto: JoinTeamDto) {
     if (!dto.gameId || !dto.playerId || !dto.teamId) {
@@ -85,16 +105,22 @@ export const teamController = (
       return;
     }
 
-    if (team.dosePlayerExist(player.id)) {
-      console.log("[Server][teamController] Player already joined a team.");
-      socket.emit("playerAlreadyJoined", { playerId: player.id });
-      return;
-    }
-
     if (!game.doseTeamExist(team.id)) {
       console.log("[Server][teamController] Team already joined a game.");
       socket.emit("teamAlreadyJoined", { teamId: team.id });
       return;
+    }
+
+    if (team.dosePlayerExist(player.id)) {
+      console.log("[Server][teamController] Player already joined this team.");
+      socket.emit("playerAlreadyJoined", { playerId: player.id });
+      return;
+    }
+
+    if (teamService.isPlayerAlreadyInTeam(player.id)) {
+      const playerTeam = teamService.getTeamByPlayerId(player.id);
+      if (!playerTeam) return;
+      playerTeam.removePlayerById(player.id);
     }
 
     team.addPlayer(player);
