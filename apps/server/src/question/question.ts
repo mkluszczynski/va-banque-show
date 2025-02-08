@@ -17,4 +17,8 @@ export class Question {
     this.answer = answer;
     this.value = value;
   }
+
+  static fromJSON(data: Question): Question {
+    return new Question(data.id, data.question, data.answer, data.value);
+  }
 }
