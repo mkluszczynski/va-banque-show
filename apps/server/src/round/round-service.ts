@@ -1,13 +1,21 @@
 import { genId } from "../../utils/gen-id";
+import { CategoryService } from "../category/category-service";
 import { Round } from "./round";
 
 export class RoundService {
-  // public rounds: Round[] = [];
+  public rounds: Round[] = [];
+
+  constructor(private readonly categoryService: CategoryService) {}
 
   public createRound(multiplier: number): Round {
     const id = genId();
     const round = new Round(id, multiplier);
-    // this.rounds.push(round);
+
+    const categories = this.categoryService.getRandomCategories(3);
+
+    round.setCategories(categories);
+
+    this.rounds.push(round);
     return round;
   }
 

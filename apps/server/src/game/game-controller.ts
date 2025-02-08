@@ -62,6 +62,8 @@ export const gameController = (
 
     const game: Game = gameService.createGame(admin);
 
+    game.addRound(roundService.createRound(1));
+
     console.log(`[Server][gameController] Game created: ${game.id}`);
     callback({ game });
     socket.join(game.id);

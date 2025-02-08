@@ -15,6 +15,10 @@ export class Round {
     this.categories.push(category);
   }
 
+  setCategories(categories: Category[]) {
+    this.categories = categories;
+  }
+
   removeCategoryById(categoryId: string) {
     this.categories = this.categories.filter(
       (category) => category.id !== categoryId

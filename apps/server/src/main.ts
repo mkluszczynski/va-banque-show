@@ -13,11 +13,11 @@ import { categoryController } from "./category/category-controller";
 const server = new Server(3000);
 
 const playerService = new PlayerService();
-const roundService = new RoundService();
 const teamService = new TeamService();
-const gameService = new GameService(playerService);
+const gameService = new GameService();
 const categoryRepository = new CategoryRepository("categories.json");
 const categoryService = new CategoryService(categoryRepository);
+const roundService = new RoundService(categoryService);
 
 const onConnection = (socket: Socket) => {
   playerController(socket, playerService);
