@@ -10,4 +10,14 @@ export class Round {
     this.id = id;
     this.multiplier = multiplier;
   }
+
+  addCategory(category: Category) {
+    this.categories.push(category);
+  }
+
+  removeCategoryById(categoryId: string) {
+    this.categories = this.categories.filter(
+      (category) => category.id !== categoryId
+    );
+  }
 }

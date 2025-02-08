@@ -26,4 +26,17 @@ export class Game {
   removeTeamById(teamId: string) {
     this.teams = this.teams.filter((team) => team.id !== teamId);
   }
+
+  doseRoundExist(roundId: string) {
+    return this.rounds.some((round) => round.id === roundId);
+  }
+
+  removeRoundById(roundId: string) {
+    this.rounds = this.rounds.filter((round) => round.id !== roundId);
+  }
+
+  getRoundById(roundId: string): Round | null {
+    const round = this.rounds.find((round) => round.id === roundId);
+    return round || null;
+  }
 }
