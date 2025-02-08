@@ -6,7 +6,7 @@ export class PlayerService {
   public players: Player[] = [];
 
   public registerPlayer(dto: RegisterPlayerDto): Player {
-    const player = new Player(genId("player"), dto.nickname);
+    const player = new Player(genId(), dto.nickname);
     this.players.push(player);
     return player;
   }

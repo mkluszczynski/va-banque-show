@@ -7,7 +7,10 @@ export const playerController = (
   socket: Socket,
   playerService: PlayerService
 ) => {
-  const registerPlayer = (data: RegisterPlayerDto) => {
+  const registerPlayer = (
+    data: RegisterPlayerDto,
+    callback: CallableFunction
+  ) => {
     if (!data.nickname) {
       console.log("[Server][playerRegister] Invalid player data.");
       socket.emit("error", { message: "Invalid data" });
@@ -15,7 +18,13 @@ export const playerController = (
     }
 
     const registeredPlayer: Player = playerService.registerPlayer(data);
-    socket.emit("player:register:success", { player: registeredPlayer });
+    console.log(
+      "[Server][playerRegister] Player registered.",
+      registeredPlayer
+    );
+    callback({ player: registeredPlayer });
+
+    // socket.emit("player:register:success", { player: registeredPlayer });
   };
   socket.on("player:register", registerPlayer);
 };

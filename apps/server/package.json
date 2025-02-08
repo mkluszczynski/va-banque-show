@@ -5,8 +5,8 @@
   "main": "src/main.ts",
   "scripts": {
     "build": "tsc",
-    "run": "node dist/index.js",
-    "start": "tsc && node dist/main.js",
+    "run": "node dist/src/index.js",
+    "start": "tsc && node dist/src/main.js",
     "dev": "nodemaon"
   },
   "keywords": [],

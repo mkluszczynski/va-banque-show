@@ -21,11 +21,18 @@ const categoryService = new CategoryService(categoryRepository);
 
 const onConnection = (socket: Socket) => {
   playerController(socket, playerService);
-  gameController(socket, gameService, roundService, categoryService);
+  gameController(
+    socket,
+    gameService,
+    roundService,
+    categoryService,
+    playerService
+  );
   teamController(socket, gameService, playerService, teamService);
   categoryController(socket, categoryService);
 };
 
+console.log("[Server] Server started.");
 server.on("connection", (socket) => {
   console.log("[Server] Client connected.");
   onConnection(socket);

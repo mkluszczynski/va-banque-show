@@ -18,6 +18,7 @@ type RoundDto = {
 };
 
 export type CreateGameDto = {
+  adminId: string;
   teams: TeamDto[];
   rounds: RoundDto[];
 };

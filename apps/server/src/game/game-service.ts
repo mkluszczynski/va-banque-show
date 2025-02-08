@@ -1,3 +1,4 @@
+import { Player } from "../player/player";
 import { PlayerService } from "../player/player-service";
 import { JoinGameDto } from "./dto/join-game-dto";
 import { Game } from "./game";
@@ -7,8 +8,8 @@ export class GameService {
 
   constructor(private readonly playerService: PlayerService) {}
 
-  createGame() {
-    const game = new Game();
+  createGame(admin: Player): Game {
+    const game = new Game(admin);
     this.games.push(game);
     return game;
   }

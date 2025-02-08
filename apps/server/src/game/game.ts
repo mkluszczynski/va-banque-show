@@ -1,4 +1,5 @@
 import { genId } from "../../utils/gen-id";
+import { Player } from "../player/player";
 import { Round } from "../round/round";
 import { Team } from "../team/team";
 
@@ -6,9 +7,12 @@ export class Game {
   public id: string;
   public teams: Team[] = [];
   public rounds: Round[] = [];
+  public players: Player[] = [];
+  public admin: Player | null = null;
 
-  constructor() {
+  constructor(admin: Player) {
     this.id = genId();
+    this.admin = admin;
   }
 
   addTeam(team: Team) {
@@ -38,5 +42,9 @@ export class Game {
   getRoundById(roundId: string): Round | null {
     const round = this.rounds.find((round) => round.id === roundId);
     return round || null;
+  }
+
+  joinPlayer(player: Player) {
+    this.players.push(player);
   }
 }
