@@ -18,7 +18,6 @@ export class Category {
   }
 
   static fromJSON(data: Category): Category {
-    console.log(data);
     const category = new Category(data.name);
     category.id = data.id;
     category.setQuestions(
