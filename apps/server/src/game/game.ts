@@ -2,6 +2,8 @@ import { genId } from "../../utils/gen-id";
 import { Player } from "../player/player";
 import { Round } from "../round/round";
 import { Team } from "../team/team";
+import { GameState } from "./game-states/game-state";
+import { LobbyState } from "./game-states/lobby-state";
 
 export class Game {
   public id: string;
@@ -10,9 +12,18 @@ export class Game {
   public players: Player[] = [];
   public admin: Player | null = null;
 
+  private gameState: GameState;
+
   constructor(admin: Player) {
     this.id = genId();
     this.admin = admin;
+
+    this.gameState = new LobbyState(this);
+  }
+
+  setGameState(gameState: GameState) {
+    this.gameState = gameState;
+    this.gameState.setContext(this);
   }
 
   addTeam(team: Team) {
