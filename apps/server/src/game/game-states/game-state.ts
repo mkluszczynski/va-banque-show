@@ -21,6 +21,7 @@ export abstract class GameState {
   abstract endGame(): void;
   abstract selectQuestion(question: Question): void;
   abstract waitForAnswer(): void;
+  abstract playerAnswer(player: Player): void;
   abstract validateAnswer(): void;
   abstract addScore(score: number): void;
   abstract removeScore(score: number): void;

@@ -19,10 +19,10 @@ export class RoundService {
     return round;
   }
 
-  // public getRoundById(id: string): Round | null {
-  //   const round = this.rounds.find((round) => round.id === id);
-  //   return round || null;
-  // }
+  public getRoundById(id: string): Round | null {
+    const round = this.rounds.find((round) => round.id === id);
+    return round || null;
+  }
 
   // public getRounds(): Round[] {
   //   return this.rounds;

@@ -42,7 +42,7 @@ export const gameController = (
       return;
     }
 
-    game.joinPlayer(player);
+    game.addPlayer(player);
 
     callback({ game });
     console.log(
@@ -109,7 +109,14 @@ export const gameController = (
       return;
     }
 
-    game.removeRoundById(dto.roundId);
+    const round = roundService.getRoundById(dto.roundId);
+    if (!round) {
+      console.log("[Server][gameController] Round not found.");
+      socket.emit("error", { message: "Round not found" });
+      return;
+    }
+
+    game.removeRound(round);
 
     socket.emit("game:round:remove:success", { game });
   }

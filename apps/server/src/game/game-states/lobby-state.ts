@@ -46,6 +46,10 @@ export class LobbyState extends GameState {
     throw new Error("Method not implemented.");
   }
 
+  playerAnswer() {
+    throw new Error("Method not implemented.");
+  }
+
   validateAnswer() {
     throw new Error("Method not implemented.");
   }
