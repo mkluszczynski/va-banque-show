@@ -52,9 +52,20 @@ export const teamController = (
       return;
     }
 
-    if (game.doseTeamExist(teamId)) game.removeTeamById(teamId);
+    const team = teamService.getTeamById(teamId);
+    if (!team) {
+      console.log("[Server][teamController] Team not found.");
+      socket.emit("teamNotFound", { teamId: dto.teamId });
+      return;
+    }
+
+    if (game.doseTeamExist(teamId)) game.removeTeam(team);
     if (teamService.doseTeamExist(teamId)) teamService.removeTeamById(teamId);
-    socket.emit("team:remove:success");
+
+    console.log(
+      `[Server][teamController][${game.id}] Team ${team.id} removed.`
+    );
+    socket.to(game.id).emit("update", { game });
   }
 
   socket.on("team:show", showTeam);
@@ -124,6 +135,7 @@ export const teamController = (
     }
 
     team.addPlayer(player);
+
     console.log(
       `[Server][teamController] Player ${player.nickname}#${player.id} joined team: ${team.id}`
     );

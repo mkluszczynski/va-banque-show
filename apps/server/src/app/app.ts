@@ -1,37 +1,57 @@
-import { Server } from "socket.io";
-import { AppConfig } from "./types/app-config";
+import { Server, Socket } from "socket.io";
+
+export abstract class Controller {
+  private socket: Socket | null = null;
+
+  abstract handleConnection(): void;
+
+  public setSocket(socket: Socket) {
+    this.socket = socket;
+  }
+
+  protected getSocket(): Socket {
+    if (!this.socket) {
+      throw new Error("Socket is not set.");
+    }
+    return this.socket;
+  }
+}
 
 export class App {
-  private readonly server: Server;
+  private controllers: Controller[] = [];
+  private server: Server;
 
-  constructor(config: Partial<AppConfig> = {}) {
-    this.server = new Server(3000);
+  constructor(port: number) {
+    this.server = new Server(port);
+  }
 
+  public run() {
     this.server.on("connection", (socket) => {
-      console.log("Client connected.");
+      console.log("[Server] Client connected.");
 
-      socket.on("message", (data) => {
-        console.log(`[Server] Received: ${data}`);
-      });
-
-      socket.on("player", (data) => {
-        console.log(`[Server] Player: ${data}`);
-      });
+      this.addSocketToControllers(socket);
+      this.handleConnection();
+      // onConnection(socket);
 
       socket.on("disconnect", () => {
-        console.log("Client disconnected.");
+        console.log("[Server] Client disconnected.");
       });
-
-      // create game
-      // create team
-      // create player
-      // add player to team
-      // add team to game
-      // start game
-      // add round to game
-      // end game
     });
   }
 
-  public run() {}
+  addController(controller: Controller) {
+    this.controllers.push(controller);
+  }
+
+  addControllers(controllers: Controller[]) {
+    this.controllers.push(...controllers);
+  }
+
+  handleConnection() {
+    this.controllers.forEach((controller) => controller.handleConnection());
+  }
+
+  private addSocketToControllers(socket: Socket) {
+    this.controllers.forEach((controller) => controller.setSocket(socket));
+  }
 }
