@@ -9,8 +9,8 @@ import { RoundService } from "./round/round-service";
 import { CategoryService } from "./category/category-service";
 import { CategoryRepository } from "./category/category-repository";
 import { categoryController } from "./category/category-controller";
+import { validateDtoMiddleware } from "../utils/validate-dto";
 
-const server = new Server(3000);
 
 const playerService = new PlayerService();
 const teamService = new TeamService();
@@ -30,13 +30,26 @@ const onConnection = (socket: Socket) => {
     teamService
   );
   teamController(socket, gameService, playerService, teamService);
-  categoryController(socket, categoryService);
+  categoryController(socket, categoryService, roundService, gameService);
 };
 
+const server = new Server(3000);
 console.log("[Server] Server started.");
+
+server.use(validateDtoMiddleware)
+
 server.on("connection", (socket) => {
   console.log("[Server] Client connected.");
-  onConnection(socket);
+  
+  try{
+    onConnection(socket);
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      socket.emit("error", { message: error.message });
+    } else {
+      socket.emit("error", { message: "An unknown error occurred." });
+    }
+  }
 
   socket.on("disconnect", () => {
     console.log("[Server] Client disconnected.");

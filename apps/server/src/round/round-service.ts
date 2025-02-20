@@ -19,16 +19,21 @@ export class RoundService {
     return round;
   }
 
-  public getRoundById(id: string): Round | null {
+  public getRoundById(id: string): Round {
     const round = this.rounds.find((round) => round.id === id);
-    return round || null;
+
+    if (!round) {
+      throw new Error(`Round with id ${id} not found`);
+    }
+
+    return round;
   }
 
-  // public getRounds(): Round[] {
-  //   return this.rounds;
-  // }
+  public getRounds(): Round[] {
+    return this.rounds;
+  }
 
-  // public deleteRound(id: string): void {
-  //   this.rounds = this.rounds.filter((round) => round.id !== id);
-  // }
+  public deleteRound(round: Round): void {
+    this.rounds = this.rounds.filter((r) => r.id !== round.id);
+  }
 }

@@ -16,16 +16,14 @@ export class Team {
     this.players.push(player);
   }
 
-  dosePlayerExist(playerId: string) {
-    return this.players.some((player) => player.id === playerId);
+  dosePlayerExist(player: Player) {
+    return this.players.some((p) => p.id === player.id);
   }
 
-  removePlayerById(playerId: string) {
-    this.players = this.players.filter((player) => player.id !== playerId);
-  }
+  removePlayerById(player: Player) {
+    if(!this.dosePlayerExist(player))
+      throw new Error(`Player with id ${player.id} not found`);
 
-  // static fromDto(dto: TeamDto): Team {
-  //   const id = dto.id || genId();
-  //   return new Team(id, dto.name);
-  // }
+    this.players = this.players.filter((p) => p.id !== player.id);
+  }
 }

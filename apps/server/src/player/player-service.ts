@@ -11,7 +11,13 @@ export class PlayerService {
     return player;
   }
 
-  public getPlayerById(id: string): Player | undefined {
-    return this.players.find((player) => player.id === id);
+  public getPlayerById(id: string): Player{
+    const player = this.players.find((player) => player.id === id);
+
+    if (!player) {
+      throw new Error(`Player with id ${id} not found`);
+    }
+
+    return player;
   }
 }

@@ -10,9 +10,14 @@ export class GameService {
     return game;
   }
 
-  getGameById(id: string): Game | null {
+  getGameById(id: string): Game {
     const game = this.games.find((game) => game.id === id);
-    return game || null;
+
+    if (!game) {
+      throw new Error(`Game with id ${id} not found`);
+    }
+
+    return game ;
   }
 
   getGames() {

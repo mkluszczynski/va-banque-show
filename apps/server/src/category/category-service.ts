@@ -8,8 +8,14 @@ export class CategoryService {
     this.categoryRepository.saveCategory(category);
   }
 
-  getCategoryById(id: string): Category | null {
-    return this.categoryRepository.getCategoryById(id);
+  getCategoryById(id: string): Category{
+    const category = this.categoryRepository.getCategoryById(id);
+
+    if (!category) {
+      throw new Error(`Category with id ${id} not found`);
+    }
+
+    return category;
   }
 
   getCategories(): Category[] {

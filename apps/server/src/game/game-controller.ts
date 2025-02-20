@@ -7,6 +7,7 @@ import { CategoryService } from "../category/category-service";
 import { PlayerService } from "../player/player-service";
 import { CreateGameDto } from "./dto/cerate-game-dto";
 import { TeamService } from "../team/team-service";
+import { SelectQuestionDto } from "./dto/select-question-dto";
 
 export const gameController = (
   socket: Socket,
@@ -18,25 +19,8 @@ export const gameController = (
 ) => {
   socket.on("game:join", joinGame);
   function joinGame(data: JoinGameDto, callback: CallableFunction) {
-    if (!data.gameId || !data.playerId) {
-      console.log("[Server][gameController] Invalid game data.");
-      socket.emit("error", { message: "Invalid data" });
-      return;
-    }
-
     const game = gameService.getGameById(data.gameId);
-    if (!game) {
-      console.log("[Server][gameController] Game not found.");
-      socket.emit("error", { gameId: data.gameId });
-      return;
-    }
-
     const player = playerService.getPlayerById(data.playerId);
-    if (!player) {
-      console.log("[Server][gameController] Player not found.");
-      socket.emit("error", { playerId: data.playerId });
-      return;
-    }
 
     game.addPlayer(player);
 
@@ -52,11 +36,6 @@ export const gameController = (
   socket.on("game:create", createGame);
   function createGame(dto: CreateGameDto, callback: CallableFunction) {
     const admin = playerService.getPlayerById(dto.adminId);
-    if (!admin) {
-      console.log("[Server][gameController] Admin not found.");
-      socket.emit("error", { message: "Admin not found" });
-      return;
-    }
 
     const game: Game = gameService.createGame(admin);
 
@@ -71,4 +50,24 @@ export const gameController = (
     socket.join(game.id);
     socket.broadcast.to(game.id).emit("update", { game });
   }
+
+  socket.on("game:question:select", selectQuestion)
+  function selectQuestion(dto: SelectQuestionDto){
+
+    const game = gameService.getGameById(dto.gameId);
+
+    const round = roundService.getRoundById(dto.roundId);
+
+    const category = categoryService.getCategoryById(dto.categoryId);
+    if(!round.douseCategoryExist(dto.categoryId))
+      throw new Error(`Category with id ${dto.categoryId} not found`);
+
+    const question = category.getQuestionById(dto.questionId);
+
+    game.setCurrentQuestion(question);
+
+    socket.broadcast.to(game.id).emit("update", { game });
+
+  }
+  
 };

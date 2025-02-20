@@ -3,30 +3,21 @@ import { Player } from "../player/player";
 import { Question } from "../question/question";
 import { Round } from "../round/round";
 import { Team } from "../team/team";
-import { GameState } from "./game-states/game-state";
-import { LobbyState } from "./game-states/lobby-state";
 
 export class Game {
   public id: string;
+  public admin: Player | null = null;
   public teams: Team[] = [];
   public rounds: Round[] = [];
   public players: Player[] = [];
 
-  public admin: Player | null = null;
+  public currentRound: Round | null = null;
+  public currentQuestion: Question | null = null;
   public answaringPlayer: Player | null = null;
-
-  private gameState: GameState;
 
   constructor(admin: Player) {
     this.id = genId();
     this.admin = admin;
-
-    this.gameState = new LobbyState(this);
-  }
-
-  setGameState(gameState: GameState) {
-    this.gameState = gameState;
-    this.gameState.setContext(this);
   }
 
   addTeam(team: Team) {
@@ -34,6 +25,9 @@ export class Game {
   }
 
   removeTeam(team: Team) {
+    if(!this.doseTeamExist(team.id))
+      throw new Error(`Team with id ${team.id} not found`);
+
     this.teams = this.teams.filter((t) => t.id !== team.id);
   }
 
@@ -46,6 +40,9 @@ export class Game {
   }
 
   removeRound(round: Round) {
+    if(!this.doseRoundExist(round.id))
+      throw new Error(`Round with id ${round.id} not found`);
+
     this.rounds = this.rounds.filter((r) => r.id !== round.id);
   }
 
@@ -54,54 +51,49 @@ export class Game {
   }
 
   addPlayer(player: Player) {
-    this.gameState.addPlayer(player);
+    this.players.push(player);
   }
 
   removePlayer(player: Player) {
-    this.gameState.removePlayer(player);
+    if(!this.dosePlayerExist(player.id))
+      throw new Error(`Player with id ${player.id} not found`);
+    this.players = this.players.filter((p) => p.id !== player.id);
   }
 
   dosePlayerExist(playerId: string) {
     return this.players.some((player) => player.id === playerId);
   }
 
-  startGame() {
-    this.gameState.startGame();
+  setAnswaringPlayer(player: Player) {
+    if(!this.dosePlayerExist(player.id))
+      throw new Error(`Player with id ${player.id} not found`);
+    if(this.answaringPlayer)
+      throw new Error(`Player with id ${this.answaringPlayer.id} is already answaring`);
+    this.answaringPlayer = player;
   }
 
-  endGame() {
-    this.gameState.endGame();
+  removeAnswaringPlayer() {
+    this.answaringPlayer = null;
   }
 
-  selectQuestion(question: Question) {
-    this.gameState.selectQuestion(question);
+  setCurrentRound(round: Round) {
+    if(!this.doseRoundExist(round.id))
+      throw new Error(`Round with id ${round.id} not found`);
+
+    this.currentRound = round;
   }
 
-  waitForAnswer() {
-    this.gameState.waitForAnswer();
+  setCurrentQuestion(question: Question) {
+    if(!this.currentRound)
+      throw new Error(`Round not found`);
+
+    if(!this.currentRound.doseQuestionExist(question.id))
+      throw new Error(`Question with id ${question.id} not found in category with id ${question.id}`);
+
+    this.currentQuestion = question;
   }
 
-  playerAnswer(player: Player) {
-    this.gameState.playerAnswer(player);
-  }
-
-  validateAnswer() {
-    this.gameState.validateAnswer();
-  }
-
-  addScore(score: number) {
-    this.gameState.addScore(score);
-  }
-
-  removeScore(score: number) {
-    this.gameState.removeScore(score);
-  }
-
-  startRound() {
-    this.gameState.startRound();
-  }
-
-  endRound() {
-    this.gameState.endRound();
+  removeQuestion() {
+    this.currentQuestion = null;
   }
 }

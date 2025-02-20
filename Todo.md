@@ -1,4 +1,6 @@
- - [ ] Stworzenie lobby gry 
- - [ ] Łączenie nowych użytkowników
- - [ ] Naciśnięcie guzika
+ - [] implementacja statusów
+ - [] implementacja timerar pytania
+ - [] ponowne połączenie
+ - [] implementcacja premii
+ - [] edycja rund, categori, etc
  

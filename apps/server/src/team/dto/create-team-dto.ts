@@ -1,4 +1,4 @@
-export type createTeamDto = {
+export type CreateTeamDto = {
   gameId: string;
   name: string;
 };

@@ -5,6 +5,7 @@ export class Question {
   public question: string;
   public answer: string;
   public value: QuestionValue;
+  public isAnswered: boolean = false;
 
   constructor(
     id: string,
