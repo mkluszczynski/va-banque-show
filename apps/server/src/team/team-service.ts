@@ -55,6 +55,9 @@ export class TeamService {
 
   addPlayerToTeam(player: Player, team: Team) {
 
+    if(!this.doseTeamExist(team))
+      throw new Error(`Team with id ${team.id} not found`);
+
     if (this.isPlayerAlreadyInTeam(player)) {
       const playerTeam = this.getTeamByPlayer(player);
       playerTeam.removePlayerById(player);
