@@ -19,6 +19,10 @@ export class Question {
     this.value = value;
   }
 
+  markAsAnswered() {
+    this.isAnswered = true;
+  }
+
   static fromJSON(data: Question): Question {
     return new Question(data.id, data.question, data.answer, data.value);
   }
