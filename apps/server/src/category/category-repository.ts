@@ -52,7 +52,8 @@ export class CategoryRepository {
 
   private readFile(): Category[] {
     if (!fs.existsSync(this.filePath)) {
-      return [];
+      // return [];
+      throw new Error(`File not found: ${this.filePath} | ${__dirname}`);
     }
     const data = fs.readFileSync(this.filePath, "utf-8");
     return JSON.parse(data);
