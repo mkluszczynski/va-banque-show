@@ -70,8 +70,6 @@ describe("Game", () => {
             game.addRound(round);
             game.setCurrentRound(round);
 
-            console.log(game.currentRound);
-
             game.setCurrentQuestion(round.categories[0].questions[0]);
             expect(game.currentQuestion).toBe(round.categories[0].questions[0]);
         });
