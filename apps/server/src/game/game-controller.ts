@@ -67,7 +67,16 @@ export const gameController = (
     game.setCurrentQuestion(question);
 
     socket.broadcast.to(game.id).emit("update", { game });
+  }
 
+  socket.on("game:round:select", selectRound)
+  function selectRound(gameId: string, roundId: string){
+    const game = gameService.getGameById(gameId);
+    const round = roundService.getRoundById(roundId);
+
+    game.setCurrentRound(round);
+
+    socket.broadcast.to(game.id).emit("update", { game });
   }
   
 };
