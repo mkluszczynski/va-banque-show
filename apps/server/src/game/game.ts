@@ -76,24 +76,58 @@ export class Game {
     this.answaringPlayer = null;
   }
 
-  setCurrentRound(round: Round) {
+  getCurrentAnswaringTeam(){
+    const team = this.teams.find((team) => team.players.some((player) => player.id === this.answaringPlayer?.id));
+
+    if(!team)
+      throw new Error(`Team with player ${this.answaringPlayer?.id} not found`);
+
+    return team;
+  }
+
+  setCurrentRound(round: Round): void {
     if(!this.doseRoundExist(round.id))
       throw new Error(`Round with id ${round.id} not found`);
 
     this.currentRound = round;
   }
 
-  setCurrentQuestion(question: Question) {
+  setCurrentQuestion(question: Question): void {
     if(!this.currentRound)
       throw new Error(`Round not found`);
 
     if(!this.currentRound.doseQuestionExist(question.id))
       throw new Error(`Question with id ${question.id} not found in category with id ${question.id}`);
 
+    if(question.isAnswared)
+      throw new Error(`Question with id ${question.id} is already answared`);
+
     this.currentQuestion = question;
   }
 
-  removeQuestion() {
+  getCurrentQuestion(): Question {
+    if(!this.currentQuestion)
+      throw new Error(`No question is selected`);
+
+    return this.currentQuestion;
+  }
+
+  removeQuestion(): void {
     this.currentQuestion = null;
+  }
+
+  validateAnswer(isAnswerValid: boolean): void {
+    if(!this.answaringPlayer)
+      throw new Error(`No player is answaring`);
+
+    const question = this.getCurrentQuestion();
+
+    if(isAnswerValid)
+      this.getCurrentAnswaringTeam().addScore(question.value);
+      question.markAsAnswared();
+    
+
+    this.removeAnswaringPlayer();
+    this.removeQuestion();
   }
 }

@@ -4,12 +4,14 @@ import { GameService } from "../../src/game/game-service";
 import { PlayerService } from "../../src/player/player-service";
 import { Question } from "../../src/question/question";
 import { RoundService } from "../../src/round/round-service";
+import { TeamService } from "../../src/team/team-service";
 
 describe("Game", () => {
 
     let categoryRepository: CategoryRepository;
 
     let gameService: GameService;
+    let teamService: TeamService;
     let playerService: PlayerService;
     let categoryService: CategoryService;
     let roundService: RoundService; 
@@ -18,6 +20,7 @@ describe("Game", () => {
         categoryRepository = new CategoryRepository("./categories.json");
 
         gameService = new GameService();
+        teamService = new TeamService();
         playerService = new PlayerService();
         categoryService = new CategoryService(categoryRepository);
         roundService = new RoundService(categoryService);
@@ -95,6 +98,142 @@ describe("Game", () => {
 
             expect(() => game.setCurrentQuestion(question)).toThrow();
         });
+
+        it("should throw error if question is already answared", () => {
+            const admin = playerService.registerPlayer({ nickname: "Admin" });
+            const game = gameService.createGame(admin);
+            const player = playerService.registerPlayer({ nickname: "Player" });
+            const team = teamService.createTeam("Team");
+            const round = roundService.createRound(1);
+
+            game.addTeam(team);
+            game.addPlayer(player);
+            team.addPlayer(player);
+            game.addRound(round);
+            game.setCurrentRound(round);
+
+            game.setCurrentQuestion(round.categories[0].questions[0]);
+
+            game.setAnswaringPlayer(player);
+
+            game.validateAnswer(true);
+
+            expect(() => game.setCurrentQuestion(round.categories[0].questions[0])).toThrow();
+        });
+
+    });
+
+    describe("Player answer", () => {
+
+        it("should set answaring player", () => {
+            const admin = playerService.registerPlayer({ nickname: "Admin" });
+            const game = gameService.createGame(admin);
+            const player = playerService.registerPlayer({ nickname: "Player" });
+
+            game.addPlayer(player);
+
+            game.setAnswaringPlayer(player);
+            expect(game.answaringPlayer).toBe(player);
+        });
+
+        it("should throw error if player is not in game", () => {
+            const admin = playerService.registerPlayer({ nickname: "Admin" });
+            const game = gameService.createGame(admin);
+            const player = playerService.registerPlayer({ nickname: "Player" });
+
+            expect(() => game.setAnswaringPlayer(player)).toThrow();
+        });
+
+        it("should throw error if player is already answaring", () => {
+            const admin = playerService.registerPlayer({ nickname: "Admin" });
+            const game = gameService.createGame(admin);
+            const player = playerService.registerPlayer({ nickname: "Player" });
+            const player2 = playerService.registerPlayer({ nickname: "Player2" });
+
+            game.addPlayer(player);
+
+            game.setAnswaringPlayer(player);
+
+            expect(() => game.setAnswaringPlayer(player2)).toThrow();
+        });
+    });
+
+    describe("Validate answer", () => {
+        
+        it("should validate answer", () => {
+            const admin = playerService.registerPlayer({ nickname: "Admin" });
+            const game = gameService.createGame(admin);
+            const player = playerService.registerPlayer({ nickname: "Player" });
+            const team = teamService.createTeam("Team");
+            const round = roundService.createRound(1);
+
+            game.addRound(round);
+            game.setCurrentRound(round);
+            game.setCurrentQuestion(round.categories[0].questions[0]);
+
+            game.addTeam(team);
+            game.addPlayer(player);
+            team.addPlayer(player);
+
+            game.setAnswaringPlayer(player);
+
+            game.validateAnswer(true);
+            expect(game.answaringPlayer).toBe(null);
+        });
+
+        it("should throw error if no player is answaring", () => {
+            const admin = playerService.registerPlayer({ nickname: "Admin" });
+            const game = gameService.createGame(admin);
+
+            expect(() => game.validateAnswer(true)).toThrow();
+        });
+
+        it("should throw error if answer is not selected", () => {
+            const admin = playerService.registerPlayer({ nickname: "Admin" });
+            const game = gameService.createGame(admin);
+            const player = playerService.registerPlayer({ nickname: "Player" });
+            const team = teamService.createTeam("Team");
+            const round = roundService.createRound(1);
+
+            game.addRound(round);
+            game.setCurrentRound(round);
+
+            game.addTeam(team);
+            game.addPlayer(player);
+            team.addPlayer(player);
+
+            game.setAnswaringPlayer(player);
+
+            expect(() => game.validateAnswer(false)).toThrow();
+        });
+
+        it("should mark question as answared", () => {
+            const admin = playerService.registerPlayer({ nickname: "Admin" });
+            const game = gameService.createGame(admin);
+            const player = playerService.registerPlayer({ nickname: "Player" });
+            const team = teamService.createTeam("Team");
+            const round = roundService.createRound(1);
+
+            game.addRound(round);
+            game.setCurrentRound(round);
+            console.log(round.categories[0]);
+            
+            console.log(round.categories[0].questions[0]);
+            
+            game.setCurrentQuestion(round.categories[0].questions[0]);
+
+            game.addTeam(team);
+            game.addPlayer(player);
+            team.addPlayer(player);
+
+            game.setAnswaringPlayer(player);
+            console.log(game.currentQuestion);
+
+            game.validateAnswer(true);
+
+            expect(round.categories[0].questions[0].isAnswared).toBe(true);
+        });
+
 
     });
 

@@ -26,4 +26,8 @@ export class Team {
 
     this.players = this.players.filter((p) => p.id !== player.id);
   }
+
+  addScore(score: number) {
+    this.score += score;
+  }
 }

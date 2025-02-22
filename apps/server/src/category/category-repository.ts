@@ -23,11 +23,7 @@ export class CategoryRepository {
 
   public getCategories(): Category[] {
     const data = this.readFile();
-    return data.map((cat: Category) => {
-      const category = Category.fromJSON(cat);
-      category.setQuestions(cat.questions);
-      return category;
-    });
+    return data.map((cat: Category) => Category.fromJSON(cat));
   }
 
   public getCategoryById(id: string): Category | null {
