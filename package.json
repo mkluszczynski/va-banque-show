@@ -4,12 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "app:server": "pnpm run --dir apps/server",
-    "app:server:add": "pnpm add --dir apps/server",
-    "app:web": "pnpm run --dir apps/web",
-    "app:web:add": "pnpm add --dir apps/web",
-    "app:dev": "pnpm run -r --parallel dev",
-    "dev": "pnpm run --parallel app:server dev app:web dev"
+    "app:server": "pnpm --dir apps/server",
+    "app:web": "pnpm --dir apps/web",
+    "dev": "pnpm run --parallel dev",
+    "start": "pnpm run --parallel start"
   },
   "keywords": [],
   "author": "",
