@@ -13,7 +13,7 @@ export class Game {
 
   public currentRound: Round | null = null;
   public currentQuestion: Question | null = null;
-  public answaringPlayer: Player | null = null;
+  public answeringPlayer: Player | null = null;
 
   constructor(admin: Player) {
     this.id = genId();
@@ -25,7 +25,7 @@ export class Game {
   }
 
   removeTeam(team: Team) {
-    if(!this.doseTeamExist(team.id))
+    if (!this.doseTeamExist(team.id))
       throw new Error(`Team with id ${team.id} not found`);
 
     this.teams = this.teams.filter((t) => t.id !== team.id);
@@ -40,7 +40,7 @@ export class Game {
   }
 
   removeRound(round: Round) {
-    if(!this.doseRoundExist(round.id))
+    if (!this.doseRoundExist(round.id))
       throw new Error(`Round with id ${round.id} not found`);
 
     this.rounds = this.rounds.filter((r) => r.id !== round.id);
@@ -55,7 +55,7 @@ export class Game {
   }
 
   removePlayer(player: Player) {
-    if(!this.dosePlayerExist(player.id))
+    if (!this.dosePlayerExist(player.id))
       throw new Error(`Player with id ${player.id} not found`);
     this.players = this.players.filter((p) => p.id !== player.id);
   }
@@ -64,50 +64,54 @@ export class Game {
     return this.players.some((player) => player.id === playerId);
   }
 
-  setAnswaringPlayer(player: Player) {
-    if(!this.dosePlayerExist(player.id))
+  setAnsweringPlayer(player: Player) {
+    if (!this.dosePlayerExist(player.id))
       throw new Error(`Player with id ${player.id} not found`);
-    if(this.answaringPlayer)
-      throw new Error(`Player with id ${this.answaringPlayer.id} is already answaring`);
-    this.answaringPlayer = player;
+    if (this.answeringPlayer)
+      throw new Error(
+        `Player with id ${this.answeringPlayer.id} is already answaring`
+      );
+    this.answeringPlayer = player;
   }
 
-  removeAnswaringPlayer() {
-    this.answaringPlayer = null;
+  removeAnsweringPlayer() {
+    this.answeringPlayer = null;
   }
 
-  getCurrentAnswaringTeam(){
-    const team = this.teams.find((team) => team.players.some((player) => player.id === this.answaringPlayer?.id));
+  getCurrentAnsweringTeam() {
+    const team = this.teams.find((team) =>
+      team.players.some((player) => player.id === this.answeringPlayer?.id)
+    );
 
-    if(!team)
-      throw new Error(`Team with player ${this.answaringPlayer?.id} not found`);
+    if (!team)
+      throw new Error(`Team with player ${this.answeringPlayer?.id} not found`);
 
     return team;
   }
 
   setCurrentRound(round: Round): void {
-    if(!this.doseRoundExist(round.id))
+    if (!this.doseRoundExist(round.id))
       throw new Error(`Round with id ${round.id} not found`);
 
     this.currentRound = round;
   }
 
   setCurrentQuestion(question: Question): void {
-    if(!this.currentRound)
-      throw new Error(`Round not found`);
+    if (!this.currentRound) throw new Error(`Round not found`);
 
-    if(!this.currentRound.doseQuestionExist(question.id))
-      throw new Error(`Question with id ${question.id} not found in category with id ${question.id}`);
+    if (!this.currentRound.doseQuestionExist(question.id))
+      throw new Error(
+        `Question with id ${question.id} not found in category with id ${question.id}`
+      );
 
-    if(question.isAnswared)
+    if (question.isAnswered)
       throw new Error(`Question with id ${question.id} is already answared`);
 
     this.currentQuestion = question;
   }
 
   getCurrentQuestion(): Question {
-    if(!this.currentQuestion)
-      throw new Error(`No question is selected`);
+    if (!this.currentQuestion) throw new Error(`No question is selected`);
 
     return this.currentQuestion;
   }
@@ -117,17 +121,18 @@ export class Game {
   }
 
   validateAnswer(isAnswerValid: boolean): void {
-    if(!this.answaringPlayer)
-      throw new Error(`No player is answaring`);
+    if (!this.answeringPlayer) throw new Error(`No player is answaring`);
+
+    if (!isAnswerValid) {
+      this.removeAnsweringPlayer();
+      return;
+    }
 
     const question = this.getCurrentQuestion();
 
-    if(isAnswerValid)
-      this.getCurrentAnswaringTeam().addScore(question.value);
-      question.markAsAnswared();
-    
-
-    this.removeAnswaringPlayer();
+    question.markAsAnswered();
+    this.getCurrentAnsweringTeam().addScore(question.value);
+    this.removeAnsweringPlayer();
     this.removeQuestion();
   }
 }

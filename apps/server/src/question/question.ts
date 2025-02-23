@@ -5,7 +5,7 @@ export class Question {
   public question: string;
   public answer: string;
   public value: QuestionValue;
-  public isAnswared: boolean = false;
+  public isAnswered: boolean = false;
 
   constructor(
     id: string,
@@ -19,8 +19,8 @@ export class Question {
     this.value = value;
   }
 
-  markAsAnswared() {
-    this.isAnswared = true;
+  markAsAnswered() {
+    this.isAnswered = true;
   }
 
   static fromJSON(data: Question): Question {

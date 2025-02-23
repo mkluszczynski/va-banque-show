@@ -33,17 +33,17 @@ export class Category {
 
   markQuestionAsAnswered(questionId: string) {
     const question = this.getQuestionById(questionId);
-    question.markAsAnswared();
+    question.markAsAnswered();
   }
 
   static fromJSON(data: Category): Category {
     const category = new Category(data.name);
     category.id = data.id;
-    const questions: Question[] = data.questions.map((q: Question) => Question.fromJSON(q));
-    
-    category.setQuestions(
-      questions
+    const questions: Question[] = data.questions.map((q: Question) =>
+      Question.fromJSON(q)
     );
+
+    category.setQuestions(questions);
 
     return category;
   }

@@ -51,15 +51,14 @@ export const gameController = (
     socket.broadcast.to(game.id).emit("update", { game });
   }
 
-  socket.on("game:question:select", selectQuestion)
-  function selectQuestion(dto: SelectQuestionDto){
-
+  socket.on("game:question:select", selectQuestion);
+  function selectQuestion(dto: SelectQuestionDto) {
     const game = gameService.getGameById(dto.gameId);
 
     const round = roundService.getRoundById(dto.roundId);
 
     const category = categoryService.getCategoryById(dto.categoryId);
-    if(!round.douseCategoryExist(dto.categoryId))
+    if (!round.douseCategoryExist(dto.categoryId))
       throw new Error(`Category with id ${dto.categoryId} not found`);
 
     const question = category.getQuestionById(dto.questionId);
@@ -69,8 +68,8 @@ export const gameController = (
     socket.broadcast.to(game.id).emit("update", { game });
   }
 
-  socket.on("game:round:select", selectRound)
-  function selectRound(gameId: string, roundId: string){
+  socket.on("game:round:select", selectRound);
+  function selectRound(gameId: string, roundId: string) {
     const game = gameService.getGameById(gameId);
     const round = roundService.getRoundById(roundId);
 
@@ -78,5 +77,13 @@ export const gameController = (
 
     socket.broadcast.to(game.id).emit("update", { game });
   }
-  
+
+  socket.on("game:answer:validate", validateAnswer);
+  function validateAnswer(dto: { gameId: string; isValid: boolean }) {
+    const game = gameService.getGameById(dto.gameId);
+
+    game.validateAnswer(dto.isValid);
+
+    socket.broadcast.to(game.id).emit("update", { game });
+  }
 };
