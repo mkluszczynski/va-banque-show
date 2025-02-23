@@ -8,7 +8,8 @@
     "app:server:add": "pnpm add --dir apps/server",
     "app:web": "pnpm run --dir apps/web",
     "app:web:add": "pnpm add --dir apps/web",
-    "app:dev": "pnpm run -r --parallel dev"
+    "app:dev": "pnpm run -r --parallel dev",
+    "dev": "pnpm run --parallel app:server dev app:web dev"
   },
   "keywords": [],
   "author": "",
