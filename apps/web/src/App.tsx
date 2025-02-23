@@ -2,10 +2,10 @@ import { PlayerRegister } from "./view/PlayerRegisterView";
 import { SocketContext } from "./context/SocketContext";
 import { io } from "socket.io-client";
 import { PlayerContext } from "./context/PlayerContext";
-import { useState } from "react";
 import { Player } from "./type/Player";
 import { useLocalStorage } from "./hooks/useLocalStorage";
 import { MainMenu } from "./view/MainMenuView";
+import { useState } from "react";
 
 export default function App() {
   const [savedPlayer] = useLocalStorage("player", null);
