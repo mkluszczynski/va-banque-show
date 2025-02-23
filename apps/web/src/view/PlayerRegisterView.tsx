@@ -1,4 +1,6 @@
+import { Button } from "@/components/ui/button";
 import { useCommands } from "../hooks/useCommands";
+import { Input } from "@/components/ui/input";
 
 export function PlayerRegister() {
   const { registerPlayer } = useCommands();
@@ -13,16 +15,18 @@ export function PlayerRegister() {
   return (
     <div className="flex justify-center items-center h-screen">
       <div>
-        <h1>Player Register</h1>
-        <input
-          type="text"
-          placeholder="Nickname"
-          id="nickname"
-          className="focus:outline-none"
-        />
-        <button onClick={onRegister} className="hover:bg-black">
-          Register
-        </button>
+        <h3>Player Register</h3>
+        <div className="flex gap-2">
+          <Input
+            type="text"
+            placeholder="Nickname"
+            id="nickname"
+            className="focus:outline-none"
+          />
+          <Button onClick={onRegister} className="hover:bg-black">
+            Register
+          </Button>
+        </div>
       </div>
     </div>
   );

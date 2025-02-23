@@ -14,7 +14,7 @@ export default function App() {
   return (
     <SocketContext.Provider value={io("http://localhost:3000")}>
       <PlayerContext.Provider value={{ player, setPlayer }}>
-        <div className="flex justify-center items-center h-screen w-screen">
+        <div className="flex justify-center items-center h-screen w-screen relative">
           {player ? <MainMenu /> : <PlayerRegister />}
         </div>
       </PlayerContext.Provider>

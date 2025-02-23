@@ -1,5 +1,7 @@
 import { useContext } from "react";
 import { PlayerContext } from "../context/PlayerContext";
+import { Button } from "@/components/ui/button";
+import { JoinGameDialog } from "@/dialog/JoinGameDialog";
 
 export function MainMenu() {
   const playerContext = useContext(PlayerContext);
@@ -15,9 +17,9 @@ export function MainMenu() {
   return (
     <div>
       <p>Welcome {playerContext.player.nickname}</p>
-      <div className="flex space-x-4">
-        <button>Host Game</button>
-        <button>Join Game</button>
+      <div className="flex gap-2">
+        <Button>Host Game</Button>
+        <JoinGameDialog />
       </div>
     </div>
   );
