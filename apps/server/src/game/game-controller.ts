@@ -8,6 +8,7 @@ import { PlayerService } from "../player/player-service";
 import { CreateGameDto } from "./dto/cerate-game-dto";
 import { TeamService } from "../team/team-service";
 import { SelectQuestionDto } from "./dto/select-question-dto";
+import { ValidateAnswerDto } from "./dto/validate-answer-dto";
 
 export const gameController = (
   socket: Socket,
@@ -79,7 +80,7 @@ export const gameController = (
   }
 
   socket.on("game:answer:validate", validateAnswer);
-  function validateAnswer(dto: { gameId: string; isValid: boolean }) {
+  function validateAnswer(dto: ValidateAnswerDto) {
     const game = gameService.getGameById(dto.gameId);
 
     game.validateAnswer(dto.isValid);
