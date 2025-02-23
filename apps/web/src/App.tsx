@@ -1,3 +1,23 @@
+import { PlayerRegister } from "./view/PlayerRegisterView";
+import { SocketContext } from "./context/SocketContext";
+import { io } from "socket.io-client";
+import { PlayerContext } from "./context/PlayerContext";
+import { useState } from "react";
+import { Player } from "./type/Player";
+import { useLocalStorage } from "./hooks/useLocalStorage";
+import { MainMenu } from "./view/MainMenuView";
+
 export default function App() {
-  return <h1 className="text-3xl font-bold underline">Hello world!</h1>;
+  const [savedPlayer] = useLocalStorage("player", null);
+  const [player, setPlayer] = useState<Player | null>(savedPlayer);
+
+  return (
+    <SocketContext.Provider value={io("http://localhost:3000")}>
+      <PlayerContext.Provider value={{ player, setPlayer }}>
+        <div className="flex justify-center items-center h-screen w-screen">
+          {player ? <MainMenu /> : <PlayerRegister />}
+        </div>
+      </PlayerContext.Provider>
+    </SocketContext.Provider>
+  );
 }

@@ -33,7 +33,11 @@ const onConnection = (socket: Socket) => {
   categoryController(socket, categoryService, roundService, gameService);
 };
 
-const server = new Server(3000);
+const server = new Server(3000, {
+  cors: {
+    origin: "*",
+  },
+});
 console.log("[Server] Server started.");
 
 server.use(validateDtoMiddleware)
