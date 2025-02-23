@@ -27,9 +27,9 @@ describe("Game", () => {
 
   describe("Player answer", () => {
     it("should set answaring player", () => {
-      const admin = playerService.registerPlayer({ nickname: "Admin" });
+      const admin = playerService.registerPlayer("Admin");
       const game = gameService.createGame(admin);
-      const player = playerService.registerPlayer({ nickname: "Player" });
+      const player = playerService.registerPlayer("Admin");
 
       game.addPlayer(player);
 
@@ -38,18 +38,18 @@ describe("Game", () => {
     });
 
     it("should throw error if player is not in game", () => {
-      const admin = playerService.registerPlayer({ nickname: "Admin" });
+      const admin = playerService.registerPlayer("Admin");
       const game = gameService.createGame(admin);
-      const player = playerService.registerPlayer({ nickname: "Player" });
+      const player = playerService.registerPlayer("Admin");
 
       expect(() => game.setAnsweringPlayer(player)).toThrow();
     });
 
     it("should throw error if player is already answaring", () => {
-      const admin = playerService.registerPlayer({ nickname: "Admin" });
+      const admin = playerService.registerPlayer("Admin");
       const game = gameService.createGame(admin);
-      const player = playerService.registerPlayer({ nickname: "Player" });
-      const player2 = playerService.registerPlayer({ nickname: "Player2" });
+      const player = playerService.registerPlayer("Admin");
+      const player2 = playerService.registerPlayer("Admin");
 
       game.addPlayer(player);
 
@@ -61,7 +61,7 @@ describe("Game", () => {
 
   describe("Question select", () => {
     it("should select question", () => {
-      const admin = playerService.registerPlayer({ nickname: "Admin" });
+      const admin = playerService.registerPlayer("Admin");
       const game = gameService.createGame(admin);
       const round = roundService.createRound(1);
       game.addRound(round);
@@ -72,7 +72,7 @@ describe("Game", () => {
     });
 
     it("should throw error if current round is not set", () => {
-      const admin = playerService.registerPlayer({ nickname: "Admin" });
+      const admin = playerService.registerPlayer("Admin");
       const game = gameService.createGame(admin);
 
       const round = roundService.createRound(1);
@@ -83,7 +83,7 @@ describe("Game", () => {
     });
 
     it("should throw error if question does not exist in current round", () => {
-      const admin = playerService.registerPlayer({ nickname: "Admin" });
+      const admin = playerService.registerPlayer("Admin");
       const game = gameService.createGame(admin);
 
       const round = roundService.createRound(1);
@@ -96,9 +96,9 @@ describe("Game", () => {
     });
 
     it("should throw error if question is already answared", () => {
-      const admin = playerService.registerPlayer({ nickname: "Admin" });
+      const admin = playerService.registerPlayer("Admin");
       const game = gameService.createGame(admin);
-      const player = playerService.registerPlayer({ nickname: "Player" });
+      const player = playerService.registerPlayer("Admin");
       const team = teamService.createTeam("Team");
       const round = roundService.createRound(1);
 
@@ -122,9 +122,9 @@ describe("Game", () => {
 
   describe("Player answer", () => {
     it("should set answaring player", () => {
-      const admin = playerService.registerPlayer({ nickname: "Admin" });
+      const admin = playerService.registerPlayer("Admin");
       const game = gameService.createGame(admin);
-      const player = playerService.registerPlayer({ nickname: "Player" });
+      const player = playerService.registerPlayer("Admin");
 
       game.addPlayer(player);
 
@@ -133,18 +133,18 @@ describe("Game", () => {
     });
 
     it("should throw error if player is not in game", () => {
-      const admin = playerService.registerPlayer({ nickname: "Admin" });
+      const admin = playerService.registerPlayer("Admin");
       const game = gameService.createGame(admin);
-      const player = playerService.registerPlayer({ nickname: "Player" });
+      const player = playerService.registerPlayer("Admin");
 
       expect(() => game.setAnsweringPlayer(player)).toThrow();
     });
 
     it("should throw error if player is already answaring", () => {
-      const admin = playerService.registerPlayer({ nickname: "Admin" });
+      const admin = playerService.registerPlayer("Admin");
       const game = gameService.createGame(admin);
-      const player = playerService.registerPlayer({ nickname: "Player" });
-      const player2 = playerService.registerPlayer({ nickname: "Player2" });
+      const player = playerService.registerPlayer("Admin");
+      const player2 = playerService.registerPlayer("Admin");
 
       game.addPlayer(player);
 
@@ -156,9 +156,9 @@ describe("Game", () => {
 
   describe("Validate answer", () => {
     it("should validate answer", () => {
-      const admin = playerService.registerPlayer({ nickname: "Admin" });
+      const admin = playerService.registerPlayer("Admin");
       const game = gameService.createGame(admin);
-      const player = playerService.registerPlayer({ nickname: "Player" });
+      const player = playerService.registerPlayer("Admin");
       const team = teamService.createTeam("Team");
       const round = roundService.createRound(1);
 
@@ -177,16 +177,16 @@ describe("Game", () => {
     });
 
     it("should throw error if no player is answaring", () => {
-      const admin = playerService.registerPlayer({ nickname: "Admin" });
+      const admin = playerService.registerPlayer("Admin");
       const game = gameService.createGame(admin);
 
       expect(() => game.validateAnswer(true)).toThrow();
     });
 
     it("should throw error if answer is not selected", () => {
-      const admin = playerService.registerPlayer({ nickname: "Admin" });
+      const admin = playerService.registerPlayer("Admin");
       const game = gameService.createGame(admin);
-      const player = playerService.registerPlayer({ nickname: "Player" });
+      const player = playerService.registerPlayer("Admin");
       const team = teamService.createTeam("Team");
       const round = roundService.createRound(1);
 
@@ -203,9 +203,9 @@ describe("Game", () => {
     });
 
     it("should mark question as answared", () => {
-      const admin = playerService.registerPlayer({ nickname: "Admin" });
+      const admin = playerService.registerPlayer("Admin");
       const game = gameService.createGame(admin);
-      const player = playerService.registerPlayer({ nickname: "Player" });
+      const player = playerService.registerPlayer("Admin");
       const team = teamService.createTeam("Team");
       const round = roundService.createRound(1);
 
