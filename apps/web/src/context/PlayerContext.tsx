@@ -3,7 +3,7 @@ import { Player } from "../type/Player";
 
 type PlayerContextType = {
   player: Player | null;
-  setPlayer: (player: Player) => void;
+  setPlayer: (player: Player | null) => void;
 };
 
 export const PlayerContext = createContext<PlayerContextType | null>(null);

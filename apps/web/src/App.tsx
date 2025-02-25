@@ -5,19 +5,36 @@ import { PlayerContext } from "./context/PlayerContext";
 import { Player } from "./type/Player";
 import { useLocalStorage } from "./hooks/useLocalStorage";
 import { MainMenu } from "./view/MainMenuView";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { Game } from "./type/Game";
+import { GameContext } from "./context/GameContext";
+import { LobbyView } from "./view/LobbyView";
 
 export default function App() {
   const [savedPlayer] = useLocalStorage("player", null);
+  const [savedGame] = useLocalStorage("game", null);
+
   const [player, setPlayer] = useState<Player | null>(savedPlayer);
+  const [game, setGame] = useState<Game | null>(savedGame);
 
   return (
     <SocketContext.Provider value={io("http://localhost:3000")}>
       <PlayerContext.Provider value={{ player, setPlayer }}>
-        <div className="flex justify-center items-center h-screen w-screen relative">
-          {player ? <MainMenu /> : <PlayerRegister />}
-        </div>
+        <GameContext.Provider value={{ game, setGame }}>
+          <div className="flex justify-center items-center h-screen w-screen relative">
+            <CurrentView />
+          </div>
+        </GameContext.Provider>
       </PlayerContext.Provider>
     </SocketContext.Provider>
   );
+}
+
+function CurrentView() {
+  const playerContext = useContext(PlayerContext);
+  const gameContext = useContext(GameContext);
+
+  if (!playerContext?.player) return <PlayerRegister />;
+  if (!gameContext?.game) return <MainMenu />;
+  return <LobbyView />;
 }

@@ -1,9 +1,9 @@
 import { Button } from "@/components/ui/button";
-import { useCommands } from "../hooks/useCommands";
+import { usePlayerCommands } from "../hooks/commands/usePlayerCommands";
 import { Input } from "@/components/ui/input";
 
 export function PlayerRegister() {
-  const { registerPlayer } = useCommands();
+  const { registerPlayer } = usePlayerCommands();
 
   const onRegister = () => {
     const nickname = (document.getElementById("nickname") as HTMLInputElement)
