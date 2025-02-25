@@ -11,14 +11,25 @@ import { GameContext } from "./context/GameContext";
 import { LobbyView } from "./view/LobbyView";
 
 export default function App() {
-  const [savedPlayer] = useLocalStorage("player", null);
-  const [savedGame] = useLocalStorage("game", null);
+  const [savedPlayer] = useLocalStorage<Player | null>("player", null);
+  const [savedGame, setSaveGame] = useLocalStorage<Game | null>("game", null);
 
   const [player, setPlayer] = useState<Player | null>(savedPlayer);
   const [game, setGame] = useState<Game | null>(savedGame);
 
+  const socket = io("http://localhost:3000", {
+    transports: ["websocket"],
+  });
+
+  socket.on("update", ({ game }: { game: Game }) => {
+    console.log("update", game);
+
+    setGame(game);
+    setSaveGame(game);
+  });
+
   return (
-    <SocketContext.Provider value={io("http://localhost:3000")}>
+    <SocketContext.Provider value={socket}>
       <PlayerContext.Provider value={{ player, setPlayer }}>
         <GameContext.Provider value={{ game, setGame }}>
           <div className="flex justify-center items-center h-screen w-screen relative">
