@@ -55,7 +55,6 @@ export const gameController = (
     if(!game.dosePlayerExist(player.id) && !game.isPlayerAdmin(player))  
       return logger.context("game:rejoin").warn(`Player ${player.toString()} not found in game: ${game.id}`);
 
-    console.log(player.nickname, socket.rooms);
     
     if(socket.rooms.has(game.id)) return;
     socket.join(game.id);
