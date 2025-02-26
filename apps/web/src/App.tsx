@@ -8,7 +8,7 @@ import { MainMenu } from "./view/MainMenuView";
 import { useContext, useState } from "react";
 import { Game } from "./type/Game";
 import { GameContext } from "./context/GameContext";
-import { LobbyView } from "./view/LobbyView";
+import { LobbyView } from "./view/lobby/LobbyView";
 import { useGameCommands } from "./hooks/commands/useGameCommands";
 import { usePlayerCommands } from "./hooks/commands/usePlayerCommands";
 
@@ -47,8 +47,9 @@ function CurrentView() {
   const playerContext = useContext(PlayerContext);
   const gameContext = useContext(GameContext);
 
-  const { checkIfGameExists } = useGameCommands();
+  const { checkIfGameExists, rejoin } = useGameCommands();
   const { checkIfPlayerExists } = usePlayerCommands();
+
   if (gameContext?.game) checkIfGameExists(gameContext.game.id);
   if (playerContext?.player) checkIfPlayerExists(playerContext.player.id);
 

@@ -48,6 +48,21 @@ export const gameController = (
     socket.broadcast.to(game.id).emit("update", { game });
   }
 
+  socket.on("game:rejoin", rejoinGame);
+  function rejoinGame(data: JoinGameDto) {
+    const game = gameService.getGameById(data.gameId);
+    const player = playerService.getPlayerById(data.playerId);
+    
+    if(!game.dosePlayerExist(player.id)) 
+      return console.log(`[Server][gameController] Player ${player.toString()} not found in game: ${game.id}`);
+
+    console.log(
+      `[Server][gameController] Player ${player.nickname}#${player.id} rejoined game: ${game.id}`
+    );
+
+    socket.join(game.id);
+  }
+
   socket.on("game:create", createGame);
   function createGame(dto: CreateGameDto, callback: CallableFunction) {
     const admin = playerService.getPlayerById(dto.adminId);

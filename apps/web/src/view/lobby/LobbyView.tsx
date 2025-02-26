@@ -1,9 +1,9 @@
 import { GameContext } from "@/context/GameContext";
 import { useContext } from "react";
 import { PlayerContext } from "@/context/PlayerContext";
-import { ErrorView } from "./ErrorView";
-import { AdminLobbyView } from "./lobby/AdminLobbyView";
-import { PlayerLobbyView } from "./lobby/PlayerLobbyView";
+import { ErrorView } from "../ErrorView";
+import { AdminLobbyView } from "./AdminLobbyView";
+import { PlayerLobbyView } from "./PlayerLobbyView";
 
 export function LobbyView() {
   const gameContext = useContext(GameContext);

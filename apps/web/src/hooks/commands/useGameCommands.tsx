@@ -15,12 +15,23 @@ export function useGameCommands() {
     null
   );
 
+  const rejoin = (gameId: string) => {
+    if (!playerContext.player) return;
+    if (!gameContext.game) return;
+    socket.emit("game:rejoin", {
+      gameId,
+      playerId: playerContext.player?.id,
+    });
+  };
+
   return {
     checkIfGameExists: (gameId: string) => {
       socket.emit("game:exists", { gameId }, (doseGameExists: boolean) => {
         if (!doseGameExists) {
           gameContext?.setGame(null);
           removeSavedGame();
+        } else {
+          rejoin(gameId);
         }
       });
     },
@@ -47,6 +58,14 @@ export function useGameCommands() {
           setSaveGame(game);
         }
       );
+    },
+    rejoin: (gameId: string) => {
+      if (!playerContext.player) return;
+      if (!gameContext.game) return;
+      socket.emit("game:rejoin", {
+        gameId,
+        playerId: playerContext.player?.id,
+      });
     },
     leaveGame: () => {
       if (!playerContext) return;
