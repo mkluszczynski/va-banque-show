@@ -1,33 +1,19 @@
 import { PlayerRegister } from "./view/PlayerRegisterView";
 import { SocketContext } from "./context/SocketContext";
 import { io } from "socket.io-client";
-import { PlayerContext } from "./context/PlayerContext";
-import { Player } from "./type/Player";
-import { useLocalStorage } from "./hooks/useLocalStorage";
 import { MainMenu } from "./view/MainMenuView";
-import { useContext, useState } from "react";
-import { Game } from "./type/Game";
-import { GameContext } from "./context/GameContext";
+import { useContext } from "react";
 import { LobbyView } from "./view/lobby/LobbyView";
 import { useGameCommands } from "./hooks/commands/useGameCommands";
 import { usePlayerCommands } from "./hooks/commands/usePlayerCommands";
+import { GameContext } from "./context/GameContext";
+import { PlayerContext } from "./context/PlayerContext";
+import { PlayerProvider } from "./provider/PlayerProvider";
+import { GameProvider } from "./provider/GameProvider";
 
 export default function App() {
-  const [savedPlayer] = useLocalStorage<Player | null>("player", null);
-  const [savedGame, setSaveGame] = useLocalStorage<Game | null>("game", null);
-
-  const [player, setPlayer] = useState<Player | null>(savedPlayer);
-  const [game, setGame] = useState<Game | null>(savedGame);
-
   const socket = io("http://localhost:3000", {
     transports: ["websocket"],
-  });
-
-  socket.on("update", ({ game }: { game: Game }) => {
-    console.log("update", game);
-
-    setGame(game);
-    setSaveGame(game);
   });
 
   socket.on("error", (error: unknown) => {
@@ -36,13 +22,13 @@ export default function App() {
 
   return (
     <SocketContext.Provider value={socket}>
-      <PlayerContext.Provider value={{ player, setPlayer }}>
-        <GameContext.Provider value={{ game, setGame }}>
+      <PlayerProvider>
+        <GameProvider>
           <div className="flex justify-center items-center h-screen w-screen relative">
             <CurrentView />
           </div>
-        </GameContext.Provider>
-      </PlayerContext.Provider>
+        </GameProvider>
+      </PlayerProvider>
     </SocketContext.Provider>
   );
 }
@@ -51,11 +37,11 @@ function CurrentView() {
   const playerContext = useContext(PlayerContext);
   const gameContext = useContext(GameContext);
 
-  const { checkIfGameExists, rejoin } = useGameCommands();
+  const { checkIfGameExists } = useGameCommands();
   const { checkIfPlayerExists } = usePlayerCommands();
 
-  if (gameContext?.game) checkIfGameExists(gameContext.game.id);
   if (playerContext?.player) checkIfPlayerExists(playerContext.player.id);
+  if (gameContext?.game) checkIfGameExists(gameContext.game.id);
 
   if (!playerContext?.player) return <PlayerRegister />;
   if (!gameContext?.game) return <MainMenu />;

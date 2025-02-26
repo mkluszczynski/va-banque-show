@@ -35,16 +35,15 @@ export const gameController = (
   }
 
   socket.on("game:join", joinGame);
-  function joinGame(data: JoinGameDto, callback: CallableFunction) {
+  function joinGame(data: JoinGameDto) {
     const game = gameService.getGameById(data.gameId);
     const player = playerService.getPlayerById(data.playerId);
 
     game.addPlayer(player);
+    socket.join(game.id);
 
-    callback({ game });
     logger.context("game:join").log(`Player ${player.toString()} joined game: ${game.id}`);
 
-    socket.join(game.id);
     socket.broadcast.to(game.id).emit("update", { game });
   }
 
@@ -52,13 +51,15 @@ export const gameController = (
   function rejoinGame(data: JoinGameDto) {
     const game = gameService.getGameById(data.gameId);
     const player = playerService.getPlayerById(data.playerId);
-    
-    if(!game.dosePlayerExist(player.id)) 
+
+    if(!game.dosePlayerExist(player.id) && !game.isPlayerAdmin(player))  
       return logger.context("game:rejoin").warn(`Player ${player.toString()} not found in game: ${game.id}`);
 
-    logger.context("game:rejoin").log(`Player ${player.toString()} rejoined game: ${game.id}`);
-
+    console.log(player.nickname, socket.rooms);
+    
+    if(socket.rooms.has(game.id)) return;
     socket.join(game.id);
+    logger.context("game:rejoin").log(`Player ${player.toString()} rejoined game: ${game.id}`);
   }
 
   socket.on("game:create", createGame);

@@ -6,7 +6,7 @@ import { Team } from "../team/team";
 
 export class Game {
   public id: string;
-  public admin: Player | null = null;
+  public admin: Player;
   public teams: Team[] = [];
   public rounds: Round[] = [];
   public players: Player[] = [];
@@ -18,6 +18,10 @@ export class Game {
   constructor(admin: Player) {
     this.id = genId();
     this.admin = admin;
+  }
+
+  isPlayerAdmin(player: Player): boolean {
+    return this.admin.id === player.id
   }
 
   addTeam(team: Team) {

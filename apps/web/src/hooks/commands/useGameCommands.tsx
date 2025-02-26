@@ -15,23 +15,12 @@ export function useGameCommands() {
     null
   );
 
-  const rejoin = (gameId: string) => {
-    if (!playerContext.player) return;
-    if (!gameContext.game) return;
-    socket.emit("game:rejoin", {
-      gameId,
-      playerId: playerContext.player?.id,
-    });
-  };
-
   return {
     checkIfGameExists: (gameId: string) => {
       socket.emit("game:exists", { gameId }, (doseGameExists: boolean) => {
         if (!doseGameExists) {
           gameContext?.setGame(null);
           removeSavedGame();
-        } else {
-          rejoin(gameId);
         }
       });
     },
@@ -48,22 +37,14 @@ export function useGameCommands() {
       );
     },
     joinGame: (gameId: string) => {
-      if (!playerContext) return;
-      if (!gameContext) return;
-      socket.emit(
-        "game:join",
-        { gameId, playerId: playerContext.player?.id },
-        ({ game }: { game: Game }) => {
-          gameContext.setGame(game);
-          setSaveGame(game);
-        }
-      );
+      if (!playerContext.player) return;
+      socket.emit("game:join", { gameId, playerId: playerContext.player.id });
     },
-    rejoin: (gameId: string) => {
+    rejoin: () => {
       if (!playerContext.player) return;
       if (!gameContext.game) return;
       socket.emit("game:rejoin", {
-        gameId,
+        gameId: gameContext.game.id,
         playerId: playerContext.player?.id,
       });
     },
