@@ -6,4 +6,7 @@ export type GameContextType = {
   setGame: (game: Game | null) => void;
 };
 
-export const GameContext = createContext<GameContextType | null>(null);
+export const GameContext = createContext<GameContextType>({
+  game: null,
+  setGame: () => {},
+});

@@ -6,4 +6,7 @@ type PlayerContextType = {
   setPlayer: (player: Player | null) => void;
 };
 
-export const PlayerContext = createContext<PlayerContextType | null>(null);
+export const PlayerContext = createContext<PlayerContextType>({
+  player: null,
+  setPlayer: () => {},
+});

@@ -1,16 +1,19 @@
 import { GameContext } from "@/context/GameContext";
-import { MainMenu } from "./MainMenuView";
 import { useContext } from "react";
+import { PlayerContext } from "@/context/PlayerContext";
+import { ErrorView } from "./ErrorView";
+import { AdminLobbyView } from "./lobby/AdminLobbyView";
+import { PlayerLobbyView } from "./lobby/PlayerLobbyView";
 
 export function LobbyView() {
   const gameContext = useContext(GameContext);
+  const playerContext = useContext(PlayerContext);
 
-  if (!gameContext?.game) return <MainMenu />;
+  if (!gameContext.game) return ErrorView();
+  if (!playerContext.player) return ErrorView();
 
-  return (
-    <div>
-      <h1>Lobby</h1>
-      <p>Game ID: {gameContext.game.id}</p>
-    </div>
-  );
+  if (gameContext.game.admin?.id === playerContext.player.id)
+    return <AdminLobbyView />;
+
+  return <PlayerLobbyView />;
 }
