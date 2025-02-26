@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-function-type */
 import { Socket } from "socket.io";
 
-export const errorMiddleware = (socket: Socket, next: (err?: Error) => void) => {
+export const handleError = (socket: Socket, next: (err?: Error) => void) => {
   const wrap = (handler: Function) => {
     return async (...args: unknown[]) => {
       try {

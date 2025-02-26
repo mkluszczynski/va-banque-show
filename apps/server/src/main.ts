@@ -10,8 +10,10 @@ import { CategoryService } from "./category/category-service";
 import { CategoryRepository } from "./category/category-repository";
 import { categoryController } from "./category/category-controller";
 import { validateDtoMiddleware } from "../utils/validate-dto";
-import { errorMiddleware } from "../utils/error-catch";
+import { handleError } from "../utils/error-catch";
+import { Logger } from "../utils/logger";
 
+const serverLogger = new Logger(["Server"]);
 
 const playerService = new PlayerService();
 const teamService = new TeamService();
@@ -39,22 +41,18 @@ const server = new Server(3000, {
     origin: "*",
   },
 });
-console.log("[Server] Server started.");
+
+serverLogger.log("Server started on port 3000");
 
 server.use(validateDtoMiddleware)
-server.use(errorMiddleware)
+server.use(handleError)
 
 server.on("connection", (socket) => {
-  console.log("[Server] Client connected.");
-  
-  try{
-    onConnection(socket);
-  } catch (e) {
-    const err = e as Error;
-      return socket.emit("error", { message: err.message });
-  }
+  serverLogger.log("Client connected."); 
+
+  onConnection(socket);
 
   socket.on("disconnect", () => {
-    console.log("[Server] Client disconnected.");
+    serverLogger.log("Client disconnected.");
   });
 });
