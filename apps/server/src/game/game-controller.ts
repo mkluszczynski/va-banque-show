@@ -18,6 +18,20 @@ export const gameController = (
   playerService: PlayerService,
   teamService: TeamService
 ) => {
+
+  socket.on("game:exists", existsGame);
+  function existsGame(dto: {gameId: string}, callback: CallableFunction) {
+    let game: Game | null = null
+    try{
+      game = gameService.getGameById(dto.gameId);
+    }
+    catch(e){
+      const err = e as Error;
+      console.log(`[Server][gameController] Game with id ${dto.gameId} not found`, err.message);
+    }
+    callback(!!game);
+  }
+
   socket.on("game:join", joinGame);
   function joinGame(data: JoinGameDto, callback: CallableFunction) {
     const game = gameService.getGameById(data.gameId);

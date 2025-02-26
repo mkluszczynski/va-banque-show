@@ -9,6 +9,8 @@ import { useContext, useState } from "react";
 import { Game } from "./type/Game";
 import { GameContext } from "./context/GameContext";
 import { LobbyView } from "./view/LobbyView";
+import { useGameCommands } from "./hooks/commands/useGameCommands";
+import { usePlayerCommands } from "./hooks/commands/usePlayerCommands";
 
 export default function App() {
   const [savedPlayer] = useLocalStorage<Player | null>("player", null);
@@ -44,6 +46,11 @@ export default function App() {
 function CurrentView() {
   const playerContext = useContext(PlayerContext);
   const gameContext = useContext(GameContext);
+
+  const { checkIfGameExists } = useGameCommands();
+  const { checkIfPlayerExists } = usePlayerCommands();
+  if (gameContext?.game) checkIfGameExists(gameContext.game.id);
+  if (playerContext?.player) checkIfPlayerExists(playerContext.player.id);
 
   if (!playerContext?.player) return <PlayerRegister />;
   if (!gameContext?.game) return <MainMenu />;

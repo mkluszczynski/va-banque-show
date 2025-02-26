@@ -8,6 +8,22 @@ export const playerController = (
   socket: Socket,
   playerService: PlayerService
 ) => {
+
+  socket.on("player:exists", existsPlayer);
+  function existsPlayer(dto: { playerId: string }, callback: CallableFunction) {
+    let player: Player | null = null;
+    try {
+      player = playerService.getPlayerById(dto.playerId);
+    } catch (e) {
+      const err = e as Error;
+      console.log(
+        `[Server][playerController] Player with id ${dto.playerId} not found`,
+        err.message
+      );
+    }
+    callback(!!player);
+  }
+
   socket.on("player:register", registerPlayer);
   function registerPlayer(dto: RegisterPlayerDto, callback: CallableFunction) {
     const registeredPlayer: Player = playerService.registerPlayer(dto.nickname);

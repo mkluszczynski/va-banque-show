@@ -13,6 +13,15 @@ export function usePlayerCommands() {
   );
 
   return {
+    checkIfPlayerExists: (playerId: string) => {
+      socket.emit("player:exists", { playerId }, (exists: boolean) => {
+        if (exists) return;
+        if (!playerContext) return;
+
+        playerContext.setPlayer(null);
+        removeSavedPlayer();
+      });
+    },
     registerPlayer: (nickname: string) => {
       socket.emit(
         "player:register",

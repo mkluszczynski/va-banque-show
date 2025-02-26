@@ -16,6 +16,14 @@ export function useGameCommands() {
   );
 
   return {
+    checkIfGameExists: (gameId: string) => {
+      socket.emit("game:exists", { gameId }, (doseGameExists: boolean) => {
+        if (!doseGameExists) {
+          gameContext?.setGame(null);
+          removeSavedGame();
+        }
+      });
+    },
     createGame: () => {
       if (!playerContext) return;
       if (!gameContext) return;
