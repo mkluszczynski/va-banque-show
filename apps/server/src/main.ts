@@ -10,6 +10,7 @@ import { CategoryService } from "./category/category-service";
 import { CategoryRepository } from "./category/category-repository";
 import { categoryController } from "./category/category-controller";
 import { validateDtoMiddleware } from "../utils/validate-dto";
+import { errorMiddleware } from "../utils/error-catch";
 
 
 const playerService = new PlayerService();
@@ -41,18 +42,16 @@ const server = new Server(3000, {
 console.log("[Server] Server started.");
 
 server.use(validateDtoMiddleware)
+server.use(errorMiddleware)
 
 server.on("connection", (socket) => {
   console.log("[Server] Client connected.");
   
   try{
     onConnection(socket);
-  } catch (error: unknown) {
-    if (error instanceof Error) {
-      socket.emit("error", { message: error.message });
-    } else {
-      socket.emit("error", { message: "An unknown error occurred." });
-    }
+  } catch (e) {
+    const err = e as Error;
+      return socket.emit("error", { message: err.message });
   }
 
   socket.on("disconnect", () => {

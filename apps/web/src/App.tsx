@@ -30,6 +30,10 @@ export default function App() {
     setSaveGame(game);
   });
 
+  socket.on("error", (error: unknown) => {
+    console.error(error);
+  });
+
   return (
     <SocketContext.Provider value={socket}>
       <PlayerContext.Provider value={{ player, setPlayer }}>

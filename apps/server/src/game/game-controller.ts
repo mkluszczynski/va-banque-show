@@ -9,6 +9,7 @@ import { CreateGameDto } from "./dto/cerate-game-dto";
 import { TeamService } from "../team/team-service";
 import { SelectQuestionDto } from "./dto/select-question-dto";
 import { ValidateAnswerDto } from "./dto/validate-answer-dto";
+import { Logger } from "../../utils/logger";
 
 export const gameController = (
   socket: Socket,
@@ -18,6 +19,7 @@ export const gameController = (
   playerService: PlayerService,
   teamService: TeamService
 ) => {
+  const logger = new Logger(["Server", "GameController"]);
 
   socket.on("game:exists", existsGame);
   function existsGame(dto: {gameId: string}, callback: CallableFunction) {
@@ -27,7 +29,7 @@ export const gameController = (
     }
     catch(e){
       const err = e as Error;
-      console.log(`[Server][gameController] Game with id ${dto.gameId} not found`, err.message);
+      logger.context("game:exists").error(`Game with id ${dto.gameId} not found`, err);
     }
     callback(!!game);
   }
@@ -40,9 +42,7 @@ export const gameController = (
     game.addPlayer(player);
 
     callback({ game });
-    console.log(
-      `[Server][gameController] Player ${player.nickname}#${player.id} joined game: ${game.id}`
-    );
+    logger.context("game:join").log(`Player ${player.toString()} joined game: ${game.id}`);
 
     socket.join(game.id);
     socket.broadcast.to(game.id).emit("update", { game });
@@ -54,11 +54,9 @@ export const gameController = (
     const player = playerService.getPlayerById(data.playerId);
     
     if(!game.dosePlayerExist(player.id)) 
-      return console.log(`[Server][gameController] Player ${player.toString()} not found in game: ${game.id}`);
+      return logger.context("game:rejoin").warn(`Player ${player.toString()} not found in game: ${game.id}`);
 
-    console.log(
-      `[Server][gameController] Player ${player.nickname}#${player.id} rejoined game: ${game.id}`
-    );
+    logger.context("game:rejoin").log(`Player ${player.toString()} rejoined game: ${game.id}`);
 
     socket.join(game.id);
   }
@@ -75,7 +73,8 @@ export const gameController = (
     game.addTeam(teamService.createTeam("Team 1"));
     game.addTeam(teamService.createTeam("Team 2"));
 
-    console.log(`[Server][gameController] Game created: ${game.id}`);
+    logger.context("game:create").log(`Game created: ${game.id}`);
+
     callback({ game });
     socket.join(game.id);
     socket.broadcast.to(game.id).emit("update", { game });
@@ -84,16 +83,23 @@ export const gameController = (
   socket.on("game:question:select", selectQuestion);
   function selectQuestion(dto: SelectQuestionDto) {
     const game = gameService.getGameById(dto.gameId);
-
     const round = roundService.getRoundById(dto.roundId);
-
     const category = categoryService.getCategoryById(dto.categoryId);
+
     if (!round.douseCategoryExist(dto.categoryId))
-      throw new Error(`Category with id ${dto.categoryId} not found`);
+      return logger
+        .context("game:question:select")
+        .context(game.id)
+        .error(`Category with id ${dto.categoryId} not found`);
 
     const question = category.getQuestionById(dto.questionId);
 
     game.setCurrentQuestion(question);
+
+    logger
+      .context("game:question:select")
+      .context(game.id)
+      .log(`Question ${question.id} selected in game: ${game.id}`);
 
     socket.broadcast.to(game.id).emit("update", { game });
   }
@@ -105,6 +111,11 @@ export const gameController = (
 
     game.setCurrentRound(round);
 
+    logger
+      .context("game:round:select")
+      .context(game.id)
+      .log(`Round ${round.id} selected in game: ${game.id}`);
+
     socket.broadcast.to(game.id).emit("update", { game });
   }
 
@@ -113,6 +124,11 @@ export const gameController = (
     const game = gameService.getGameById(dto.gameId);
 
     game.validateAnswer(dto.isValid);
+
+    logger
+      .context("game:answer:validate")
+      .context(game.id)
+      .log(`Answer ${dto.isValid ? "correct" : "incorrect"} in game: ${game.id}`);
 
     socket.broadcast.to(game.id).emit("update", { game });
   }

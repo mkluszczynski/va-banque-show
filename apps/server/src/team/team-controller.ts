@@ -5,6 +5,7 @@ import { PlayerService } from "../player/player-service";
 import { TeamService } from "./team-service";
 import { CreateTeamDto } from "./dto/create-team-dto";
 import { RemoveTeamDto } from "./dto/remove-team-dto";
+import { Logger } from "../../utils/logger";
 
 export const teamController = (
   socket: Socket,
@@ -12,12 +13,20 @@ export const teamController = (
   playerService: PlayerService,
   teamService: TeamService
 ) => {
+
+  const logger = new Logger(["Server", "TeamController"]);
+
   socket.on("team:create", createTeam);
   function createTeam(dto: CreateTeamDto) {
     const game = gameService.getGameById(dto.gameId);
     const team = teamService.createTeam(dto.name);
 
     game.addTeam(team);
+
+    logger
+      .context("team:create")
+      .context(game.id)
+      .log(`Team ${team.id} created`);
 
     socket.broadcast.to(game.id).emit("update", { game });
   }
@@ -30,9 +39,11 @@ export const teamController = (
     game.removeTeam(team);
     teamService.removeTeam(team);
 
-    console.log(
-      `[Server][teamController][${game.id}] Team ${team.id} removed.`
-    );
+    logger
+      .context("team:remove")
+      .context(game.id)
+      .log(`Team ${team.id} removed`);
+
     socket.to(game.id).emit("update", { game });
   }
 
@@ -45,9 +56,12 @@ export const teamController = (
 
     teamService.addPlayerToTeam(player, team);
 
-    console.log(
-      `[Server][teamController] Player ${player.nickname}#${player.id} joined team: ${team.id}`
-    );
+
+    logger
+      .context("team:join")
+      .context(game.id)
+      .log(`Player ${player.nickname}#${player.id} joined team: ${team.id}`);
+
     socket.to(game.id).emit("update", { game });
   }
 };

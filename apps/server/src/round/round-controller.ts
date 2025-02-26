@@ -5,12 +5,16 @@ import { Game } from "../game/game";
 import { RoundService } from "./round-service";
 import { RemoveRoundDto } from "./dto/remove-round-dto";
 import { Round } from "./round";
+import { Logger } from "../../utils/logger";
 
 export const roundController = (
   socket: Socket,
   roundService: RoundService,
   gameService: GameService,
 ) => {
+
+  const logger = new Logger(["Server", "RoundController"]);
+
   socket.on("game:round:add", addRound);
   function addRound(dto: AddRoundDto) {
     const game: Game = gameService.getGameById(dto.gameId);
@@ -18,6 +22,11 @@ export const roundController = (
     const round: Round = roundService.createRound(dto.multiplier);
 
     game.addRound(round);
+
+    logger
+      .context("game:round:add")
+      .context(game.id)
+      .log(`Round ${round.id} added.`);
 
     socket.broadcast.to(game.id).emit("update", { game });
   }
@@ -30,6 +39,11 @@ export const roundController = (
 
     game.removeRound(round);
     roundService.deleteRound(round);
+
+    logger
+      .context("game:round:remove")
+      .context(game.id)
+      .log(`Round ${round.id} removed.`);
 
     socket.broadcast.to(game.id).emit("update", { game });
   }
