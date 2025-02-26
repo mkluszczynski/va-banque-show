@@ -6,4 +6,8 @@ export class Player {
     this.id = id;
     this.nickname = nickname;
   }
+
+  toString(): string {
+    return `${this.nickname}#${this.id}`;
+  }
 }

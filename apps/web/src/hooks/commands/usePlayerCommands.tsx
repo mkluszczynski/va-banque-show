@@ -14,7 +14,7 @@ export function usePlayerCommands() {
 
   return {
     checkIfPlayerExists: (playerId: string) => {
-      socket.emit("player:exists", { playerId }, (exists: boolean) => {
+      socket.emit("player:check", { playerId }, (exists: boolean) => {
         if (exists) return;
         if (!playerContext) return;
 
