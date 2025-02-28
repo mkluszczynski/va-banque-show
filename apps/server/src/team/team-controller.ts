@@ -6,6 +6,7 @@ import { TeamService } from "./team-service";
 import { CreateTeamDto } from "./dto/create-team-dto";
 import { RemoveTeamDto } from "./dto/remove-team-dto";
 import { Logger } from "../../utils/logger";
+import { EditTeamDto } from "./dto/edit-team-dto";
 
 export const teamController = (
   socket: Socket,
@@ -61,6 +62,23 @@ export const teamController = (
       .context("team:join")
       .context(game.id)
       .log(`Player ${player.nickname}#${player.id} joined team: ${team.id}`);
+
+    socket.to(game.id).emit("update", { game });
+  }
+
+
+  socket.on("team:edit", editTeam);
+  function editTeam(dto: EditTeamDto) {
+    const game = gameService.getGameById(dto.gameId);
+    const team = teamService.getTeamById(dto.teamId);
+
+    team.name = dto.name;
+    team.score = dto.score;
+
+    logger
+      .context("team:edit")
+      .context(game.id)
+      .log(`Team ${team.id} edited`);
 
     socket.to(game.id).emit("update", { game });
   }
