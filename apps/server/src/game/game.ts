@@ -55,6 +55,8 @@ export class Game {
   }
 
   addPlayer(player: Player) {
+    if(this.dosePlayerExist(player.id))
+      throw new Error(`Player with id ${player.id} already exists`);
     this.players.push(player);
   }
 
