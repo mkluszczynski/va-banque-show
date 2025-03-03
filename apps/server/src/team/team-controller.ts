@@ -64,6 +64,7 @@ export const teamController = (
       .log(`Player ${player.nickname}#${player.id} joined team: ${team.id}`);
 
     socket.to(game.id).emit("update", { game });
+    socket.emit("update", { game });
   }
 
 

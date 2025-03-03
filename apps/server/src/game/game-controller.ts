@@ -44,7 +44,8 @@ export const gameController = (
 
     logger.context("game:join").log(`Player ${player.toString()} joined game: ${game.id}`);
 
-    socket.broadcast.to(game.id).emit("update", { game });
+    socket.to(game.id).emit("update", { game });
+    socket.emit("update", { game });
   }
 
   socket.on("game:rejoin", rejoinGame);

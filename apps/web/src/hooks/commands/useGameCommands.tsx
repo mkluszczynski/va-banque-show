@@ -38,9 +38,18 @@ export function useGameCommands() {
     },
     joinGame: (gameId: string) => {
       if (!playerContext.player) return;
-      socket.emit("game:join", { gameId, playerId: playerContext.player.id });
+      socket.emit(
+        "game:join",
+        { gameId, playerId: playerContext.player.id },
+        ({ game }: { game: Game }) => {
+          gameContext.setGame(game);
+          setSaveGame(game);
+        }
+      );
     },
     rejoin: () => {
+      console.log("rejoin");
+
       if (!playerContext.player) return;
       if (!gameContext.game) return;
       socket.emit("game:rejoin", {

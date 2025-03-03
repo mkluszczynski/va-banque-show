@@ -23,7 +23,7 @@ export default function App() {
   return (
     <SocketContext.Provider value={socket}>
       <PlayerProvider>
-        <GameProvider>
+        <GameProvider socket={socket}>
           <div className="flex justify-center items-center h-screen w-screen relative">
             <CurrentView />
           </div>

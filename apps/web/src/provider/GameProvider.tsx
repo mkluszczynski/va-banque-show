@@ -1,14 +1,20 @@
 import { GameContext } from "@/context/GameContext";
-import { SocketContext } from "@/context/SocketContext";
 import { useLocalStorage } from "@/hooks/useLocalStorage";
 import { Game } from "@/type/Game";
-import { useContext, useState } from "react";
+import { useState } from "react";
+import { Socket } from "socket.io-client";
 
-export function GameProvider({ children }: { children: React.ReactNode }) {
+export function GameProvider({
+  children,
+  socket,
+}: {
+  children: React.ReactNode;
+  socket: Socket;
+}) {
   const [savedGame, setSaveGame] = useLocalStorage<Game | null>("game", null);
   const [game, setGame] = useState<Game | null>(savedGame);
 
-  const socket = useContext(SocketContext);
+  // const socket = useContext(SocketContext);
 
   socket.on("update", ({ game }: { game: Game }) => {
     console.log("update", game);
