@@ -4,27 +4,14 @@ import { Button } from "./ui/button";
 
 export function CopyGameCode({ gameCode }: { gameCode: string }) {
   const [buttonText, setButtonText] = useState(
-    <>
-      {gameCode}
-      <Copy />
-    </>
+    <GameCodeText gameCode={gameCode} />
   );
 
   const copyCode = () => {
     navigator.clipboard.writeText(gameCode);
-    setButtonText(
-      <>
-        Copied!
-        <CopyCheck />
-      </>
-    );
+    setButtonText(<CopyText />);
     setTimeout(() => {
-      setButtonText(
-        <>
-          {gameCode}
-          <Copy />
-        </>
-      );
+      setButtonText(<GameCodeText gameCode={gameCode} />);
     }, 2000);
   };
 
@@ -32,5 +19,23 @@ export function CopyGameCode({ gameCode }: { gameCode: string }) {
     <Button id="copy-game-button" onClick={copyCode}>
       {buttonText}
     </Button>
+  );
+}
+
+function GameCodeText({ gameCode }: { gameCode: string }) {
+  return (
+    <>
+      {gameCode}
+      <Copy />
+    </>
+  );
+}
+
+function CopyText() {
+  return (
+    <>
+      Copied!
+      <CopyCheck />
+    </>
   );
 }
