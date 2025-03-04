@@ -48,10 +48,10 @@ export function useGameCommands() {
       );
     },
     rejoin: () => {
-      console.log("rejoin");
-
       if (!playerContext.player) return;
       if (!gameContext.game) return;
+
+      console.log("rejoin");
       socket.emit("game:rejoin", {
         gameId: gameContext.game.id,
         playerId: playerContext.player?.id,

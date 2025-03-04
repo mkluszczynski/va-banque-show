@@ -23,7 +23,7 @@ export default function App() {
   return (
     <SocketContext.Provider value={socket}>
       <PlayerProvider>
-        <GameProvider socket={socket}>
+        <GameProvider>
           <div className="flex justify-center items-center h-screen w-screen relative">
             <CurrentView />
           </div>
@@ -37,11 +37,13 @@ function CurrentView() {
   const playerContext = useContext(PlayerContext);
   const gameContext = useContext(GameContext);
 
-  const { checkIfGameExists } = useGameCommands();
+  const { checkIfGameExists, rejoin } = useGameCommands();
   const { checkIfPlayerExists } = usePlayerCommands();
 
   if (playerContext?.player) checkIfPlayerExists(playerContext.player.id);
   if (gameContext?.game) checkIfGameExists(gameContext.game.id);
+
+  rejoin();
 
   if (!playerContext?.player) return <PlayerRegister />;
   if (!gameContext?.game) return <MainMenu />;
