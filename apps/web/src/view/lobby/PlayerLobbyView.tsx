@@ -1,8 +1,9 @@
+import { CopyGameCode } from "@/components/CopyGameCode";
 import { GameContext } from "@/context/GameContext";
+import { useTeamCommands } from "@/hooks/commands/useTeamCommands";
 import { useContext } from "react";
 import { ErrorView } from "../ErrorView";
-import { useTeamCommands } from "@/hooks/commands/useTeamCommands";
-import { Button } from "@/components/ui/button";
+import { TeamView } from "../TeamView";
 
 export function PlayerLobbyView() {
   const gameContext = useContext(GameContext);
@@ -11,23 +12,13 @@ export function PlayerLobbyView() {
   if (!gameContext.game) return <ErrorView />;
 
   return (
-    <div>
-      <h1>Player Lobby</h1>
-      <p>Game ID: {gameContext.game.id}</p>
-      <div className="flex justify-center items-stretch">
+    <div className="flex flex-col items-center gap-4">
+      <h1>{gameContext.game.admin?.nickname}'s Game</h1>
+      <h4>Waiting for host to start.</h4>
+      <CopyGameCode gameCode={gameContext.game.id} />
+      <div className="flex justify-center gap-4">
         {gameContext.game.teams.map((team) => (
-          <div
-            key={team.id}
-            className="flex flex-col justify-center items-center"
-          >
-            <h2>{team.name}</h2>
-            <ul>
-              {team.players.map((player) => (
-                <li key={player.id}>{player.nickname}</li>
-              ))}
-            </ul>
-            <Button onClick={() => joinTeam(team.id)}>Join</Button>
-          </div>
+          <TeamView key={team.id} team={team} onJoin={joinTeam} />
         ))}
       </div>
     </div>
