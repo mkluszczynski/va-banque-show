@@ -2,7 +2,6 @@ import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -12,10 +11,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
 import { TeamSettingsView } from "@/view/TeamSettingsView";
 
 export function GameSettingsDialog() {
-  const onSave = () => {
-    //
-  };
-
   return (
     <Dialog>
       <Tabs defaultValue="account">
@@ -40,11 +35,6 @@ export function GameSettingsDialog() {
           <TabsContent value="Categories">
             Change your password here.
           </TabsContent>
-          <DialogFooter>
-            <Button type="submit" onClick={onSave}>
-              Save
-            </Button>
-          </DialogFooter>
         </DialogContent>
       </Tabs>
     </Dialog>

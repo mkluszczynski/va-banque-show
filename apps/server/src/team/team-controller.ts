@@ -30,6 +30,7 @@ export const teamController = (
       .log(`Team ${team.id} created`);
 
     socket.broadcast.to(game.id).emit("update", { game });
+    socket.emit("update", { game });
   }
 
   socket.on("team:remove", removeTeam);
@@ -46,6 +47,7 @@ export const teamController = (
       .log(`Team ${team.id} removed`);
 
     socket.to(game.id).emit("update", { game });
+    socket.emit("update", { game });
   }
 
   socket.on("team:join", joinTeam);
@@ -99,5 +101,6 @@ export const teamController = (
       .log(`Team ${team.id} edited`);
 
     socket.to(game.id).emit("update", { game });
+    socket.emit("update", { game });
   }
 };

@@ -12,16 +12,22 @@ import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { Separator } from "../ui/separator";
 import { useTeamCommands } from "@/hooks/commands/useTeamCommands";
+import { useState } from "react";
 
 export function TeamEditDialog(team: Team) {
-  const { kickPlayer } = useTeamCommands();
+  const { kickPlayer, editTeam } = useTeamCommands();
+  const [name, setName] = useState(team.name);
+  const [score, setScore] = useState(team.score);
+
+  const [open, setOpen] = useState(false);
 
   const onSave = () => {
-    //
+    editTeam(team.id, name, score);
+    setOpen(false);
   };
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button variant="outline">Edit</Button>
       </DialogTrigger>
@@ -32,17 +38,29 @@ export function TeamEditDialog(team: Team) {
 
         <div className="flex flex-col gap-4">
           <Label htmlFor="name">Name</Label>
-          <Input type="text" placeholder="Team name" defaultValue={team.name} />
+          <Input
+            type="text"
+            placeholder="Team name"
+            defaultValue={team.name}
+            onChange={(event) => setName(event.target.value)}
+          />
+
+          <Separator />
+
           <Label htmlFor="name">Score</Label>
           <Input
             type="number"
             placeholder="Score"
             defaultValue={team.score}
             step={100}
+            onChange={(event) => setScore(parseInt(event.target.value))}
           />
+
+          <Separator />
 
           <Label htmlFor="name">Players</Label>
           <div className="flex flex-col gap-2">
+            {team.players.length === 0 && <div>No players</div>}
             {team.players.map((player, index) => (
               <>
                 {index > 0 && <Separator />}

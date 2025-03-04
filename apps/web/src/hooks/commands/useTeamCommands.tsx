@@ -36,7 +36,15 @@ export function useTeamCommands() {
         name,
       });
     },
-    editTeam: ()
+    editTeam: (teamId: string, name: string, score: number) => {
+      if (!gameContext.game) return;
+      socket.emit("team:edit", {
+        gameId: gameContext.game.id,
+        teamId,
+        name,
+        score,
+      });
+    },
     removeTeam: (teamId: string) => {
       if (!gameContext.game) return;
       socket.emit("team:remove", {
