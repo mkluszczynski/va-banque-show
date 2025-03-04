@@ -65,4 +65,11 @@ export class TeamService {
 
     team.addPlayer(player);
   }
+
+  removePlayerFromTeam(player: Player, team: Team) {
+    if(!this.doseTeamExist(team))
+      throw new Error(`Team with id ${team.id} not found`);
+
+    team.removePlayerById(player);
+  }
 }

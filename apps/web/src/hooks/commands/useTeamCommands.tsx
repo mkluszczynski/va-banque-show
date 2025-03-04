@@ -21,6 +21,14 @@ export function useTeamCommands() {
         playerId: playerContext.player.id,
       });
     },
+    kickPlayer: (teamId: string, playerId: string) => {
+      if (!gameContext.game) return;
+      socket.emit("team:kick", {
+        gameId: gameContext.game.id,
+        teamId,
+        playerId,
+      });
+    },
     createTeam: (name: string) => {
       if (!gameContext.game) return;
       socket.emit("team:create", {
@@ -28,6 +36,7 @@ export function useTeamCommands() {
         name,
       });
     },
+    editTeam: ()
     removeTeam: (teamId: string) => {
       if (!gameContext.game) return;
       socket.emit("team:remove", {

@@ -67,6 +67,23 @@ export const teamController = (
     socket.emit("update", { game });
   }
 
+  socket.on("team:kick", kickPlayer);
+  function kickPlayer(dto: JoinTeamDto) {
+    const game = gameService.getGameById(dto.gameId);
+    const player = playerService.getPlayerById(dto.playerId);
+    const team = teamService.getTeamById(dto.teamId);
+
+    teamService.removePlayerFromTeam(player, team);
+
+    logger
+      .context("team:kick")
+      .context(game.id)
+      .log(`Player ${player.nickname}#${player.id} kicked from team: ${team.id}`);
+
+    socket.to(game.id).emit("update", { game });
+    socket.emit("update", { game });
+  }
+
 
   socket.on("team:edit", editTeam);
   function editTeam(dto: EditTeamDto) {
