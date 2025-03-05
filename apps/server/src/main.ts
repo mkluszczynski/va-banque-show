@@ -12,6 +12,7 @@ import { categoryController } from "./category/category-controller";
 import { validateDtoMiddleware } from "../utils/validate-dto";
 import { handleError } from "../utils/error-catch";
 import { Logger } from "../utils/logger";
+import { roundController } from "./round/round-controller";
 
 const serverLogger = new Logger(["Server"]);
 
@@ -33,6 +34,7 @@ const onConnection = (socket: Socket) => {
     teamService
   );
   teamController(socket, gameService, playerService, teamService);
+  roundController(socket, roundService, gameService);
   categoryController(socket, categoryService, roundService, gameService);
 };
 

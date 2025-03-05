@@ -8,7 +8,8 @@ import {
 } from "@/components/ui/dialog";
 import { Bolt } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
-import { TeamSettingsView } from "@/view/TeamSettingsView";
+import { TeamSettingsView } from "@/view/settings/TeamSettingsView";
+import { RoundSettingsView } from "@/view/settings/RoundSettingsView";
 
 export function GameSettingsDialog() {
   return (
@@ -31,7 +32,9 @@ export function GameSettingsDialog() {
           <TabsContent value="Teams">
             <TeamSettingsView />
           </TabsContent>
-          <TabsContent value="Rounds">Change your password here.</TabsContent>
+          <TabsContent value="Rounds">
+            <RoundSettingsView />
+          </TabsContent>
           <TabsContent value="Categories">
             Change your password here.
           </TabsContent>

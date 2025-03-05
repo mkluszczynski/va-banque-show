@@ -28,7 +28,8 @@ export const roundController = (
       .context(game.id)
       .log(`Round ${round.id} added.`);
 
-    socket.broadcast.to(game.id).emit("update", { game });
+    socket.to(game.id).emit("update", { game });
+    socket.emit("update", { game });
   }
 
   socket.on("game:round:remove", deleteRound);
@@ -45,6 +46,7 @@ export const roundController = (
       .context(game.id)
       .log(`Round ${round.id} removed.`);
 
-    socket.broadcast.to(game.id).emit("update", { game });
+    socket.to(game.id).emit("update", { game });
+    socket.emit("update", { game });
   }
 };
