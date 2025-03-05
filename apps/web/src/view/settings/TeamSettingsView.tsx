@@ -1,10 +1,5 @@
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { GameContext } from "@/context/GameContext";
 import { Team } from "@/type/Team";
 import { Trash } from "lucide-react";
@@ -38,7 +33,20 @@ function TeamSettingsListItem(team: Team) {
   const { removeTeam } = useTeamCommands();
   return (
     <Card className="flex flex-col gap-2">
-      <CardHeader className="text-lg font-bold">{team.name}</CardHeader>
+      <CardHeader className="flex flex-row justify-between">
+        <div className="text-lg font-bold">{team.name}</div>
+        <div className="flex items-center gap-2">
+          <TeamEditDialog {...team} />
+          <Button
+            variant="destructive"
+            onClick={() => {
+              removeTeam(team.id);
+            }}
+          >
+            <Trash />
+          </Button>
+        </div>
+      </CardHeader>
       <CardContent className="flex flex-col gap-2">
         <div>Score: {team.score}</div>
         <Separator />
@@ -49,17 +57,6 @@ function TeamSettingsListItem(team: Team) {
           ))}
         </div>
       </CardContent>
-      <CardFooter className="flex gap-2">
-        <TeamEditDialog {...team} />
-        <Button
-          variant="destructive"
-          onClick={() => {
-            removeTeam(team.id);
-          }}
-        >
-          <Trash />
-        </Button>
-      </CardFooter>
     </Card>
   );
 }

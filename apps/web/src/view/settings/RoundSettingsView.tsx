@@ -12,6 +12,7 @@ import { Separator } from "@/components/ui/separator";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Round } from "@/type/Round";
 import { useRoundCommands } from "@/hooks/commands/useRoundCommands";
+import { RoundEditDialog } from "@/components/dialog/RoundEditDialog";
 
 export function RoundSettingsView() {
   const gameContext = useContext(GameContext);
@@ -44,7 +45,20 @@ function RoundSettingsListItem({
 
   return (
     <Card className="flex flex-col gap-2">
-      <CardHeader className="text-lg font-bold">Round {order + 1}</CardHeader>
+      <CardHeader className="flex flex-row justify-between">
+        <div className="text-lg font-bold">Round {order + 1}</div>
+        <div className="flex items-center gap-2">
+          <RoundEditDialog {...round} />
+          <Button
+            variant="destructive"
+            onClick={() => {
+              removeRound(round.id);
+            }}
+          >
+            <Trash />
+          </Button>
+        </div>
+      </CardHeader>
       <CardContent className="flex flex-col gap-2">
         <div>Multiplayer: {round.multiplier}</div>
         <Separator />
@@ -57,14 +71,6 @@ function RoundSettingsListItem({
       </CardContent>
       <CardFooter className="flex gap-2">
         {/* <TeamEditDialog {...team} /> */}
-        <Button
-          variant="destructive"
-          onClick={() => {
-            removeRound(round.id);
-          }}
-        >
-          <Trash />
-        </Button>
       </CardFooter>
     </Card>
   );
