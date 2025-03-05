@@ -10,6 +10,8 @@ import { GameContext } from "./context/GameContext";
 import { PlayerContext } from "./context/PlayerContext";
 import { PlayerProvider } from "./provider/PlayerProvider";
 import { GameProvider } from "./provider/GameProvider";
+import { TopBarView } from "./view/TopBarView";
+import { ThemeProvider } from "./provider/ThemeProvider";
 
 export default function App() {
   const socket = io("http://localhost:3000", {
@@ -21,15 +23,18 @@ export default function App() {
   });
 
   return (
-    <SocketContext.Provider value={socket}>
-      <PlayerProvider>
-        <GameProvider>
-          <div className="flex justify-center items-center h-screen w-screen relative">
-            <CurrentView />
-          </div>
-        </GameProvider>
-      </PlayerProvider>
-    </SocketContext.Provider>
+    <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+      <SocketContext.Provider value={socket}>
+        <PlayerProvider>
+          <GameProvider>
+            <div className="flex justify-center items-center h-screen w-screen relative">
+              <TopBarView />
+              <CurrentView />
+            </div>
+          </GameProvider>
+        </PlayerProvider>
+      </SocketContext.Provider>
+    </ThemeProvider>
   );
 }
 
