@@ -44,16 +44,16 @@ function RoundSettingsListItem({
 
   return (
     <Card className="flex flex-col gap-2">
-      <CardHeader>Round {order + 1}</CardHeader>
+      <CardHeader className="text-lg font-bold">Round {order + 1}</CardHeader>
       <CardContent className="flex flex-col gap-2">
+        <div>Multiplayer: {round.multiplier}</div>
+        <Separator />
         <div>
           <div>Categories:</div>
           {round.categories.map((category) => (
             <div key={category.id}> - {category.name}</div>
           ))}
         </div>
-        <Separator />
-        <div>Multiplayer: {round.multiplier}</div>
       </CardContent>
       <CardFooter className="flex gap-2">
         {/* <TeamEditDialog {...team} /> */}
