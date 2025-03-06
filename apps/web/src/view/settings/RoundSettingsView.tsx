@@ -1,18 +1,13 @@
+import { RoundEditDialog } from "@/components/dialog/RoundEditDialog";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Separator } from "@/components/ui/separator";
 import { GameContext } from "@/context/GameContext";
+import { useRoundCommands } from "@/hooks/commands/useRoundCommands";
+import { Round } from "@/type/Round";
 import { Trash } from "lucide-react";
 import { useContext } from "react";
-import { Separator } from "@/components/ui/separator";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Round } from "@/type/Round";
-import { useRoundCommands } from "@/hooks/commands/useRoundCommands";
-import { RoundEditDialog } from "@/components/dialog/RoundEditDialog";
 
 export function RoundSettingsView() {
   const gameContext = useContext(GameContext);
@@ -69,9 +64,6 @@ function RoundSettingsListItem({
           ))}
         </div>
       </CardContent>
-      <CardFooter className="flex gap-2">
-        {/* <TeamEditDialog {...team} /> */}
-      </CardFooter>
     </Card>
   );
 }

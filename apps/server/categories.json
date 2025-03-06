@@ -1,91 +1,271 @@
 [
     {
         "id": 1,
-        "name": "Category 1",
+        "name": "Geografia",
         "questions": [
             {
                 "id": 1,
-                "question": "Question 1",
-                "answer": "Answer 1",
+                "question": "Jaka jest stolica Polski?",
+                "answer": "Warszawa",
                 "value": 100
             },
             {
                 "id": 2,
-                "question": "Question 2",
-                "answer": "Answer 2",
+                "question": "W którym kraju znajduje się Mount Everest?",
+                "answer": "Nepal",
                 "value": 200
+            },
+            {
+                "id": 3,
+                "question": "Jakie jest największe jezioro na świecie?",
+                "answer": "Morze Kaspijskie",
+                "value": 300
+            },
+            {
+                "id": 4,
+                "question": "Który kontynent jest najmniejszy pod względem powierzchni?",
+                "answer": "Australia",
+                "value": 400
+            },
+            {
+                "id": 5,
+                "question": "Przez które miasto przepływa rzeka Tamiza?",
+                "answer": "Londyn",
+                "value": 500
+            },
+            {
+                "id": 6,
+                "question": "Jakie państwo ma najwięcej wysp?",
+                "answer": "Szwecja",
+                "value": 600
+            },
+            {
+                "id": 7,
+                "question": "W jakim kraju znajduje się pustynia Atakama?",
+                "answer": "Chile",
+                "value": 700
+            },
+            {
+                "id": 8,
+                "question": "Która rzeka jest najdłuższa na świecie?",
+                "answer": "Nil",
+                "value": 800
             }
         ]
     },
     {
         "id": 2,
-        "name": "Category 2",
+        "name": "Historia",
         "questions": [
             {
-                "id": 3,
-                "question": "Question 3",
-                "answer": "Answer 3",
+                "id": 9,
+                "question": "Kto był pierwszym prezydentem USA?",
+                "answer": "George Washington",
+                "value": 100
+            },
+            {
+                "id": 10,
+                "question": "W którym roku zakończyła się II wojna światowa?",
+                "answer": "1945",
+                "value": 200
+            },
+            {
+                "id": 11,
+                "question": "Jak nazywał się statek, którym Kolumb dotarł do Ameryki?",
+                "answer": "Santa Maria",
                 "value": 300
             },
             {
-                "id": 4,
-                "question": "Question 4",
-                "answer": "Answer 4",
+                "id": 12,
+                "question": "W którym roku miała miejsce rewolucja francuska?",
+                "answer": "1789",
                 "value": 400
+            },
+            {
+                "id": 13,
+                "question": "Kto był królem Polski w 1410 roku?",
+                "answer": "Władysław II Jagiełło",
+                "value": 500
+            },
+            {
+                "id": 14,
+                "question": "Jakie miasto było stolicą Cesarstwa Rzymskiego?",
+                "answer": "Rzym",
+                "value": 600
+            },
+            {
+                "id": 15,
+                "question": "Kto wynalazł druk?",
+                "answer": "Johannes Gutenberg",
+                "value": 700
+            },
+            {
+                "id": 16,
+                "question": "W którym roku Polska odzyskała niepodległość?",
+                "answer": "1918",
+                "value": 800
             }
         ]
     },
     {
         "id": 3,
-        "name": "Category 3",
+        "name": "Nauka",
         "questions": [
             {
-                "id": 5,
-                "question": "Question 5",
-                "answer": "Answer 5",
+                "id": 17,
+                "question": "Kto wynalazł telefon?",
+                "answer": "Alexander Graham Bell",
+                "value": 100
+            },
+            {
+                "id": 18,
+                "question": "Jaki jest wzór chemiczny wody?",
+                "answer": "H2O",
+                "value": 200
+            },
+            {
+                "id": 19,
+                "question": "Ile planet jest w Układzie Słonecznym?",
+                "answer": "8",
+                "value": 300
+            },
+            {
+                "id": 20,
+                "question": "Kto odkrył prawo grawitacji?",
+                "answer": "Isaac Newton",
+                "value": 400
+            },
+            {
+                "id": 21,
+                "question": "Jak nazywa się największa planeta w Układzie Słonecznym?",
+                "answer": "Jowisz",
                 "value": 500
             },
             {
-                "id": 6,
-                "question": "Question 6",
-                "answer": "Answer 6",
+                "id": 22,
+                "question": "Jaki pierwiastek jest najczęściej występujący we Wszechświecie?",
+                "answer": "Wodór",
                 "value": 600
+            },
+            {
+                "id": 23,
+                "question": "Jak nazywa się jednostka mocy?",
+                "answer": "Wat",
+                "value": 700
+            },
+            {
+                "id": 24,
+                "question": "Kto sformułował teorię względności?",
+                "answer": "Albert Einstein",
+                "value": 800
             }
         ]
     },
     {
         "id": 4,
-        "name": "Category 4",
+        "name": "Sztuka",
         "questions": [
             {
-                "id": 7,
-                "question": "Question 7",
-                "answer": "Answer 7",
+                "id": 25,
+                "question": "Kto namalował 'Mona Lisę'?",
+                "answer": "Leonardo da Vinci",
+                "value": 100
+            },
+            {
+                "id": 26,
+                "question": "W jakim stylu namalowano 'Starry Night'?",
+                "answer": "Postimpresjonizm",
+                "value": 200
+            },
+            {
+                "id": 27,
+                "question": "Który artysta odciął sobie ucho?",
+                "answer": "Vincent van Gogh",
+                "value": 300
+            },
+            {
+                "id": 28,
+                "question": "Jakie są trzy podstawowe kolory?",
+                "answer": "Czerwony, niebieski, żółty",
+                "value": 400
+            },
+            {
+                "id": 29,
+                "question": "Gdzie znajduje się Kaplica Sykstyńska?",
+                "answer": "Watykan",
+                "value": 500
+            },
+            {
+                "id": 30,
+                "question": "Kto napisał 'Dziady'?",
+                "answer": "Adam Mickiewicz",
+                "value": 600
+            },
+            {
+                "id": 31,
+                "question": "Jaki styl architektoniczny reprezentuje Katedra Notre-Dame?",
+                "answer": "Gotyk",
                 "value": 700
             },
             {
-                "id": 8,
-                "question": "Question 8",
-                "answer": "Answer 8",
+                "id": 32,
+                "question": "Jak nazywa się obraz przedstawiający 'Ostatnią Wieczerzę'?",
+                "answer": "Ostatnia Wieczerza",
                 "value": 800
             }
         ]
     },
     {
         "id": 5,
-        "name": "Category 5",
+        "name": "Sport",
         "questions": [
             {
-                "id": 9,
-                "question": "Question 9",
-                "answer": "Answer 9",
-                "value": 900
+                "id": 33,
+                "question": "Kto zdobył najwięcej bramek w historii Mistrzostw Świata?",
+                "answer": "Miroslav Klose",
+                "value": 100
             },
             {
-                "id": 10,
-                "question": "Question 10",
-                "answer": "Answer 10",
-                "value": 1000
+                "id": 34,
+                "question": "Jakie miasto było gospodarzem letnich igrzysk olimpijskich w 2008 roku?",
+                "answer": "Pekin",
+                "value": 200
+            },
+            {
+                "id": 35,
+                "question": "W jakim sporcie używa się rakiety i lotki?",
+                "answer": "Badminton",
+                "value": 300
+            },
+            {
+                "id": 36,
+                "question": "Kto jest nazywany 'Królem Futbolu'?",
+                "answer": "Pelé",
+                "value": 400
+            },
+            {
+                "id": 37,
+                "question": "W jakim sporcie zdobywa się punkty za 'strike'?",
+                "answer": "Kręgle",
+                "value": 500
+            },
+            {
+                "id": 38,
+                "question": "Jaką dyscyplinę uprawiał Michael Phelps?",
+                "answer": "Pływanie",
+                "value": 600
+            },
+            {
+                "id": 39,
+                "question": "Ile zawodników jest w drużynie koszykarskiej na boisku?",
+                "answer": "5",
+                "value": 700
+            },
+            {
+                "id": 40,
+                "question": "Jakie miasto było gospodarzem MŚ w piłce nożnej w 2022 roku?",
+                "answer": "Katar",
+                "value": 800
             }
         ]
     }
