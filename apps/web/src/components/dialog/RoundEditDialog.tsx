@@ -18,6 +18,8 @@ import {
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import { Separator } from "../ui/separator";
+import { ScrollArea } from "../ui/scroll-area";
+import { Plus } from "lucide-react";
 
 export function RoundEditDialog(round: Round) {
   const [multiplier, setMultiplier] = useState(round.multiplier);
@@ -52,44 +54,46 @@ export function RoundEditDialog(round: Round) {
 
           <Separator />
 
-          <Label htmlFor="name">Categories</Label>
-          <div className="flex flex-col gap-2">
-            {round.categories.length === 0 && <div>No categories</div>}
-            <Accordion type="single" collapsible>
-              {round.categories.map((category, index) => (
-                // <>
-                //   {index > 0 && <Separator />}
-                //   <div className="flex  justify-between items-center gap-4">
-                //     <div key={category.id}> - {category.name}</div>
-                //     <Button
-                //       variant="outline"
-                //       // onClick={() => kickPlayer(team.id, player.id)}
-                //     >
-                //       Edit
-                //     </Button>
-                //   </div>
-                // </>
-                <AccordionItem value={category.id}>
-                  <AccordionTrigger>{category.name}</AccordionTrigger>
-                  <AccordionContent>
-                    <AccordionItem value={category.id}>
-                      {category.questions.map((question, index) => (
-                        <>
-                          {index > 0 && <Separator />}
-                          <div className="flex justify-between items-center m-1">
-                            <div>{question.question}</div>
-                            <div className="text-xs font-thin">
-                              {question.value}
-                            </div>
-                          </div>
-                        </>
-                      ))}
-                    </AccordionItem>
-                  </AccordionContent>
-                </AccordionItem>
-              ))}
-            </Accordion>
+          <div className="flex justify-between items-center">
+            <Label htmlFor="name">Categories</Label>
+            <Button variant="ghost" className="p-0">
+              <Plus size={12} />
+            </Button>
           </div>
+          <ScrollArea className="h-[50vh]">
+            <div className="flex flex-col gap-2 mx-2">
+              {round.categories.length === 0 && <div>No categories</div>}
+              <Accordion type="multiple">
+                {round.categories.map((category) => (
+                  <AccordionItem value={category.id}>
+                    <AccordionTrigger>{category.name}</AccordionTrigger>
+                    <AccordionContent>
+                      <AccordionItem value={category.id}>
+                        {category.questions.map((question, index) => (
+                          <>
+                            {index > 0 && <Separator />}
+                            <div className="flex justify-between items-center m-1">
+                              <div className="flex flex-col gap-0.5">
+                                <div className="text-sm font-semibold">
+                                  {question.question}
+                                </div>
+                                <div className="text-xs font-extralight">
+                                  {question.answer}
+                                </div>
+                              </div>
+                              <div className="text-xs font-extralight">
+                                {question.value}
+                              </div>
+                            </div>
+                          </>
+                        ))}
+                      </AccordionItem>
+                    </AccordionContent>
+                  </AccordionItem>
+                ))}
+              </Accordion>
+            </div>
+          </ScrollArea>
         </div>
 
         <DialogFooter>
