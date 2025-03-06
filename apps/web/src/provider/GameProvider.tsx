@@ -17,6 +17,11 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     setSaveGame(game);
   });
 
+  socket.on("game:closed", () => {
+    setGame(null);
+    setSaveGame(null);
+  });
+
   return (
     <GameContext.Provider value={{ game, setGame }}>
       {children}

@@ -1,9 +1,9 @@
+import { GameContext } from "@/context/GameContext";
 import { PlayerContext } from "@/context/PlayerContext";
 import { SocketContext } from "@/context/SocketContext";
+import { Game } from "@/type/Game";
 import { useContext } from "react";
 import { useLocalStorage } from "../useLocalStorage";
-import { Game } from "@/type/Game";
-import { GameContext } from "@/context/GameContext";
 
 export function useGameCommands() {
   const socket = useContext(SocketContext);
@@ -60,10 +60,12 @@ export function useGameCommands() {
     leaveGame: () => {
       if (!playerContext) return;
       if (!gameContext) return;
-      socket.emit("game:leave", () => {
-        gameContext.setGame(null);
-        removeSavedGame();
+      socket.emit("game:leave", {
+        gameId: gameContext.game?.id,
+        playerId: playerContext.player?.id,
       });
+      gameContext.setGame(null);
+      removeSavedGame();
     },
   };
 }

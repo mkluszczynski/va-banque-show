@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
-import { usePlayerCommands } from "../hooks/commands/usePlayerCommands";
 import { Input } from "@/components/ui/input";
+import { usePlayerCommands } from "../hooks/commands/usePlayerCommands";
 
 export function PlayerRegister() {
   const { registerPlayer } = usePlayerCommands();
@@ -23,9 +23,7 @@ export function PlayerRegister() {
             id="nickname"
             className="focus:outline-none"
           />
-          <Button onClick={onRegister} className="hover:bg-black">
-            Register
-          </Button>
+          <Button onClick={onRegister}>Register</Button>
         </div>
       </div>
     </div>

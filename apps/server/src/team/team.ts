@@ -20,8 +20,8 @@ export class Team {
     return this.players.some((p) => p.id === player.id);
   }
 
-  removePlayerById(player: Player) {
-    if(!this.dosePlayerExist(player))
+  removePlayer(player: Player) {
+    if (!this.dosePlayerExist(player))
       throw new Error(`Player with id ${player.id} not found`);
 
     this.players = this.players.filter((p) => p.id !== player.id);

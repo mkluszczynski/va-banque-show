@@ -1,6 +1,6 @@
 import { Copy, CopyCheck } from "lucide-react";
 import { useState } from "react";
-import { Button } from "./ui/button";
+import { Button } from "../ui/button";
 
 export function CopyGameCode({ gameCode }: { gameCode: string }) {
   const [buttonText, setButtonText] = useState(

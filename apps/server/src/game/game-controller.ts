@@ -1,15 +1,15 @@
 import { Socket } from "socket.io";
-import { JoinGameDto } from "./dto/join-game-dto";
-import { Game } from "./game";
-import { GameService } from "./game-service";
-import { RoundService } from "../round/round-service";
+import { Logger } from "../../utils/logger";
 import { CategoryService } from "../category/category-service";
 import { PlayerService } from "../player/player-service";
-import { CreateGameDto } from "./dto/cerate-game-dto";
+import { RoundService } from "../round/round-service";
 import { TeamService } from "../team/team-service";
+import { CreateGameDto } from "./dto/cerate-game-dto";
+import { JoinGameDto } from "./dto/join-game-dto";
 import { SelectQuestionDto } from "./dto/select-question-dto";
 import { ValidateAnswerDto } from "./dto/validate-answer-dto";
-import { Logger } from "../../utils/logger";
+import { Game } from "./game";
+import { GameService } from "./game-service";
 
 export const gameController = (
   socket: Socket,
@@ -22,14 +22,15 @@ export const gameController = (
   const logger = new Logger(["Server", "GameController"]);
 
   socket.on("game:exists", existsGame);
-  function existsGame(dto: {gameId: string}, callback: CallableFunction) {
-    let game: Game | null = null
-    try{
+  function existsGame(dto: { gameId: string }, callback: CallableFunction) {
+    let game: Game | null = null;
+    try {
       game = gameService.getGameById(dto.gameId);
-    }
-    catch(e){
+    } catch (e) {
       const err = e as Error;
-      logger.context("game:exists").error(`Game with id ${dto.gameId} not found`, err);
+      logger
+        .context("game:exists")
+        .error(`Game with id ${dto.gameId} not found`, err);
     }
     callback(!!game);
   }
@@ -42,7 +43,9 @@ export const gameController = (
     game.addPlayer(player);
     socket.join(game.id);
 
-    logger.context("game:join").log(`Player ${player.toString()} joined game: ${game.id}`);
+    logger
+      .context("game:join")
+      .log(`Player ${player.toString()} joined game: ${game.id}`);
 
     socket.to(game.id).emit("update", { game });
     socket.emit("update", { game });
@@ -53,13 +56,42 @@ export const gameController = (
     const game = gameService.getGameById(data.gameId);
     const player = playerService.getPlayerById(data.playerId);
 
-    if(!game.dosePlayerExist(player.id) && !game.isPlayerAdmin(player))  
-      return logger.context("game:rejoin").warn(`Player ${player.toString()} not found in game: ${game.id}`);
+    if (!game.dosePlayerExist(player.id) && !game.isPlayerAdmin(player))
+      return logger
+        .context("game:rejoin")
+        .warn(`Player ${player.toString()} not found in game: ${game.id}`);
 
-    
-    if(socket.rooms.has(game.id)) return;
+    if (socket.rooms.has(game.id)) return;
     socket.join(game.id);
-    logger.context("game:rejoin").log(`Player ${player.toString()} rejoined game: ${game.id}`);
+    logger
+      .context("game:rejoin")
+      .log(`Player ${player.toString()} rejoined game: ${game.id}`);
+  }
+
+  socket.on("game:leave", leaveGame);
+  function leaveGame(data: JoinGameDto) {
+    const game = gameService.getGameById(data.gameId);
+    const player = playerService.getPlayerById(data.playerId);
+
+    if (game.isPlayerAdmin(player)) {
+      gameService.deleteGame(game.id);
+      logger
+        .context("game:leave")
+        .log(`Player ${player.toString()} left game: ${game.id}`);
+      socket.broadcast.to(game.id).emit("game:closed");
+      return;
+    }
+
+    game.removePlayer(player);
+    teamService.removePlayerFromAllTeams(player);
+
+    socket.leave(game.id);
+
+    logger
+      .context("game:leave")
+      .log(`Player ${player.toString()} left game: ${game.id}`);
+
+    socket.broadcast.to(game.id).emit("update", { game });
   }
 
   socket.on("game:create", createGame);
@@ -129,7 +161,9 @@ export const gameController = (
     logger
       .context("game:answer:validate")
       .context(game.id)
-      .log(`Answer ${dto.isValid ? "correct" : "incorrect"} in game: ${game.id}`);
+      .log(
+        `Answer ${dto.isValid ? "correct" : "incorrect"} in game: ${game.id}`
+      );
 
     socket.broadcast.to(game.id).emit("update", { game });
   }

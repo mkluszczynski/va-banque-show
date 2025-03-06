@@ -33,7 +33,7 @@ export class TeamService {
   }
 
   removeTeam(team: Team): void {
-    if(!this.doseTeamExist(team))
+    if (!this.doseTeamExist(team))
       throw new Error(`Team with id ${team.id} not found`);
 
     this.teams = this.teams.filter((t) => t.id !== team.id);
@@ -54,22 +54,31 @@ export class TeamService {
   }
 
   addPlayerToTeam(player: Player, team: Team) {
-
-    if(!this.doseTeamExist(team))
+    if (!this.doseTeamExist(team))
       throw new Error(`Team with id ${team.id} not found`);
 
     if (this.isPlayerAlreadyInTeam(player)) {
       const playerTeam = this.getTeamByPlayer(player);
-      playerTeam.removePlayerById(player);
+      playerTeam.removePlayer(player);
     }
 
     team.addPlayer(player);
   }
 
   removePlayerFromTeam(player: Player, team: Team) {
-    if(!this.doseTeamExist(team))
+    if (!this.doseTeamExist(team))
       throw new Error(`Team with id ${team.id} not found`);
 
-    team.removePlayerById(player);
+    team.removePlayer(player);
+  }
+
+  removePlayerFromAllTeams(player: Player) {
+    const playersTeams: Team[] = this.teams.filter((team) => {
+      return team.dosePlayerExist(player);
+    });
+
+    playersTeams.forEach((team) => {
+      team.removePlayer(player);
+    });
   }
 }

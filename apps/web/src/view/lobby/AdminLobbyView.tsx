@@ -1,4 +1,4 @@
-import { CopyGameCode } from "@/components/CopyGameCode";
+import { CopyGameCode } from "@/components/buttons/CopyGameCode";
 import { GameSettingsDialog } from "@/components/dialog/GameSettingsDialog";
 import { GameContext } from "@/context/GameContext";
 import { useContext } from "react";
