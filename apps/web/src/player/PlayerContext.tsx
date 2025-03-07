@@ -22,6 +22,6 @@ export function PlayerProvider({ children }: { children: React.ReactNode }) {
   );
 }
 
-export function usePlayer() {
+export const usePlayer = () => {
   return use(PlayerContext);
-}
+};

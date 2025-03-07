@@ -38,6 +38,6 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
   );
 }
 
-export function useGame() {
+export const useGame = () => {
   return use(GameContext);
-}
+};
