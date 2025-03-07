@@ -56,19 +56,7 @@ export function RoundEditDialog(round: Round) {
           <div className="flex flex-col gap-2">
             {round.categories.length === 0 && <div>No categories</div>}
             <Accordion type="single" collapsible>
-              {round.categories.map((category, index) => (
-                // <>
-                //   {index > 0 && <Separator />}
-                //   <div className="flex  justify-between items-center gap-4">
-                //     <div key={category.id}> - {category.name}</div>
-                //     <Button
-                //       variant="outline"
-                //       // onClick={() => kickPlayer(team.id, player.id)}
-                //     >
-                //       Edit
-                //     </Button>
-                //   </div>
-                // </>
+              {round.categories.map((category) => (
                 <AccordionItem value={category.id}>
                   <AccordionTrigger>{category.name}</AccordionTrigger>
                   <AccordionContent>

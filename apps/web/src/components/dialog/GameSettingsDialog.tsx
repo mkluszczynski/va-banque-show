@@ -6,10 +6,12 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { CategoryListProvider } from "@/provider/CategoryListProvider";
+import { CategorySettingsView } from "@/view/settings/CategorySettingsView";
+import { RoundSettingsView } from "@/view/settings/RoundSettingsView";
+import { TeamSettingsView } from "@/view/settings/TeamSettingsView";
 import { Bolt } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
-import { TeamSettingsView } from "@/view/settings/TeamSettingsView";
-import { RoundSettingsView } from "@/view/settings/RoundSettingsView";
 
 export function GameSettingsDialog() {
   return (
@@ -36,7 +38,9 @@ export function GameSettingsDialog() {
             <RoundSettingsView />
           </TabsContent>
           <TabsContent value="Categories">
-            Change your password here.
+            <CategoryListProvider>
+              <CategorySettingsView />
+            </CategoryListProvider>
           </TabsContent>
         </DialogContent>
       </Tabs>
