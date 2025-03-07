@@ -1,10 +1,11 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import { useGame } from "@/game/GameContext";
 import { useTeamCommands } from "@/team/useTeamCommands";
-import { Trash } from "lucide-react";
+import { Plus, Trash } from "lucide-react";
 import { Team } from "./Team";
 import { TeamEditDialog } from "./TeamEditDialog";
 
@@ -16,7 +17,16 @@ export function TeamSettingsView() {
 
   return (
     <div className="flex flex-col gap-4">
-      <Button onClick={() => createTeam("New team")}>Add team</Button>
+      <div className="flex justify-between items-center">
+        <Label className="text-xl">Teams</Label>
+        <Button
+          variant="ghost"
+          className="p-0"
+          onClick={() => createTeam("New team")}
+        >
+          <Plus size={12} />
+        </Button>
+      </div>
       <ScrollArea className="h-[70vh] ">
         <div className="flex flex-col gap-2">
           {gameContext.game.teams.map((team) => (

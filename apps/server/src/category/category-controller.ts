@@ -1,4 +1,5 @@
 import { Socket } from "socket.io";
+import { Logger } from "../../utils/logger";
 import { GameService } from "../game/game-service";
 import { RoundService } from "../round/round-service";
 import { CategoryService } from "./category-service";
@@ -10,6 +11,8 @@ export const categoryController = (
   roundService: RoundService,
   gameService: GameService
 ) => {
+  const logger = new Logger(["Server", "CategoryController"]);
+
   socket.on("category:all", getAllCategories);
   function getAllCategories(callback: CallableFunction) {
     console.log("[Server][categoryController] Getting all categories.");
@@ -17,8 +20,8 @@ export const categoryController = (
     callback(categories);
   }
 
-  socket.on("game:round:categorie:add", addCategorie);
-  function addCategorie(dto: AddCategoryDto) {
+  socket.on("game:round:category:add", addCategory);
+  function addCategory(dto: AddCategoryDto) {
     const game = gameService.getGameById(dto.gameId);
     const category = categoryService.getCategoryById(dto.categoryId);
     const round = roundService.getRoundById(dto.roundId);
@@ -29,7 +32,15 @@ export const categoryController = (
 
     round.addCategory(category);
 
-    socket.broadcast.to(game.id).emit("update", { game });
+    logger
+      .context("game:round:category:add")
+      .context(game.id)
+      .log(
+        `Category ${category.id} added to round ${round.id} in game ${game.id}.`
+      );
+
+    socket.to(game.id).emit("update", { game });
+    socket.emit("update", { game });
   }
 
   socket.on("game:round:categorie:remove", removeCategorie);
@@ -48,6 +59,14 @@ export const categoryController = (
 
     round.removeCategoryById(category.id);
 
-    socket.broadcast.to(game.id).emit("update", { game });
+    logger
+      .context("game:round:category:remove")
+      .context(game.id)
+      .log(
+        `Category ${category.id} removed from round ${round.id} in game ${game.id}.`
+      );
+
+    socket.to(game.id).emit("update", { game });
+    socket.emit("update", { game });
   }
 };

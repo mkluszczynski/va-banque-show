@@ -12,7 +12,13 @@ export class Round {
   }
 
   addCategory(category: Category) {
+    if (this.checkIfCategoryExist(category.id))
+      throw new Error("Category already exist");
     this.categories.push(category);
+  }
+
+  checkIfCategoryExist(categoryId: string) {
+    return this.categories.some((category) => category.id === categoryId);
   }
 
   setCategories(categories: Category[]) {

@@ -7,19 +7,19 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { useState } from "react";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "../components/ui/accordion";
-import { Input } from "../components/ui/input";
-import { Label } from "../components/ui/label";
-import { Separator } from "../components/ui/separator";
-import { Round } from "./Round";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Plus } from "lucide-react";
+} from "../../components/ui/accordion";
+import { Input } from "../../components/ui/input";
+import { Label } from "../../components/ui/label";
+import { Separator } from "../../components/ui/separator";
+import { Round } from "../Round";
+import { AddCategoryToRoundDialog } from "./AddCategoryToRoundDialog";
 
 export function RoundEditDialog(round: Round) {
   const [multiplier, setMultiplier] = useState(round.multiplier);
@@ -56,9 +56,7 @@ export function RoundEditDialog(round: Round) {
 
           <div className="flex justify-between items-center">
             <Label htmlFor="name">Categories</Label>
-            <Button variant="ghost" className="p-0">
-              <Plus size={12} />
-            </Button>
+            <AddCategoryToRoundDialog {...round} />
           </div>
           <ScrollArea className="h-[50vh]">
             <div className="flex flex-col gap-2 mx-2">

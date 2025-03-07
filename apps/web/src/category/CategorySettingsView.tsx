@@ -6,9 +6,11 @@ import {
 } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader } from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
-import { Edit, Plus } from "lucide-react";
+import { Edit } from "lucide-react";
+import { AddCategoryButton } from "./AddCategoryButton";
 import { useCategoryList } from "./CategoryListContext";
 import { Category } from "./types/Category";
 
@@ -17,14 +19,9 @@ export function CategorySettingsView() {
 
   return (
     <div className="flex flex-col gap-4">
-      {/* <Button onClick={() => createRound()}>Add round</Button> */}
-      <div className="flex flex-row justify-between items-center">
-        <div className="text-xl ">Categories</div>
-        <div>
-          <Button variant="ghost">
-            <Plus />
-          </Button>
-        </div>
+      <div className="flex justify-between items-center">
+        <Label className="text-xl">Categories</Label>
+        <AddCategoryButton />
       </div>
       <ScrollArea className="h-[70vh] ">
         <div className="flex flex-col gap-2">
