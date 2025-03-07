@@ -15,8 +15,6 @@ import { Category } from "./types/Category";
 export function CategorySettingsView() {
   const categoryContext = useCategoryList();
 
-  console.log(categoryContext.categories);
-
   return (
     <div className="flex flex-col gap-4">
       {/* <Button onClick={() => createRound()}>Add round</Button> */}

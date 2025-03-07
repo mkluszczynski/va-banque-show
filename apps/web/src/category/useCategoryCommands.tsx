@@ -1,18 +1,16 @@
 import { useSocket } from "../common/socket/useSocket";
+import { useCategoryList } from "./CategoryListContext";
 import { Category } from "./types/Category";
 
 export function useCategoryCommands() {
   const socket = useSocket();
+  const categoryContext = useCategoryList();
 
   return {
     getAllCategories: () => {
-      let categories: Category[] = [];
-      socket.emit("category:all", (c: Category[]) => {
-        console.log("socket", c);
-
-        categories = c;
+      socket.emit("category:all", (categories: Category[]) => {
+        categoryContext.setCategories(categories);
       });
-      return categories;
     },
   };
 }
