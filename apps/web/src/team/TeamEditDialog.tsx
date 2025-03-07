@@ -11,6 +11,7 @@ import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { useTeamCommands } from "@/team/useTeamCommands";
 import { Label } from "@radix-ui/react-label";
+import { Edit } from "lucide-react";
 import { useState } from "react";
 import { Team } from "./Team";
 
@@ -29,7 +30,9 @@ export function TeamEditDialog(team: Team) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline">Edit</Button>
+        <Button variant="ghost" className="p-0">
+          <Edit size={12} />
+        </Button>
       </DialogTrigger>
       <DialogContent className="flex flex-col justify-center ">
         <DialogHeader className="">

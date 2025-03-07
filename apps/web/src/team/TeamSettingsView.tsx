@@ -61,9 +61,12 @@ function TeamSettingsListItem(team: Team) {
         <Separator />
         <div>
           <div>Players:</div>
-          {team.players.map((player) => (
-            <div key={player.id}> - {player.nickname}</div>
-          ))}
+          <div className="flex flex-col gap-2 text-sm font-extralight mx-2">
+            {team.players.length === 0 && <div>No players</div>}
+            {team.players.map((player) => (
+              <div key={player.id}> - {player.nickname}</div>
+            ))}
+          </div>
         </div>
       </CardContent>
     </Card>

@@ -67,7 +67,7 @@ export function RoundEditDialog(round: Round) {
               {round.categories.length === 0 && <div>No categories</div>}
               <Accordion type="multiple">
                 {round.categories.map((category) => (
-                  <AccordionItem value={category.id}>
+                  <AccordionItem key={category.id} value={category.id}>
                     <AccordionTrigger className="flex justify-between items-center gap-1">
                       <div className="flex justify-between items-center w-full">
                         <div>{category.name}</div>

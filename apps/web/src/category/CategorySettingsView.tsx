@@ -55,7 +55,10 @@ function CategorySettingsListItem({ category }: { category: Category }) {
                 {category.questions.map((question, index) => (
                   <>
                     {index > 0 && <Separator />}
-                    <div className="flex justify-between items-center m-1">
+                    <div
+                      key={question.id}
+                      className="flex justify-between items-center m-1"
+                    >
                       <div className="flex flex-col gap-0.5">
                         <div key={question.id}>{question.question}</div>
                         <div className="text-xs font-light">

@@ -31,6 +31,9 @@ export function TeamView({
         <Separator />
       </CardHeader>
       <CardContent className="flex justify-start h-full flex-col gap-2 flex-wrap">
+        {team.players.length === 0 && (
+          <div className="text-sm font-extralight">No players</div>
+        )}
         {team.players.map((player) => (
           <div key={player.id} className="flex items-center gap-2">
             <Avatar>
