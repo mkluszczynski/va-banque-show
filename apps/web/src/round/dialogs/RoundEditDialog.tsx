@@ -8,6 +8,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Edit } from "lucide-react";
 import { useState } from "react";
 import {
   Accordion,
@@ -36,7 +37,9 @@ export function RoundEditDialog(round: Round) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline">Edit</Button>
+        <Button variant="ghost" className="p-0">
+          <Edit size={12} />
+        </Button>
       </DialogTrigger>
       <DialogContent className="flex flex-col justify-center ">
         <DialogHeader className="">

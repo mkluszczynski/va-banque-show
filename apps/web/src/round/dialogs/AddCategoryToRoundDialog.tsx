@@ -62,6 +62,7 @@ export function AddCategoryToRoundDialog(round: Round) {
                 <div>No categories</div>
               )}
               <Accordion type="multiple">
+                {uniqueCategory.length === 0 && <div>No categories</div>}
                 {uniqueCategory.map((category) => (
                   <AccordionItem value={category.id}>
                     <AccordionTrigger className="flex justify-between items-center w-full gap-1">

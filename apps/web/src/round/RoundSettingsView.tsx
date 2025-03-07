@@ -62,9 +62,14 @@ function RoundSettingsListItem({
         <Separator />
         <div>
           <div>Categories:</div>
-          {round.categories.map((category) => (
-            <div key={category.id}> - {category.name}</div>
-          ))}
+          <div className="flex flex-col gap-1 mx-2">
+            {round.categories.length === 0 && <div>No categories</div>}
+            {round.categories.map((category) => (
+              <div key={category.id} className="text-sm font-extralight">
+                {category.name}
+              </div>
+            ))}
+          </div>
         </div>
       </CardContent>
     </Card>
