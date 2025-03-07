@@ -1,0 +1,55 @@
+import { useSocket } from "@/common/socket/useSocket";
+import { useGame } from "@/game/GameContext";
+import { usePlayer } from "@/player/PlayerContext";
+
+export function useTeamCommands() {
+  const socket = useSocket();
+  const playerContext = usePlayer();
+  const gameContext = useGame();
+  return {
+    joinTeam: (teamId: string) => {
+      console.log("joinTeam");
+      console.log(gameContext.game);
+      console.log(playerContext.player);
+
+      if (!gameContext.game) return;
+      if (!playerContext.player) return;
+      socket.emit("team:join", {
+        gameId: gameContext.game.id,
+        teamId,
+        playerId: playerContext.player.id,
+      });
+    },
+    kickPlayer: (teamId: string, playerId: string) => {
+      if (!gameContext.game) return;
+      socket.emit("team:kick", {
+        gameId: gameContext.game.id,
+        teamId,
+        playerId,
+      });
+    },
+    createTeam: (name: string) => {
+      if (!gameContext.game) return;
+      socket.emit("team:create", {
+        gameId: gameContext.game.id,
+        name,
+      });
+    },
+    editTeam: (teamId: string, name: string, score: number) => {
+      if (!gameContext.game) return;
+      socket.emit("team:edit", {
+        gameId: gameContext.game.id,
+        teamId,
+        name,
+        score,
+      });
+    },
+    removeTeam: (teamId: string) => {
+      if (!gameContext.game) return;
+      socket.emit("team:remove", {
+        gameId: gameContext.game.id,
+        teamId,
+      });
+    },
+  };
+}

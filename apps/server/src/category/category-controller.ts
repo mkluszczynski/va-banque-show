@@ -1,22 +1,21 @@
 import { Socket } from "socket.io";
-import { CategoryService } from "./category-service";
 import { GameService } from "../game/game-service";
-import { AddCategoryDto } from "./dto/add-category-dto";
 import { RoundService } from "../round/round-service";
+import { CategoryService } from "./category-service";
+import { AddCategoryDto } from "./dto/add-category-dto";
 
 export const categoryController = (
   socket: Socket,
   categoryService: CategoryService,
   roundService: RoundService,
-  gameService: GameService,
+  gameService: GameService
 ) => {
   socket.on("category:all", getAllCategories);
   function getAllCategories(callback: CallableFunction) {
     console.log("[Server][categoryController] Getting all categories.");
     const categories = categoryService.getCategories();
-    callback({ categories });
+    callback(categories);
   }
-
 
   socket.on("game:round:categorie:add", addCategorie);
   function addCategorie(dto: AddCategoryDto) {
@@ -26,7 +25,7 @@ export const categoryController = (
 
     if (!game.doseRoundExist(dto.roundId)) throw new Error("Round not found");
 
-    if(!game.doseRoundExist(round.id)) throw new Error("Round not found");
+    if (!game.doseRoundExist(round.id)) throw new Error("Round not found");
 
     round.addCategory(category);
 
@@ -41,7 +40,7 @@ export const categoryController = (
 
     if (!game.doseRoundExist(dto.roundId)) throw new Error("Round not found");
 
-    if(!game.doseRoundExist(round.id)){
+    if (!game.doseRoundExist(round.id)) {
       console.log("[Server][gameController] Round not found.");
       socket.emit("error", { message: "Round not found" });
       return;
