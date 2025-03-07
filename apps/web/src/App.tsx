@@ -1,17 +1,14 @@
-import { PlayerRegister } from "./view/PlayerRegisterView";
-import { SocketContext } from "./context/SocketContext";
 import { io } from "socket.io-client";
-import { MainMenu } from "./view/MainMenuView";
-import { useContext } from "react";
-import { LobbyView } from "./view/lobby/LobbyView";
-import { useGameCommands } from "./hooks/commands/useGameCommands";
-import { usePlayerCommands } from "./hooks/commands/usePlayerCommands";
-import { GameContext } from "./context/GameContext";
-import { PlayerContext } from "./context/PlayerContext";
-import { PlayerProvider } from "./provider/PlayerProvider";
-import { GameProvider } from "./provider/GameProvider";
-import { TopBarView } from "./view/TopBarView";
-import { ThemeProvider } from "./provider/ThemeProvider";
+import { SocketContext } from "./common/socket/SocketContext";
+import { TopBarView } from "./common/top-bar/TopBarView";
+import { GameProvider, useGame } from "./game/GameContext";
+import { useGameCommands } from "./game/useGameCommands";
+import { LobbyView } from "./lobby/LobbyView";
+import { MainMenu } from "./menu/MainMenuView";
+import { PlayerRegister } from "./menu/PlayerRegisterView";
+import { PlayerProvider, usePlayer } from "./player/PlayerContext";
+import { usePlayerCommands } from "./player/usePlayerCommands";
+import { ThemeProvider } from "./team/ThemeProvider";
 
 export default function App() {
   const socket = io("http://localhost:3000", {
@@ -39,8 +36,8 @@ export default function App() {
 }
 
 function CurrentView() {
-  const playerContext = useContext(PlayerContext);
-  const gameContext = useContext(GameContext);
+  const playerContext = usePlayer();
+  const gameContext = useGame();
 
   const { checkIfGameExists, rejoin } = useGameCommands();
   const { checkIfPlayerExists } = usePlayerCommands();
