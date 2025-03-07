@@ -33,6 +33,6 @@ export function CategoryListProvider({
   );
 }
 
-export function useCategoryList() {
+export const useCategoryList = () => {
   return use(CategoryListContext);
-}
+};

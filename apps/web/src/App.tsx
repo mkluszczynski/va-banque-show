@@ -1,5 +1,6 @@
 import { io } from "socket.io-client";
 import { SocketContext } from "./common/socket/SocketContext";
+import { ThemeProvider } from "./common/theme/ThemeProvider";
 import { TopBarView } from "./common/top-bar/TopBarView";
 import { GameProvider, useGame } from "./game/GameContext";
 import { useGameCommands } from "./game/useGameCommands";
@@ -8,7 +9,6 @@ import { MainMenu } from "./menu/MainMenuView";
 import { PlayerRegister } from "./menu/PlayerRegisterView";
 import { PlayerProvider, usePlayer } from "./player/PlayerContext";
 import { usePlayerCommands } from "./player/usePlayerCommands";
-import { ThemeProvider } from "./team/ThemeProvider";
 
 export default function App() {
   const socket = io("http://localhost:3000", {
