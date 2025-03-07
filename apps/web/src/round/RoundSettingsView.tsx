@@ -4,11 +4,11 @@ import { Label } from "@/components/ui/label";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import { useGame } from "@/game/GameContext";
-import { RoundEditDialog } from "@/round/dialog/RoundEditDialog";
+import { RoundEditDialog } from "@/round/dialogs/RoundEditDialog";
 import { useRoundCommands } from "@/round/useRoundCommands";
 import { Trash } from "lucide-react";
-import { AddRoundButton } from "./AddRoundButton";
 import { Round } from "./Round";
+import { AddRoundButton } from "./buttons/AddRoundButton";
 
 export function RoundSettingsView() {
   const gameContext = useGame();
@@ -17,7 +17,6 @@ export function RoundSettingsView() {
 
   return (
     <div className="flex flex-col gap-4">
-      {/* <Button onClick={() => createRound()}>Add round</Button> */}
       <div className="flex justify-between items-center">
         <Label className="text-xl">Rounds</Label>
         <AddRoundButton />

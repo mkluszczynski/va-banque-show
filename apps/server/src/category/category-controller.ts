@@ -43,8 +43,8 @@ export const categoryController = (
     socket.emit("update", { game });
   }
 
-  socket.on("game:round:categorie:remove", removeCategorie);
-  function removeCategorie(dto: AddCategoryDto) {
+  socket.on("game:round:category:remove", removeCategory);
+  function removeCategory(dto: AddCategoryDto) {
     const game = gameService.getGameById(dto.gameId);
     const category = categoryService.getCategoryById(dto.categoryId);
     const round = roundService.getRoundById(dto.roundId);

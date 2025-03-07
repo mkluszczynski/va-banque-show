@@ -32,5 +32,14 @@ export function useRoundCommands() {
         categoryId,
       });
     },
+    removeCategoryFromRound: (roundId: string, categoryId: string) => {
+      if (!gameContext.game) return;
+
+      socket.emit("game:round:category:remove", {
+        gameId: gameContext.game?.id,
+        roundId,
+        categoryId,
+      });
+    },
   };
 }

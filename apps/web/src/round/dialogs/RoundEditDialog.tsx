@@ -18,6 +18,7 @@ import {
 import { Input } from "../../components/ui/input";
 import { Label } from "../../components/ui/label";
 import { Separator } from "../../components/ui/separator";
+import { RemoveCategoryFromRoundButton } from "../buttons/RemoveCategoryFromRoundButton";
 import { Round } from "../Round";
 import { AddCategoryToRoundDialog } from "./AddCategoryToRoundDialog";
 
@@ -64,7 +65,15 @@ export function RoundEditDialog(round: Round) {
               <Accordion type="multiple">
                 {round.categories.map((category) => (
                   <AccordionItem value={category.id}>
-                    <AccordionTrigger>{category.name}</AccordionTrigger>
+                    <AccordionTrigger className="flex justify-between items-center gap-1">
+                      <div className="flex justify-between items-center w-full">
+                        <div>{category.name}</div>
+                        <RemoveCategoryFromRoundButton
+                          roundId={round.id}
+                          categoryId={category.id}
+                        />
+                      </div>
+                    </AccordionTrigger>
                     <AccordionContent>
                       <AccordionItem value={category.id}>
                         {category.questions.map((question, index) => (
@@ -79,8 +88,10 @@ export function RoundEditDialog(round: Round) {
                                   {question.answer}
                                 </div>
                               </div>
-                              <div className="text-xs font-extralight">
-                                {question.value}
+                              <div className="flex items-center">
+                                <div className="text-xs font-extralight">
+                                  {question.value}
+                                </div>
                               </div>
                             </div>
                           </>

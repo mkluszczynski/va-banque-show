@@ -36,6 +36,8 @@ export class Round {
   }
 
   removeCategoryById(categoryId: string) {
+    if (!this.douseCategoryExist(categoryId))
+      throw new Error("Category not found");
     this.categories = this.categories.filter(
       (category) => category.id !== categoryId
     );

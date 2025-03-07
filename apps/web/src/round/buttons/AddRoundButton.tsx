@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
-import { useRoundCommands } from "./useRoundCommands";
+import { useRoundCommands } from "../useRoundCommands";
 
 export function AddRoundButton() {
   const { createRound } = useRoundCommands();
