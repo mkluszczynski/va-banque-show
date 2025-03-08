@@ -1,3 +1,4 @@
+import { QuestionListItem } from "@/category/CategorySettingsView";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -82,21 +83,7 @@ export function RoundEditDialog(round: Round) {
                         {category.questions.map((question, index) => (
                           <>
                             {index > 0 && <Separator />}
-                            <div className="flex justify-between items-center m-1">
-                              <div className="flex flex-col gap-0.5">
-                                <div className="text-sm font-semibold">
-                                  {question.question}
-                                </div>
-                                <div className="text-xs font-extralight">
-                                  {question.answer}
-                                </div>
-                              </div>
-                              <div className="flex items-center">
-                                <div className="text-xs font-extralight">
-                                  {question.value}
-                                </div>
-                              </div>
-                            </div>
+                            <QuestionListItem question={question} />
                           </>
                         ))}
                       </AccordionItem>

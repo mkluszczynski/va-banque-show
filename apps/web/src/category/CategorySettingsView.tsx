@@ -13,6 +13,7 @@ import { Edit } from "lucide-react";
 import { AddCategoryButton } from "./AddCategoryButton";
 import { useCategoryList } from "./CategoryListContext";
 import { Category } from "./types/Category";
+import { Question } from "./types/Question";
 
 export function CategorySettingsView() {
   const categoryContext = useCategoryList();
@@ -55,20 +56,7 @@ function CategorySettingsListItem({ category }: { category: Category }) {
                 {category.questions.map((question, index) => (
                   <>
                     {index > 0 && <Separator />}
-                    <div
-                      key={question.id}
-                      className="flex justify-between items-center m-1"
-                    >
-                      <div className="flex flex-col gap-0.5">
-                        <div key={question.id}>{question.question}</div>
-                        <div className="text-xs font-light">
-                          {question.answer}
-                        </div>
-                      </div>
-                      <div className="text-xs font-extralight">
-                        {question.value}
-                      </div>
-                    </div>
+                    <QuestionListItem question={question} />
                   </>
                 ))}
               </div>
@@ -77,5 +65,19 @@ function CategorySettingsListItem({ category }: { category: Category }) {
         </CardHeader>
       </Accordion>
     </Card>
+  );
+}
+
+export function QuestionListItem({ question }: { question: Question }) {
+  return (
+    <div key={question.id} className="flex justify-between items-center m-1">
+      <div className="flex flex-col gap-0.5">
+        <div className="text-sm font-semibold">{question.question}</div>
+        <div className="text-xs font-extralight">{question.answer}</div>
+      </div>
+      <div className="flex items-center">
+        <div className="text-xs font-extralight">{question.value}</div>
+      </div>
+    </div>
   );
 }
