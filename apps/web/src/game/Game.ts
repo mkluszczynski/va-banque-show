@@ -1,7 +1,7 @@
+import { Round } from "@/round/Round";
+import { Team } from "@/team/Team";
 import { Question } from "../category/types/Question";
 import { Player } from "../player/Player";
-import { Round } from "./Round";
-import { Team } from "./Team";
 
 export type Game = {
   id: string;
