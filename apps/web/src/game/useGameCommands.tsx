@@ -66,5 +66,19 @@ export function useGameCommands() {
       gameContext.setGame(null);
       removeSavedGame();
     },
+    selectRound: (roundId: string) => {
+      if (!gameContext.game) return;
+      socket.emit("game:round:select", {
+        gameId: gameContext.game.id,
+        roundId,
+      });
+    },
+    selectQuestion: (questionId: string) => {
+      if (!gameContext.game) return;
+      socket.emit("game:question:select", {
+        gameId: gameContext.game.id,
+        questionId,
+      });
+    },
   };
 }
