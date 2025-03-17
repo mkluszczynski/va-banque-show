@@ -8,7 +8,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { useGameCommands } from "./useGameCommands";
+import { useGameCommands } from "../useGameCommands";
 
 export function JoinGameDialog() {
   const { joinGame } = useGameCommands();

@@ -1,6 +1,7 @@
-import { CopyGameCode } from "@/game/CopyGameCode";
+import { CopyGameCode } from "@/game/buttons/CopyGameCode";
+import { StartGameButton } from "@/game/buttons/StartGameButton";
+import { GameSettingsDialog } from "@/game/dialogs/GameSettingsDialog";
 import { useGame } from "@/game/GameContext";
-import { GameSettingsDialog } from "@/game/GameSettingsDialog";
 import { ErrorView } from "../common/utils/ErrorView";
 import { TeamView } from "../team/TeamView";
 
@@ -14,6 +15,7 @@ export function AdminLobbyView() {
       <h1>{gameContext.game.admin?.nickname}'s Game (Admin panel)</h1>
       <h4>Waiting for host to start.</h4>
       <div className="flex gap-4">
+        <StartGameButton />
         <CopyGameCode gameCode={gameContext.game.id} />
         <GameSettingsDialog />
       </div>

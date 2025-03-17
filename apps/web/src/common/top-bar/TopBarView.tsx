@@ -1,6 +1,6 @@
 import { ThemeToggle } from "@/common/theme/ThemeToggle";
 import { useGame } from "@/game/GameContext";
-import { LeaveGameButton } from "@/game/LeaveGameButton";
+import { LeaveGameButton } from "@/game/buttons/LeaveGameButton";
 import { LogoutButton } from "@/player/LogoutButton";
 import { usePlayer } from "@/player/PlayerContext";
 

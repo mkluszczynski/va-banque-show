@@ -21,7 +21,7 @@ export class Game {
   }
 
   isPlayerAdmin(player: Player): boolean {
-    return this.admin.id === player.id
+    return this.admin.id === player.id;
   }
 
   addTeam(team: Team) {
@@ -55,7 +55,7 @@ export class Game {
   }
 
   addPlayer(player: Player) {
-    if(this.dosePlayerExist(player.id))
+    if (this.dosePlayerExist(player.id))
       throw new Error(`Player with id ${player.id} already exists`);
     this.players.push(player);
   }
@@ -140,5 +140,16 @@ export class Game {
     this.getCurrentAnsweringTeam().addScore(question.value);
     this.removeAnsweringPlayer();
     this.removeQuestion();
+  }
+  canGameStart(): boolean {
+    const isTeamValid = this.teams.every((team) => team.players.length >= 1);
+    const isRoundValid = this.rounds.length >= 1;
+    const isNumberOfTeamsValid = this.teams.length >= 2;
+
+    console.log("isTeamValid", isTeamValid);
+    console.log("isRoundValid", isRoundValid);
+    console.log("isNumberOfTeamsValid", isNumberOfTeamsValid);
+
+    return isTeamValid && isRoundValid && isNumberOfTeamsValid;
   }
 }

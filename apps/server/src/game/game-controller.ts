@@ -167,4 +167,18 @@ export const gameController = (
 
     socket.broadcast.to(game.id).emit("update", { game });
   }
+
+  socket.on("game:start:validate", validateStart);
+  function validateStart(gameId: string, callback: CallableFunction) {
+    const game = gameService.getGameById(gameId);
+
+    const canGameStart = game.canGameStart();
+
+    logger
+      .context("game:start:validate")
+      .context(game.id)
+      .log(`Game can start: ${canGameStart}`);
+
+    callback(canGameStart);
+  }
 };

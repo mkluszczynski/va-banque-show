@@ -1,4 +1,4 @@
-import { CopyGameCode } from "@/game/CopyGameCode";
+import { CopyGameCode } from "@/game/buttons/CopyGameCode";
 import { useGame } from "@/game/GameContext";
 import { useTeamCommands } from "@/team/useTeamCommands";
 import { ErrorView } from "../common/utils/ErrorView";

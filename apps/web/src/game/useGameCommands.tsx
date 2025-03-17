@@ -80,5 +80,18 @@ export function useGameCommands() {
         questionId,
       });
     },
+    canGameStart: () => {
+      if (!gameContext.game) return false;
+      let canStart = false;
+      socket.emit(
+        "game:start:validate",
+        gameContext.game.id,
+        (startValid: boolean) => {
+          canStart = startValid;
+        }
+      );
+      console.log("canStart", canStart);
+      return canStart;
+    },
   };
 }

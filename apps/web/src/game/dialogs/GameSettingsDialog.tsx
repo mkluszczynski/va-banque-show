@@ -8,15 +8,10 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { RoundSettingsView } from "@/round/RoundSettingsView";
 import { TeamSettingsView } from "@/team/TeamSettingsView";
 import { Bolt } from "lucide-react";
-import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from "../components/ui/tabs";
 
 export function GameSettingsDialog() {
   return (

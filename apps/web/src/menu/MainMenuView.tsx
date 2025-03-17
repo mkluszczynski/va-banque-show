@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { JoinGameDialog } from "@/game/JoinGameDialog";
+import { JoinGameDialog } from "@/game/dialogs/JoinGameDialog";
 import { useGameCommands } from "@/game/useGameCommands";
 import { usePlayer } from "@/player/PlayerContext";
 
