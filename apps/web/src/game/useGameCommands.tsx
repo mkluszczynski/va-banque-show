@@ -87,5 +87,9 @@ export function useGameCommands() {
       console.log("canStart", canStart);
       return canStart;
     },
+    startGame: () => {
+      if (!gameContext.game) return;
+      socket.emit("game:start", gameContext.game.id);
+    },
   };
 }

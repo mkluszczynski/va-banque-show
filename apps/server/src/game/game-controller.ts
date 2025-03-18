@@ -167,4 +167,16 @@ export const gameController = (
 
     socket.broadcast.to(game.id).emit("update", { game });
   }
+
+  socket.on("game:start", startGame);
+  function startGame(gameId: string) {
+    const game = gameService.getGameById(gameId);
+
+    game.startGame();
+
+    logger.context("game:start").context(game.id).log(`Game started`);
+
+    socket.to(game.id).emit("update", { game });
+    socket.emit("update", { game });
+  }
 };

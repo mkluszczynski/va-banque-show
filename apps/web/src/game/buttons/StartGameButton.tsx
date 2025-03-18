@@ -4,7 +4,7 @@ import { useGame } from "../GameContext";
 import { useGameCommands } from "../useGameCommands";
 
 export function StartGameButton() {
-  const { canGameStart } = useGameCommands();
+  const { canGameStart, startGame } = useGameCommands();
   const game = useGame();
 
   const [canStart, setCanStart] = useState(false);
@@ -13,5 +13,14 @@ export function StartGameButton() {
     canGameStart().then(setCanStart);
   }, [game.game, canGameStart]);
 
-  return <Button disabled={!canStart}>Start Game</Button>;
+  const handleStartGame = () => {
+    if (!canStart) return;
+    startGame();
+  };
+
+  return (
+    <Button disabled={!canStart} onClick={handleStartGame}>
+      Start Game
+    </Button>
+  );
 }

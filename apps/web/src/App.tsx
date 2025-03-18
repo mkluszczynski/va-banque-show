@@ -9,6 +9,7 @@ import { MainMenu } from "./menu/MainMenuView";
 import { PlayerRegister } from "./menu/PlayerRegisterView";
 import { PlayerProvider, usePlayer } from "./player/PlayerContext";
 import { usePlayerCommands } from "./player/usePlayerCommands";
+import { GameView } from "./game/views/GameView";
 
 export default function App() {
   const socket = io("http://localhost:3000", {
@@ -49,5 +50,6 @@ function CurrentView() {
 
   if (!playerContext?.player) return <PlayerRegister />;
   if (!gameContext?.game) return <MainMenu />;
-  return <LobbyView />;
+  if (!gameContext.game.currentRound) return <LobbyView />;
+  return <GameView />;
 }

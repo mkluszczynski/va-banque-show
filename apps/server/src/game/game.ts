@@ -152,4 +152,23 @@ export class Game {
 
     return isTeamValid && isRoundValid && isNumberOfTeamsValid;
   }
+
+  startGame(): void {
+    if (!this.canGameStart()) throw new Error(`Game can not start`);
+
+    this.setCurrentRound(this.rounds[0]);
+  }
+
+  nextRound(): void {
+    if (!this.currentRound) throw new Error(`Round not found`);
+
+    const currentRoundIndex = this.rounds.findIndex(
+      (round) => round.id === this.currentRound?.id
+    );
+
+    if (currentRoundIndex === this.rounds.length - 1)
+      throw new Error(`No more rounds`);
+
+    this.setCurrentRound(this.rounds[currentRoundIndex + 1]);
+  }
 }
