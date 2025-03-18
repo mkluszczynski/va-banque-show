@@ -10,7 +10,7 @@ export function StartGameButton() {
   const [canStart, setCanStart] = useState(false);
 
   useEffect(() => {
-    setCanStart(canGameStart());
+    canGameStart().then(setCanStart);
   }, [game.game, canGameStart]);
 
   return <Button disabled={!canStart}>Start Game</Button>;

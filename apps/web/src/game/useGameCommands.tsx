@@ -2,6 +2,7 @@ import { useLocalStorage } from "@/common/hooks/useLocalStorage";
 import { useSocket } from "@/common/socket/useSocket";
 import { Game } from "@/game/Game";
 import { useGame } from "@/game/GameContext";
+import { getApi } from "@/lib/fetch";
 import { usePlayer } from "@/player/PlayerContext";
 
 export function useGameCommands() {
@@ -80,16 +81,9 @@ export function useGameCommands() {
         questionId,
       });
     },
-    canGameStart: () => {
+    canGameStart: async () => {
       if (!gameContext.game) return false;
-      let canStart = false;
-      socket.emit(
-        "game:start:validate",
-        gameContext.game.id,
-        (startValid: boolean) => {
-          canStart = startValid;
-        }
-      );
+      const canStart = await getApi(`/games/${gameContext.game.id}/can-start`);
       console.log("canStart", canStart);
       return canStart;
     },

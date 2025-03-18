@@ -13,6 +13,10 @@ import { validateDtoMiddleware } from "../utils/validate-dto";
 import { handleError } from "../utils/error-catch";
 import { Logger } from "../utils/logger";
 import { roundController } from "./round/round-controller";
+import express from "express";
+import { createServer } from "http";
+import { createGameRouter } from "./game/game-route";
+import cors from "cors";
 
 const serverLogger = new Logger(["Server"]);
 
@@ -38,7 +42,16 @@ const onConnection = (socket: Socket) => {
   categoryController(socket, categoryService, roundService, gameService);
 };
 
-const server = new Server(3000, {
+const app = express();
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(cors());
+
+app.use("/games", createGameRouter(gameService));
+
+const httpServer = createServer(app);
+const server = new Server(httpServer, {
   cors: {
     origin: "*",
   },
@@ -58,3 +71,7 @@ server.on("connection", (socket) => {
     serverLogger.log("Client disconnected.");
   });
 });
+
+httpServer.listen(3000);
+
+
