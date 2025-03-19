@@ -1,8 +1,8 @@
 import { createRoot } from "react-dom/client";
 import { BrowserRouter, Route, Routes } from "react-router";
 import App from "./App";
-import { CategoriesWidget } from "./widgets/Categories/CategoriesWidget";
-import { TeamWidget } from "./widgets/Team/TeamWidget";
+import { CategoriesWidget } from "./widgets/CategoriesWidget";
+import { TeamWidget } from "./widgets/TeamWidget";
 
 createRoot(document.getElementById("root")!).render(
   <BrowserRouter>

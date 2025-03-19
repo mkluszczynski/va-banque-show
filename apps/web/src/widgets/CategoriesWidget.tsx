@@ -1,27 +1,15 @@
 import { useSocket } from "@/common/socket/useSocket";
 import { Game } from "@/game/Game";
-import { PlayerProvider } from "@/player/PlayerContext";
-import { Team } from "@/team/Team";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 
-export function TeamWidget() {
-  return (
-    <PlayerProvider>
-      <TeamWidgetView />
-    </PlayerProvider>
-  );
-}
-
-function TeamWidgetView() {
+export function CategoriesWidget() {
   const params = useParams();
   const socket = useSocket();
 
   const gameId = params.gameId;
-  const teamId = params.teamId;
 
   const [game, setGame] = useState<Game | null>(null);
-  const [team, setTeam] = useState<Team | null>(null);
 
   socket.on("update", ({ game }: { game: Game }) => {
     setGame(game);
@@ -33,19 +21,24 @@ function TeamWidgetView() {
     });
   }, [gameId, socket]);
 
-  useEffect(() => {
-    if (!game) return;
-
-    const team = game.teams.find((team) => team.id === teamId);
-    setTeam(team || null);
-  }, [game, teamId]);
-
   return (
     <div className="flex justify-center items-center gap-4 border-[#df2af0] h-screen text-4xl p-4 rounded-2xl border-8 bg-[#902394] text-[#f7f7f7]">
-      <div className="flex flex-col gap-4">
-        <h2>{team?.name}</h2>
-        <div className="flex flex-col items-center gap-2">{team?.score}</div>
-      </div>
+      {game?.currentRound?.categories.map((category) => (
+        <div key={category.id} className="flex flex-col gap-4">
+          <h2>{category.name}</h2>
+          <div className="flex flex-col items-center gap-2">
+            {category.questions.map((question) => (
+              <div key={question.id}>
+                {question.isAnswered ? (
+                  <span className="line-through">{question.value}</span>
+                ) : (
+                  <span>{question.value}</span>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      ))}
     </div>
   );
 }
