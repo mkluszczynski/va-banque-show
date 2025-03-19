@@ -11,6 +11,7 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { RoundSettingsView } from "@/round/RoundSettingsView";
 import { TeamSettingsView } from "@/team/TeamSettingsView";
+import { WidgetSettingsView } from "@/widgets/WidgetSettingsView";
 import { Bolt } from "lucide-react";
 
 export function GameSettingsDialog() {
@@ -31,6 +32,7 @@ export function GameSettingsDialog() {
               <TabsTrigger value="Teams">Teams</TabsTrigger>
               <TabsTrigger value="Rounds">Rounds</TabsTrigger>
               <TabsTrigger value="Categories">Categories</TabsTrigger>
+              <TabsTrigger value="Widgets">Widgets</TabsTrigger>
             </TabsList>
             <TabsContent value="Teams">
               <TeamSettingsView />
@@ -40,6 +42,9 @@ export function GameSettingsDialog() {
             </TabsContent>
             <TabsContent value="Categories">
               <CategorySettingsView />
+            </TabsContent>
+            <TabsContent value="Widgets">
+              <WidgetSettingsView />
             </TabsContent>
           </DialogContent>
         </Tabs>

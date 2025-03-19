@@ -1,4 +1,4 @@
-import { CopyGameCode } from "@/game/buttons/CopyGameCode";
+import { CopyButton } from "@/game/buttons/CopyGameCode";
 import { useGame } from "@/game/GameContext";
 import { useTeamCommands } from "@/team/useTeamCommands";
 import { ErrorView } from "../common/utils/ErrorView";
@@ -17,7 +17,10 @@ export function PlayerLobbyView() {
     <div className="flex flex-col items-center gap-4">
       <h1>{gameContext.game.admin?.nickname}'s Game</h1>
       <h4>Waiting for host to start.</h4>
-      <CopyGameCode gameCode={gameContext.game.id} />
+      <CopyButton
+        copyContent={gameContext.game.id}
+        copyText={gameContext.game.id}
+      />
       <div className="flex justify-center gap-4">
         {gameContext.game.teams.map((team) => (
           <TeamView key={team.id} team={team}>

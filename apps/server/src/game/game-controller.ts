@@ -51,6 +51,19 @@ export const gameController = (
     socket.emit("update", { game });
   }
 
+  socket.on("game:widget:join", joinGameWidget);
+  function joinGameWidget(data: {gameId: string}) {
+    const game = gameService.getGameById(data.gameId);
+
+    socket.join(game.id);
+
+    logger
+      .context("game:widget:join")
+      .log(`Widget joined game: ${game.id}`);
+
+    socket.emit("update", { game });
+  }
+
   socket.on("game:rejoin", rejoinGame);
   function rejoinGame(data: JoinGameDto) {
     const game = gameService.getGameById(data.gameId);

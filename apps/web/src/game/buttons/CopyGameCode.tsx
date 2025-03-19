@@ -2,16 +2,22 @@ import { Button } from "@/components/ui/button";
 import { Copy, CopyCheck } from "lucide-react";
 import { useState } from "react";
 
-export function CopyGameCode({ gameCode }: { gameCode: string }) {
+export function CopyButton({
+  copyContent,
+  copyText,
+}: {
+  copyContent: string;
+  copyText: string;
+}) {
   const [buttonText, setButtonText] = useState(
-    <GameCodeText gameCode={gameCode} />
+    <CopyButtonText copyText={copyText} />
   );
 
   const copyCode = () => {
-    navigator.clipboard.writeText(gameCode);
+    navigator.clipboard.writeText(copyContent);
     setButtonText(<CopyText />);
     setTimeout(() => {
-      setButtonText(<GameCodeText gameCode={gameCode} />);
+      setButtonText(<CopyButtonText copyText={copyText} />);
     }, 2000);
   };
 
@@ -22,10 +28,10 @@ export function CopyGameCode({ gameCode }: { gameCode: string }) {
   );
 }
 
-function GameCodeText({ gameCode }: { gameCode: string }) {
+function CopyButtonText({ copyText }: { copyText: string }) {
   return (
     <>
-      {gameCode}
+      {copyText}
       <Copy />
     </>
   );

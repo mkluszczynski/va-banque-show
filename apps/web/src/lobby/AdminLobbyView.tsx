@@ -1,4 +1,4 @@
-import { CopyGameCode } from "@/game/buttons/CopyGameCode";
+import { CopyButton } from "@/game/buttons/CopyGameCode";
 import { StartGameButton } from "@/game/buttons/StartGameButton";
 import { GameSettingsDialog } from "@/game/dialogs/GameSettingsDialog";
 import { useGame } from "@/game/GameContext";
@@ -16,7 +16,10 @@ export function AdminLobbyView() {
       <h4>Waiting for host to start.</h4>
       <div className="flex gap-4">
         <StartGameButton />
-        <CopyGameCode gameCode={gameContext.game.id} />
+        <CopyButton
+          copyContent={gameContext.game.id}
+          copyText={gameContext.game.id}
+        />
         <GameSettingsDialog />
       </div>
       <div className="flex justify-center gap-4">
