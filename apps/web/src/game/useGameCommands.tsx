@@ -4,6 +4,7 @@ import { Game } from "@/game/Game";
 import { useGame } from "@/game/GameContext";
 import { getApi } from "@/lib/fetch";
 import { usePlayer } from "@/player/PlayerContext";
+import { Team } from "@/team/Team";
 
 export function useGameCommands() {
   const socket = useSocket();
@@ -109,6 +110,35 @@ export function useGameCommands() {
         gameId: gameContext.game.id,
         isValid,
       });
+    },
+    skipQuestion: () => {
+      if (!gameContext.game) return;
+      socket.emit("game:question:skip", gameContext.game.id);
+    },
+    nextRound: () => {
+      if (!gameContext.game) return;
+      socket.emit("game:round:next", gameContext.game.id);
+    },
+    hasMoreRounds: async () => {
+      if (!gameContext.game) return false;
+      const hasMoreRounds = await getApi(
+        `/games/${gameContext.game.id}/has-more-rounds`
+      );
+      console.log("hasMoreRounds", hasMoreRounds);
+      return hasMoreRounds;
+    },
+    getWinningTeam: async () => {
+      if (!gameContext.game) return;
+      const winningTeam: Team = await getApi(
+        `/games/${gameContext.game.id}/winner`
+      );
+      console.log("winningTeam", winningTeam);
+      return winningTeam;
+    },
+    finishGame: () => {
+      if (!gameContext.game) return;
+      socket.emit("game:winner", gameContext.game.id);
+      socket.emit("game:finish", gameContext.game.id);
     },
   };
 }

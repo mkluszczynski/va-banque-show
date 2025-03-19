@@ -174,4 +174,26 @@ export class Game {
 
     this.setCurrentRound(this.rounds[currentRoundIndex + 1]);
   }
+
+  hasMoreRounds(): boolean {
+
+    if (!this.currentRound) throw new Error(`Round not found`);
+
+    const currentRoundIndex = this.rounds.findIndex(
+      (round) => round.id === this.currentRound?.id
+    );
+
+    return currentRoundIndex < this.rounds.length - 1;
+  }
+
+
+  getWinningTeam(): Team {
+    if (!this.currentRound) throw new Error(`Round not found`);
+
+    const winningTeam = this.teams.reduce((prev, current) =>
+      prev.score > current.score ? prev : current
+    );
+
+    return winningTeam;
+  }
 }

@@ -10,6 +10,8 @@ import { PlayerRegister } from "./menu/PlayerRegisterView";
 import { PlayerProvider, usePlayer } from "./player/PlayerContext";
 import { usePlayerCommands } from "./player/usePlayerCommands";
 import { GameView } from "./game/views/GameView";
+import { useWinner, WinnerProvider } from "./game/WinnerContext";
+import { WinnerView } from "./game/views/WinnerView";
 
 export default function App() {
   const socket = io("http://localhost:3000", {
@@ -25,10 +27,12 @@ export default function App() {
       <SocketContext.Provider value={socket}>
         <PlayerProvider>
           <GameProvider>
-            <div className="flex justify-center items-center h-screen w-screen relative">
-              <TopBarView />
-              <CurrentView />
-            </div>
+            <WinnerProvider>
+              <div className="flex justify-center items-center h-screen w-screen relative">
+                <TopBarView />
+                <CurrentView />
+              </div>
+            </WinnerProvider>
           </GameProvider>
         </PlayerProvider>
       </SocketContext.Provider>
@@ -39,6 +43,7 @@ export default function App() {
 function CurrentView() {
   const playerContext = usePlayer();
   const gameContext = useGame();
+  const { winner } = useWinner();
 
   const { checkIfGameExists, rejoin } = useGameCommands();
   const { checkIfPlayerExists } = usePlayerCommands();
@@ -48,8 +53,10 @@ function CurrentView() {
 
   rejoin();
 
+  if (winner) return <WinnerView />;
   if (!playerContext?.player) return <PlayerRegister />;
   if (!gameContext?.game) return <MainMenu />;
   if (!gameContext.game.currentRound) return <LobbyView />;
+
   return <GameView />;
 }

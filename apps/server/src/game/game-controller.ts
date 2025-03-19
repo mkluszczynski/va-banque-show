@@ -197,6 +197,21 @@ export const gameController = (
     socket.emit("update", { game });
   }
 
+  socket.on("game:question:skip", skipQuestion);
+  function skipQuestion(gameId: string) {
+    const game = gameService.getGameById(gameId);
+
+    game.removeQuestion();
+
+    logger
+      .context("game:question:skip")
+      .context(game.id)
+      .log(`Question skipped in game: ${game.id}`);
+
+    socket.to(game.id).emit("update", { game });
+    socket.emit("update", { game });
+  }
+
   socket.on("game:start", startGame);
   function startGame(gameId: string) {
     const game = gameService.getGameById(gameId);
@@ -207,5 +222,43 @@ export const gameController = (
 
     socket.to(game.id).emit("update", { game });
     socket.emit("update", { game });
+  }
+
+  socket.on("game:round:next", nextRound);
+  function nextRound(gameId: string) {
+    const game = gameService.getGameById(gameId);
+
+    game.nextRound();
+
+    logger
+      .context("game:next-round")
+      .context(game.id)
+      .log(`Next round in game: ${game.id}`);
+
+    socket.to(game.id).emit("update", { game });
+    socket.emit("update", { game });
+  }
+
+  socket.on("game:winner", getWinningTeam);
+  function getWinningTeam(gameId: string) {
+    const game = gameService.getGameById(gameId);
+
+
+    logger.context("game:winner").context(game.id).log(`Winning team: ${game.getWinningTeam().name}`);
+
+    socket.to(game.id).emit("game:winner", {winner: game.getWinningTeam()});
+    socket.emit("game:winner", {winner: game.getWinningTeam()});
+  }
+
+  socket.on("game:finish", finishGame);
+  function finishGame(gameId: string) {
+    const game = gameService.getGameById(gameId);
+
+    gameService.deleteGame(game.id);
+
+    logger.context("game:finish").context(game.id).log(`Game finished`);
+
+    socket.to(game.id).emit("update", {game: null});
+    socket.emit("update", {game: null});
   }
 };

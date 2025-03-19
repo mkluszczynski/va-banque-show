@@ -14,5 +14,22 @@ export const createGameRouter = (gameService: GameService) => {
 
     }
 
+    router.get("/:id/has-more-rounds", nextRound);
+    function nextRound(req: Request, res: Response){ 
+        const gameId = req.params.id;
+        const game = gameService.getGameById(gameId);
+
+        res.send(game.hasMoreRounds());
+    }
+
+    router.get("/:id/winner", getWinningTeam);
+    function getWinningTeam(req: Request, res: Response){
+        const gameId = req.params.id;
+        const game = gameService.getGameById(gameId);
+
+        res.send(game.getWinningTeam());
+    }
+
+
     return router;
 }
