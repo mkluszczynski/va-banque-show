@@ -53,10 +53,10 @@ export function AdminGameView() {
           </TeamView>
         ))}
       </div>
-      {allQuestionsAnswered && hasMoreRoundsState && (
+      {allQuestionsAnswered && hasMoreRoundsState && !game.currentQuestion && (
         <Button onClick={() => nextRound()}>Next Round</Button>
       )}
-      {allQuestionsAnswered && !hasMoreRoundsState && (
+      {allQuestionsAnswered && !hasMoreRoundsState && !game.currentQuestion && (
         <div>
           <div>Winning Team: {winningTeam?.name}</div>
           <Button onClick={() => finishGame()}>End Game</Button>
