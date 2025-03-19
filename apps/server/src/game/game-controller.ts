@@ -119,6 +119,8 @@ export const gameController = (
     const round = roundService.getRoundById(dto.roundId);
     const category = categoryService.getCategoryById(dto.categoryId);
 
+    if(game.currentQuestion) return;
+
     if (!round.douseCategoryExist(dto.categoryId))
       return logger
         .context("game:question:select")
@@ -129,12 +131,17 @@ export const gameController = (
 
     game.setCurrentQuestion(question);
 
+    round.categories
+      .find((c) => c.id === dto.categoryId)!.questions
+      .find((q) => q.id === dto.questionId)!.isAnswered = true;
+
     logger
       .context("game:question:select")
       .context(game.id)
       .log(`Question ${question.id} selected in game: ${game.id}`);
 
-    socket.broadcast.to(game.id).emit("update", { game });
+    socket.to(game.id).emit("update", { game });
+    socket.emit("update", { game });
   }
 
   socket.on("game:round:select", selectRound);
@@ -149,8 +156,29 @@ export const gameController = (
       .context(game.id)
       .log(`Round ${round.id} selected in game: ${game.id}`);
 
-    socket.broadcast.to(game.id).emit("update", { game });
+    socket.to(game.id).emit("update", { game });
+    socket.emit("update", { game });
   }
+
+  socket.on("game:answer:dispatch", dispatchAnswer);
+  function dispatchAnswer(dto: { gameId: string, playerId: string }) {
+    const game = gameService.getGameById(dto.gameId);
+    const player = playerService.getPlayerById(dto.playerId);
+
+    if(!game.currentQuestion) return;
+    if(game.answeringPlayer) return;
+
+    game.answeringPlayer = player;
+
+    logger
+      .context("game:answer:dispatch")
+      .context(game.id)
+      .log(`Answer dispatched in game: ${game.id}`);
+
+    socket.to(game.id).emit("update", { game });
+    socket.emit("update", { game });
+  }
+
 
   socket.on("game:answer:validate", validateAnswer);
   function validateAnswer(dto: ValidateAnswerDto) {
@@ -165,7 +193,8 @@ export const gameController = (
         `Answer ${dto.isValid ? "correct" : "incorrect"} in game: ${game.id}`
       );
 
-    socket.broadcast.to(game.id).emit("update", { game });
+    socket.to(game.id).emit("update", { game });
+    socket.emit("update", { game });
   }
 
   socket.on("game:start", startGame);

@@ -30,4 +30,8 @@ export class Team {
   addScore(score: number) {
     this.score += score;
   }
+
+  removeScore(score: number) {
+    this.score -= score;
+  }
 }

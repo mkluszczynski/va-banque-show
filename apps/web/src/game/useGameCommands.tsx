@@ -74,10 +74,12 @@ export function useGameCommands() {
         roundId,
       });
     },
-    selectQuestion: (questionId: string) => {
+    selectQuestion: (categoryId: string, questionId: string) => {
       if (!gameContext.game) return;
       socket.emit("game:question:select", {
         gameId: gameContext.game.id,
+        roundId: gameContext.game.currentRound?.id,
+        categoryId,
         questionId,
       });
     },
@@ -90,6 +92,16 @@ export function useGameCommands() {
     startGame: () => {
       if (!gameContext.game) return;
       socket.emit("game:start", gameContext.game.id);
+    },
+    dispatchAnswer: () => {
+      if (!gameContext.game) return;
+      if (!playerContext.player) return;
+      console.log("dispatchAnswer");
+
+      socket.emit("game:answer:dispatch", {
+        gameId: gameContext.game.id,
+        playerId: playerContext.player.id,
+      });
     },
   };
 }

@@ -1,5 +1,4 @@
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -7,27 +6,28 @@ import {
   CardHeader,
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { usePlayer } from "@/player/PlayerContext";
 import { Team } from "./Team";
+import { cn } from "@/lib/utils";
+import { JSX } from "react";
 
 export function TeamView({
   team,
-  onJoin,
+  showScore,
+  children,
+  className,
 }: {
   team: Team;
-  onJoin?: (teamId: string) => void;
+  showScore?: boolean;
+  children?: JSX.Element;
+  className?: string;
 }) {
-  const playerContext = usePlayer();
-  if (!playerContext.player) return null;
-
-  const isPlayerInTeam = team.players.some(
-    (player) => player.id === playerContext.player?.id
-  );
-
   return (
-    <Card className="w-64 h-[50vh] flex justify-between">
+    <Card className={cn("w-64 h-[50vh] flex justify-between", className)}>
       <CardHeader>
-        <div className="text-lg font-bold">{team.name}</div>
+        <div className="flex justify-between items-center">
+          <div className="text-lg font-bold">{team.name}</div>
+          {showScore && <div>{team.score}</div>}
+        </div>
         <Separator />
       </CardHeader>
       <CardContent className="flex justify-start h-full flex-col gap-2 flex-wrap">
@@ -43,13 +43,7 @@ export function TeamView({
           </div>
         ))}
       </CardContent>
-      <CardFooter className="flex justify-center">
-        {onJoin && !isPlayerInTeam && (
-          <Button className="w-full" onClick={() => onJoin(team.id)}>
-            Join
-          </Button>
-        )}
-      </CardFooter>
+      <CardFooter className="flex justify-center">{children}</CardFooter>
     </Card>
   );
 }

@@ -129,12 +129,14 @@ export class Game {
   validateAnswer(isAnswerValid: boolean): void {
     if (!this.answeringPlayer) throw new Error(`No player is answaring`);
 
+    const question = this.getCurrentQuestion();
+
     if (!isAnswerValid) {
+      this.getCurrentAnsweringTeam().removeScore(question.value);
       this.removeAnsweringPlayer();
       return;
     }
 
-    const question = this.getCurrentQuestion();
 
     question.markAsAnswered();
     this.getCurrentAnsweringTeam().addScore(question.value);
