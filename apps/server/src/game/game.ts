@@ -134,6 +134,7 @@ export class Game {
     if (!isAnswerValid) {
       this.getCurrentAnsweringTeam().removeScore(question.value);
       this.removeAnsweringPlayer();
+      this.removeQuestion();
       return;
     }
 

@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Player } from "@/player/Player";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Question } from "@/category/types/Question";
+import { useGameCommands } from "../useGameCommands";
 
 export function AdminGameView() {
   const { game } = useGame();
@@ -15,7 +16,7 @@ export function AdminGameView() {
   return (
     <div className="flex flex-col gap-4">
       <QuestionView question={game.currentQuestion} showAnswer />
-      <CategoryTable round={game?.currentRound} />
+      <CategoryTable round={game?.currentRound} canSelect />
       <div className="flex gap-4">
         {game.teams.map((team) => (
           <TeamView key={team.id} team={team} showScore className="h-auto">
@@ -58,9 +59,15 @@ export function QuestionView({
 }
 
 export function CorrectAnswer() {
-  return <Button>Correct</Button>;
+  const { validateAnswer } = useGameCommands();
+  return <Button onClick={() => validateAnswer(true)}>Correct</Button>;
 }
 
 export function IncorrectAnswer() {
-  return <Button variant="destructive">Incorrect</Button>;
+  const { validateAnswer } = useGameCommands();
+  return (
+    <Button variant="destructive" onClick={() => validateAnswer(false)}>
+      Incorrect
+    </Button>
+  );
 }

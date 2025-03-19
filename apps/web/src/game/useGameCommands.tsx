@@ -103,5 +103,12 @@ export function useGameCommands() {
         playerId: playerContext.player.id,
       });
     },
+    validateAnswer: (isValid: boolean) => {
+      if (!gameContext.game) return;
+      socket.emit("game:answer:validate", {
+        gameId: gameContext.game.id,
+        isValid,
+      });
+    },
   };
 }

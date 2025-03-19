@@ -3,10 +3,16 @@ import { Separator } from "@/components/ui/separator";
 import { Round } from "@/round/Round";
 import { useGameCommands } from "./useGameCommands";
 
-export function CategoryTable({ round }: { round: Round }) {
+export function CategoryTable({
+  round,
+  canSelect,
+}: {
+  round: Round;
+  canSelect?: boolean;
+}) {
   const { selectQuestion } = useGameCommands();
   return (
-    <div className="flex justify-center items-stretch gap-4">
+    <div className="flex justify-around items-stretch gap-4 w-full">
       {round.categories.map((category) => (
         <div key={category.id} className="flex flex-col gap-4">
           <div>
@@ -18,7 +24,10 @@ export function CategoryTable({ round }: { round: Round }) {
               <Button
                 key={question.id}
                 disabled={question.isAnswered}
-                onClick={() => selectQuestion(category.id, question.id)}
+                onClick={() => {
+                  if (!canSelect) return;
+                  selectQuestion(category.id, question.id);
+                }}
               >
                 {question.value}
               </Button>
