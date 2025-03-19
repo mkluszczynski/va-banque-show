@@ -4,11 +4,12 @@ import { useGame } from "../GameContext";
 import { TeamView } from "@/team/TeamView";
 import { Button } from "@/components/ui/button";
 import { Player } from "@/player/Player";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { Question } from "@/category/types/Question";
 import { useGameCommands } from "../useGameCommands";
 import { useEffect, useState } from "react";
 import { Team } from "@/team/Team";
+import { QuestionView } from "./QuestionView";
+import { IncorrectAnswerButton } from "../buttons/IncorrectAnswerButton";
+import { CorrectAnswerButton } from "../buttons/CorrectAnswerButton";
 
 export function AdminGameView() {
   const { game } = useGame();
@@ -45,8 +46,8 @@ export function AdminGameView() {
                 (player: Player) => game.answeringPlayer?.id == player.id
               ) && (
                 <div className="flex gap-4">
-                  <IncorrectAnswer />
-                  <CorrectAnswer />
+                  <IncorrectAnswerButton />
+                  <CorrectAnswerButton />
                 </div>
               )}
             </div>
@@ -57,50 +58,13 @@ export function AdminGameView() {
         <Button onClick={() => nextRound()}>Next Round</Button>
       )}
       {allQuestionsAnswered && !hasMoreRoundsState && !game.currentQuestion && (
-        <div>
-          <div>Winning Team: {winningTeam?.name}</div>
+        <>
+          <div className="text-blue-500 dark:text-amber-500">
+            Winning Team: {winningTeam?.name}
+          </div>
           <Button onClick={() => finishGame()}>End Game</Button>
-        </div>
+        </>
       )}
     </div>
-  );
-}
-
-export function QuestionView({
-  question,
-  showAnswer,
-}: {
-  question: Question | null;
-  showAnswer?: boolean;
-}) {
-  const { skipQuestion } = useGameCommands();
-  return (
-    <Card>
-      <CardHeader>
-        <div className="flex justify-between items-center">
-          <div className="text-lg font-bold">Question</div>
-          {question && <Button onClick={skipQuestion}>Skip</Button>}
-        </div>
-      </CardHeader>
-      <CardContent>
-        {question && <div>{question.question}</div>}
-        {!question && <div>No question</div>}
-        {question && showAnswer && <div>{question.answer}</div>}
-      </CardContent>
-    </Card>
-  );
-}
-
-export function CorrectAnswer() {
-  const { validateAnswer } = useGameCommands();
-  return <Button onClick={() => validateAnswer(true)}>Correct</Button>;
-}
-
-export function IncorrectAnswer() {
-  const { validateAnswer } = useGameCommands();
-  return (
-    <Button variant="destructive" onClick={() => validateAnswer(false)}>
-      Incorrect
-    </Button>
   );
 }

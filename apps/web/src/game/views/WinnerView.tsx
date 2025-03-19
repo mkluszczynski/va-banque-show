@@ -8,7 +8,7 @@ export function WinnerView() {
   if (!winner) return null;
 
   return (
-    <div className="flex flex-col items-center gap-4 ">
+    <div className="flex flex-col  gap-4 ">
       <div className="text-xl">Winner</div>
       <TeamView
         team={winner}
