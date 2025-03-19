@@ -1,31 +1,24 @@
 import { useSocket } from "@/common/socket/useSocket";
 import { Game } from "@/game/Game";
-import { usePlayer } from "@/player/PlayerContext";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 
-export function CategoryWidgetView() {
+export function CategoriesWidgetView() {
   const params = useParams();
-  const { player } = usePlayer();
   const socket = useSocket();
-  const gameId = params.id;
+
+  const gameId = params.gameId;
+
   const [game, setGame] = useState<Game | null>(null);
 
   socket.on("update", ({ game }: { game: Game }) => {
-    console.log("game", game);
     setGame(game);
   });
 
   useEffect(() => {
-    socket.emit(
-      "game:widget:join",
-      { gameId, playerId: player?.id },
-      ({ game }: { game: Game }) => {
-        console.log("game", game);
-
-        setGame(game);
-      }
-    );
+    socket.emit("game:widget:join", { gameId }, ({ game }: { game: Game }) => {
+      setGame(game);
+    });
   }, []);
 
   return (

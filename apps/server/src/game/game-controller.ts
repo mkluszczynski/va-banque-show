@@ -52,14 +52,12 @@ export const gameController = (
   }
 
   socket.on("game:widget:join", joinGameWidget);
-  function joinGameWidget(data: {gameId: string}) {
+  function joinGameWidget(data: { gameId: string }) {
     const game = gameService.getGameById(data.gameId);
 
     socket.join(game.id);
 
-    logger
-      .context("game:widget:join")
-      .log(`Widget joined game: ${game.id}`);
+    logger.context("game:widget:join").log(`Widget joined game: ${game.id}`);
 
     socket.emit("update", { game });
   }
@@ -116,8 +114,8 @@ export const gameController = (
     game.addRound(roundService.createRound(1));
     game.addRound(roundService.createRound(2));
 
-    game.addTeam(teamService.createTeam("Team 1"));
-    game.addTeam(teamService.createTeam("Team 2"));
+    game.addTeam(teamService.createTeam("Blue"));
+    game.addTeam(teamService.createTeam("Red"));
 
     logger.context("game:create").log(`Game created: ${game.id}`);
 
@@ -132,7 +130,7 @@ export const gameController = (
     const round = roundService.getRoundById(dto.roundId);
     const category = categoryService.getCategoryById(dto.categoryId);
 
-    if(game.currentQuestion) return;
+    if (game.currentQuestion) return;
 
     if (!round.douseCategoryExist(dto.categoryId))
       return logger
@@ -145,8 +143,8 @@ export const gameController = (
     game.setCurrentQuestion(question);
 
     round.categories
-      .find((c) => c.id === dto.categoryId)!.questions
-      .find((q) => q.id === dto.questionId)!.isAnswered = true;
+      .find((c) => c.id === dto.categoryId)!
+      .questions.find((q) => q.id === dto.questionId)!.isAnswered = true;
 
     logger
       .context("game:question:select")
@@ -174,12 +172,12 @@ export const gameController = (
   }
 
   socket.on("game:answer:dispatch", dispatchAnswer);
-  function dispatchAnswer(dto: { gameId: string, playerId: string }) {
+  function dispatchAnswer(dto: { gameId: string; playerId: string }) {
     const game = gameService.getGameById(dto.gameId);
     const player = playerService.getPlayerById(dto.playerId);
 
-    if(!game.currentQuestion) return;
-    if(game.answeringPlayer) return;
+    if (!game.currentQuestion) return;
+    if (game.answeringPlayer) return;
 
     game.answeringPlayer = player;
 
@@ -191,7 +189,6 @@ export const gameController = (
     socket.to(game.id).emit("update", { game });
     socket.emit("update", { game });
   }
-
 
   socket.on("game:answer:validate", validateAnswer);
   function validateAnswer(dto: ValidateAnswerDto) {
@@ -256,11 +253,13 @@ export const gameController = (
   function getWinningTeam(gameId: string) {
     const game = gameService.getGameById(gameId);
 
+    logger
+      .context("game:winner")
+      .context(game.id)
+      .log(`Winning team: ${game.getWinningTeam().name}`);
 
-    logger.context("game:winner").context(game.id).log(`Winning team: ${game.getWinningTeam().name}`);
-
-    socket.to(game.id).emit("game:winner", {winner: game.getWinningTeam()});
-    socket.emit("game:winner", {winner: game.getWinningTeam()});
+    socket.to(game.id).emit("game:winner", { winner: game.getWinningTeam() });
+    socket.emit("game:winner", { winner: game.getWinningTeam() });
   }
 
   socket.on("game:finish", finishGame);
@@ -271,7 +270,7 @@ export const gameController = (
 
     logger.context("game:finish").context(game.id).log(`Game finished`);
 
-    socket.to(game.id).emit("update", {game: null});
-    socket.emit("update", {game: null});
+    socket.to(game.id).emit("update", { game: null });
+    socket.emit("update", { game: null });
   }
 };

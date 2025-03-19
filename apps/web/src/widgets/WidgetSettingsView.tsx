@@ -20,6 +20,16 @@ export function WidgetSettingsView() {
               url: url + `/widget/games/${game?.id}/categories`,
             }}
           />
+
+          {game?.teams.map((team) => (
+            <WidgetSettingsListItem
+              key={team.id}
+              widget={{
+                name: `Team ${team.name}'s Widget`,
+                url: url + `/widget/games/${game?.id}/teams/${team.id}`,
+              }}
+            />
+          ))}
         </div>
       </ScrollArea>
     </div>
