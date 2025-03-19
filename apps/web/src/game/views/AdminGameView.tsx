@@ -59,7 +59,7 @@ export function AdminGameView() {
       )}
       {allQuestionsAnswered && !hasMoreRoundsState && !game.currentQuestion && (
         <>
-          <div className="text-blue-500 dark:text-amber-500">
+          <div className="text-amber-600 dark:text-amber-500">
             Winning Team: {winningTeam?.name}
           </div>
           <Button onClick={() => finishGame()}>End Game</Button>
