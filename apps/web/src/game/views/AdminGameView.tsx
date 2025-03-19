@@ -36,7 +36,7 @@ export function AdminGameView() {
 
   return (
     <div className="flex flex-col gap-4">
-      <QuestionView question={game.currentQuestion} showAnswer />
+      <QuestionView question={game.currentQuestion} showAnswer showSkipButton />
       <CategoryTable round={game?.currentRound} canSelect />
       <div className="flex gap-4">
         {game.teams.map((team) => (

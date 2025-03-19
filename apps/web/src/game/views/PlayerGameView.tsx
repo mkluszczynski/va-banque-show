@@ -3,7 +3,7 @@ import { useGame } from "../GameContext";
 import { CategoryTable } from "../CategoryTable";
 import { Button } from "@/components/ui/button";
 import { useGameCommands } from "../useGameCommands";
-import { QuestionView } from "./AdminGameView";
+import { QuestionView } from "./QuestionView";
 
 export function PlayerGameView() {
   const { game } = useGame();
