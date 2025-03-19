@@ -1,0 +1,21 @@
+services:
+  web:
+    image: mkluszczynski/va-banque-show-web:latest
+    build:
+      context: ./apps/web
+      dockerfile: DockerFile
+    ports:
+      - "80:80"
+    depends_on:
+      - server
+
+  server:
+    image: mkluszczynski/va-banque-show-server:latest
+    build:
+      context: ./apps/server
+      dockerfile: DockerFile
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+    restart: unless-stopped
