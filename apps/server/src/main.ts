@@ -57,7 +57,7 @@ const server = new Server(httpServer, {
   },
 });
 
-serverLogger.log("Server started on port 3000");
+serverLogger.log("Server started on port 3010");
 
 server.use(validateDtoMiddleware)
 server.use(handleError)
@@ -72,6 +72,6 @@ server.on("connection", (socket) => {
   });
 });
 
-httpServer.listen(3000);
+httpServer.listen(3010);
 
 

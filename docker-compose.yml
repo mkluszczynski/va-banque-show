@@ -4,10 +4,10 @@ services:
     build:
       context: ./apps/web
       dockerfile: DockerFile
-    ports:
-      - "80:80"
     depends_on:
       - server
+    volumes:
+        - ./dist:/app/dist
 
   server:
     image: mkluszczynski/va-banque-show-server:latest

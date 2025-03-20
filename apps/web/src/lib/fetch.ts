@@ -1,5 +1,6 @@
 export function fetchApi(path: string, options: RequestInit = {}) {
-    const apiUrl = "http://localhost:3000"
+    // const apiUrl = "http://localhost:3010"
+  const apiUrl = "https://va-banque-api.mkluszczynski.dev"
   return fetch(`${apiUrl}${path}`, {
     ...options,
     headers: {
