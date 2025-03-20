@@ -1,7 +1,1 @@
-- [] implementcacja premii
-- [] edycja rund, categori, etc
-- [] Implement hearth beat to detect if player is still connected
-- [] Implement player to host promotion
-- [] Game functionality
-- [] Team widgets
 - [] Questions widget
