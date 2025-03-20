@@ -1,5 +1,5 @@
 {
-  "name": "server",
+  "name": "va-banque-show-server",
   "version": "1.0.0",
   "description": "",
   "main": "src/main.ts",
