@@ -19,9 +19,9 @@ export default function App() {
     transports: ["websocket"],
   });
 
-  socket.on("error", (error: unknown) => {
-    console.error(error);
-  });
+  // socket.on("error", (error: unknown) => {
+  //   console.error(error);
+  // });
 
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">

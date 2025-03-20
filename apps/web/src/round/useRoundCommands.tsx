@@ -21,7 +21,6 @@ export function useRoundCommands() {
         gameId: gameContext.game?.id,
         roundId,
       });
-      console.log("remove round");
     },
     addCategoryToRound: (roundId: string, categoryId: string) => {
       if (!gameContext.game) return;

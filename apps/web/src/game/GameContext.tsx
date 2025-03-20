@@ -20,8 +20,6 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
   const socket = useSocket();
 
   socket.on("update", ({ game }: { game: Game }) => {
-    console.log("update", game);
-
     setGame(game);
     setSaveGame(game);
   });

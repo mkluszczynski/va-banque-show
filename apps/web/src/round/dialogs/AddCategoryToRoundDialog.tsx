@@ -34,7 +34,6 @@ export function AddCategoryToRoundDialog(round: Round) {
           (roundCategory) => roundCategory.id === category.id
         )
     );
-    console.log("uniqueCategory", uniqueCategory);
 
     setUniqueCategory(uniqueCategory);
   }, [categoryListContext.categories, round.categories]);

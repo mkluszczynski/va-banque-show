@@ -30,8 +30,6 @@ export function RoundEditDialog(round: Round) {
   const [open, setOpen] = useState(false);
 
   const onSave = () => {
-    console.log("Save round", round.id, multiplier);
-
     setOpen(false);
   };
 
@@ -52,7 +50,7 @@ export function RoundEditDialog(round: Round) {
           <Input
             type="number"
             placeholder="Score"
-            defaultValue={round.multiplier}
+            defaultValue={multiplier}
             step={1}
             onChange={(event) => setMultiplier(parseInt(event.target.value))}
           />

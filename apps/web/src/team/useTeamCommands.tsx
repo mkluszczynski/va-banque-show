@@ -8,10 +8,6 @@ export function useTeamCommands() {
   const gameContext = useGame();
   return {
     joinTeam: (teamId: string) => {
-      console.log("joinTeam");
-      console.log(gameContext.game);
-      console.log(playerContext.player);
-
       if (!gameContext.game) return;
       if (!playerContext.player) return;
       socket.emit("team:join", {

@@ -52,7 +52,6 @@ export function useGameCommands() {
       if (!playerContext.player) return;
       if (!gameContext.game) return;
 
-      console.log("rejoin");
       socket.emit("game:rejoin", {
         gameId: gameContext.game.id,
         playerId: playerContext.player?.id,
@@ -87,7 +86,6 @@ export function useGameCommands() {
     canGameStart: async () => {
       if (!gameContext.game) return false;
       const canStart = await getApi(`/games/${gameContext.game.id}/can-start`);
-      console.log("canStart", canStart);
       return canStart;
     },
     startGame: () => {
@@ -97,7 +95,6 @@ export function useGameCommands() {
     dispatchAnswer: () => {
       if (!gameContext.game) return;
       if (!playerContext.player) return;
-      console.log("dispatchAnswer");
 
       socket.emit("game:answer:dispatch", {
         gameId: gameContext.game.id,
@@ -124,7 +121,6 @@ export function useGameCommands() {
       const hasMoreRounds = await getApi(
         `/games/${gameContext.game.id}/has-more-rounds`
       );
-      console.log("hasMoreRounds", hasMoreRounds);
       return hasMoreRounds;
     },
     getWinningTeam: async () => {
@@ -132,7 +128,6 @@ export function useGameCommands() {
       const winningTeam: Team = await getApi(
         `/games/${gameContext.game.id}/winner`
       );
-      console.log("winningTeam", winningTeam);
       return winningTeam;
     },
     finishGame: () => {

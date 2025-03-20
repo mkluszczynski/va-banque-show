@@ -18,8 +18,6 @@ export function WinnerProvider({ children }: { children: React.ReactNode }) {
   const socket = useSocket();
 
   socket.on("game:winner", ({ winner }: { winner: Team }) => {
-    console.log("game:winner", winner);
-
     setWinner(winner);
   });
 
