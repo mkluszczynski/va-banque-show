@@ -17,6 +17,8 @@ import express from "express";
 import { createServer } from "http";
 import { createGameRouter } from "./game/game-route";
 import cors from "cors";
+import { FinalRoundService } from "./final-round/final-round-service";
+import { finalRoundController } from "./final-round/final-round-controller";
 
 const serverLogger = new Logger(["Server"]);
 
@@ -26,6 +28,7 @@ const gameService = new GameService();
 const categoryRepository = new CategoryRepository("categories.json");
 const categoryService = new CategoryService(categoryRepository);
 const roundService = new RoundService(categoryService);
+const finalRoundService = new FinalRoundService(categoryService, roundService);
 
 const onConnection = (socket: Socket) => {
   playerController(socket, playerService);
@@ -35,11 +38,13 @@ const onConnection = (socket: Socket) => {
     roundService,
     categoryService,
     playerService,
-    teamService
+    teamService,
+    finalRoundService
   );
   teamController(socket, gameService, playerService, teamService);
   roundController(socket, roundService, gameService);
   categoryController(socket, categoryService, roundService, gameService);
+  finalRoundController(socket, finalRoundService, categoryService, gameService);
 };
 
 const app = express();

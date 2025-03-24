@@ -40,5 +40,13 @@ export function useRoundCommands() {
         categoryId,
       });
     },
+    setFinalRoundQuestion: (questionId: string) => {
+      if (!gameContext.game) return;
+
+      socket.emit("final:round:question:edit", {
+        gameId: gameContext.game?.id,
+        questionId,
+      });
+    },
   };
 }

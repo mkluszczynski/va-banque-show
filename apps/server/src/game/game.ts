@@ -1,6 +1,7 @@
 import { genId } from "../../utils/gen-id";
 import { Player } from "../player/player";
 import { Question } from "../question/question";
+import { FinalRound } from "../final-round/final-round";
 import { Round } from "../round/round";
 import { Team } from "../team/team";
 
@@ -14,6 +15,7 @@ export class Game {
   public currentRound: Round | null = null;
   public currentQuestion: Question | null = null;
   public answeringPlayer: Player | null = null;
+  public finalRound: FinalRound | null = null;
 
   constructor(admin: Player) {
     this.id = genId();
@@ -41,6 +43,10 @@ export class Game {
 
   addRound(round: Round) {
     this.rounds.push(round);
+  }
+
+  addFinalRound(finalRound: FinalRound) {
+    this.finalRound = finalRound;
   }
 
   removeRound(round: Round) {
@@ -75,7 +81,7 @@ export class Game {
       throw new Error(`Player with id ${player.id} not found`);
     if (this.answeringPlayer)
       throw new Error(
-        `Player with id ${this.answeringPlayer.id} is already answaring`
+        `Player with id ${this.answeringPlayer.id} is already answering`
       );
     this.answeringPlayer = player;
   }
@@ -102,6 +108,12 @@ export class Game {
     this.currentRound = round;
   }
 
+  getFinalRound(): FinalRound {
+    if (!this.finalRound) throw new Error(`Final round not found`);
+
+    return this.finalRound;
+  }
+
   setCurrentQuestion(question: Question): void {
     if (!this.currentRound) throw new Error(`Round not found`);
 
@@ -111,7 +123,7 @@ export class Game {
       );
 
     if (question.isAnswered)
-      throw new Error(`Question with id ${question.id} is already answared`);
+      throw new Error(`Question with id ${question.id} is already answered`);
 
     this.currentQuestion = question;
   }
@@ -127,7 +139,7 @@ export class Game {
   }
 
   validateAnswer(isAnswerValid: boolean): void {
-    if (!this.answeringPlayer) throw new Error(`No player is answaring`);
+    if (!this.answeringPlayer) throw new Error(`No player is answering`);
 
     const question = this.getCurrentQuestion();
 

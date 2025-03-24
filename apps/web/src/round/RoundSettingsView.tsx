@@ -9,6 +9,8 @@ import { useRoundCommands } from "@/round/useRoundCommands";
 import { Trash } from "lucide-react";
 import { Round } from "./Round";
 import { AddRoundButton } from "./buttons/AddRoundButton";
+import { FinalRound } from "@/final-round/FinalRound";
+import { FinalRoundEditDialog } from "./dialogs/FinalRoundEditDialog";
 
 export function RoundSettingsView() {
   const gameContext = useGame();
@@ -26,6 +28,9 @@ export function RoundSettingsView() {
           {gameContext.game.rounds.map((round, index) => (
             <RoundSettingsListItem key={round.id} round={round} order={index} />
           ))}
+          {gameContext.game.finalRound && (
+            <FinalRoundSettings finalRound={gameContext.game.finalRound} />
+          )}
         </div>
       </ScrollArea>
     </div>
@@ -71,6 +76,22 @@ function RoundSettingsListItem({
             ))}
           </div>
         </div>
+      </CardContent>
+    </Card>
+  );
+}
+
+function FinalRoundSettings({ finalRound }: { finalRound: FinalRound }) {
+  return (
+    <Card className="flex flex-col gap-2">
+      <CardHeader className="flex flex-row justify-between">
+        <div className="text-lg font-bold">Final round</div>
+        <div className="flex items-center gap-2">
+          <FinalRoundEditDialog />
+        </div>
+      </CardHeader>
+      <CardContent className="flex flex-col gap-2">
+        <div>Question: {finalRound.finalQuestion.question}</div>
       </CardContent>
     </Card>
   );

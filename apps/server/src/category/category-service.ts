@@ -1,3 +1,4 @@
+import { Question } from "../question/question";
 import { Category } from "./category";
 import { CategoryRepository } from "./category-repository";
 
@@ -36,6 +37,36 @@ export class CategoryService {
 
     return randomCategories;
   }
+
+  getRandomQuestion(): Question {
+    const categories = this.categoryRepository.getCategories();
+    const randomCategory = categories[Math.floor(Math.random() * categories.length)];
+    const questions = randomCategory.questions;
+    const randomQuestion = questions[Math.floor(Math.random() * questions.length)];
+
+    return randomQuestion;
+
+  }
+
+  getQuestionById(questionId: string): Question {
+    const categories = this.categoryRepository.getCategories();
+    const category = categories.find((category) =>
+      category.doseQuestionExist(questionId)
+    );
+
+    if (!category) {
+      throw new Error(`Question with id ${questionId} not found`);
+    }
+
+    const question = category.getQuestionById(questionId);
+
+    if (!question) {
+      throw new Error(`Question with id ${questionId} not found`);
+    }
+
+    return question;
+  }
+
 
   doesCategoryExist(id: string): boolean {
     return this.categoryRepository.doseCategoryExist(id);

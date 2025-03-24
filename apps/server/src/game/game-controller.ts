@@ -10,6 +10,7 @@ import { SelectQuestionDto } from "./dto/select-question-dto";
 import { ValidateAnswerDto } from "./dto/validate-answer-dto";
 import { Game } from "./game";
 import { GameService } from "./game-service";
+import { FinalRoundService } from "../final-round/final-round-service";
 
 export const gameController = (
   socket: Socket,
@@ -17,7 +18,8 @@ export const gameController = (
   roundService: RoundService,
   categoryService: CategoryService,
   playerService: PlayerService,
-  teamService: TeamService
+  teamService: TeamService,
+  finalRoundService: FinalRoundService
 ) => {
   const logger = new Logger(["Server", "GameController"]);
 
@@ -116,6 +118,8 @@ export const gameController = (
 
     game.addTeam(teamService.createTeam("Blue"));
     game.addTeam(teamService.createTeam("Red"));
+
+    game.addFinalRound(finalRoundService.createFinalRound());
 
     logger.context("game:create").log(`Game created: ${game.id}`);
 
