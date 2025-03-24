@@ -15,4 +15,8 @@ export class FinalRound {
     this.id = id;
     this.finalQuestion = finalQuestion;
   }
+
+  addAnswer(answer: FinalRoundAnswer) {
+    this.answers.push(answer);
+  }
 }

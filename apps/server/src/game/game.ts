@@ -149,10 +149,6 @@ export class Game {
     const isRoundValid = this.rounds.length >= 1;
     const isNumberOfTeamsValid = this.teams.length >= 2;
 
-    console.log("isTeamValid", isTeamValid);
-    console.log("isRoundValid", isRoundValid);
-    console.log("isNumberOfTeamsValid", isNumberOfTeamsValid);
-
     return isTeamValid && isRoundValid && isNumberOfTeamsValid;
   }
 

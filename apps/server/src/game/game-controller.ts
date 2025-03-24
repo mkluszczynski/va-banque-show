@@ -273,26 +273,6 @@ export const gameController = (
     socket.emit("update", { game: null });
   }
 
-  socket.on("round:question:bonus", setQuestionAsBonus);
-  function setQuestionAsBonus(dto: {
-    gameId: string;
-    questionId: string;
-    bonusScore: number
-  }) {
-    const game = gameService.getGameById(dto.gameId);
-    const question = game.getQuestionById(dto.questionId);
-
-    if (game?.currentQuestion?.id !== question.id) return;
-    question.value = dto.bonusScore;
-    game.currentQuestion.value = dto.bonusScore;
-
-    logger
-      .context("round:question:bonus")
-      .context(game.id)
-      .log(`Question ${question.id} set as bonus`);
-
-    socket.to(game.id).emit("update", { game });
-    socket.emit("update", { game });
-  }
+ 
 
 };
