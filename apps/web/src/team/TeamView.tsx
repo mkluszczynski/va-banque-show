@@ -9,18 +9,33 @@ import { Separator } from "@/components/ui/separator";
 import { Team } from "./Team";
 import { cn } from "@/lib/utils";
 import { JSX } from "react";
+import { useGame } from "@/game/GameContext";
+import { Button } from "@/components/ui/button";
+import { Hand } from "lucide-react";
+import { useGameCommands } from "@/game/useGameCommands";
+import { Player } from "@/player/Player";
 
 export function TeamView({
   team,
   showScore,
+  showSelectToAnswer,
   children,
   className,
 }: {
   team: Team;
   showScore?: boolean;
+  showSelectToAnswer?: boolean;
   children?: JSX.Element;
   className?: string;
 }) {
+  const { game } = useGame();
+  const { selectPlayerToAnswer } = useGameCommands();
+
+  const handleSelectPlayer = (player: Player) => {
+    if (!game) return;
+    selectPlayerToAnswer(player.id);
+  };
+
   return (
     <Card className={cn("w-64 h-[50vh] flex justify-between", className)}>
       <CardHeader>
@@ -35,11 +50,23 @@ export function TeamView({
           <div className="text-sm font-extralight">No players</div>
         )}
         {team.players.map((player) => (
-          <div key={player.id} className="flex items-center gap-2">
-            <Avatar>
-              <AvatarFallback>{player.nickname[0]}</AvatarFallback>
-            </Avatar>
-            {player.nickname}
+          <div className="flex justify-between items-center gap-4">
+            <div key={player.id} className="flex items-center gap-2">
+              <Avatar>
+                <AvatarFallback>{player.nickname[0]}</AvatarFallback>
+              </Avatar>
+              {player.nickname}
+            </div>
+            {showSelectToAnswer &&
+              !game?.answeringPlayer &&
+              game?.currentQuestion && (
+                <Button
+                  variant="ghost"
+                  onClick={() => handleSelectPlayer(player)}
+                >
+                  <Hand />
+                </Button>
+              )}
           </div>
         ))}
       </CardContent>

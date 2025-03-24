@@ -101,6 +101,13 @@ export function useGameCommands() {
         playerId: playerContext.player.id,
       });
     },
+    selectPlayerToAnswer: (playerId: string) => {
+      if (!gameContext.game) return;
+      socket.emit("game:answer:dispatch", {
+        gameId: gameContext.game.id,
+        playerId,
+      });
+    },
     validateAnswer: (isValid: boolean) => {
       if (!gameContext.game) return;
       socket.emit("game:answer:validate", {
@@ -134,6 +141,24 @@ export function useGameCommands() {
       if (!gameContext.game) return;
       socket.emit("game:winner", gameContext.game.id);
       socket.emit("game:finish", gameContext.game.id);
+    },
+    setQuestionAsBonus: (roundId: string, questionId: string) => {
+      const gameId = gameContext.game?.id;
+      if (!gameId) return;
+      socket.emit("round:question:bonus", {
+        gameId,
+        roundId,
+        questionId,
+      });
+    },
+    setQuestionBonusScore: (questionId: string, bonusScore: number) => {
+      const gameId = gameContext.game?.id;
+      if (!gameId) return;
+      socket.emit("round:question:bonus", {
+        gameId,
+        questionId,
+        bonusScore,
+      });
     },
   };
 }

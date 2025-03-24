@@ -1,5 +1,6 @@
 import { genId } from "../../utils/gen-id";
 import { CategoryService } from "../category/category-service";
+import { Question } from "../question/question";
 import { Round } from "./round";
 
 export class RoundService {
@@ -15,6 +16,10 @@ export class RoundService {
 
     round.setCategories(categories);
 
+    round.markRandomQuestionAsBonus();
+    round.markRandomQuestionAsBonus();
+    round.markRandomQuestionAsBonus();
+
     this.rounds.push(round);
     return round;
   }
@@ -29,6 +34,24 @@ export class RoundService {
     return round;
   }
 
+  public getQuestionById(questionId: string): Question {
+    const round = this.rounds.find((round) =>
+      round.doseQuestionExist(questionId)
+    );
+
+    if (!round) {
+      throw new Error(`Question with id ${questionId} not found`);
+    }
+
+    const question = round.getQuestionById(questionId);
+
+    if(!question) {
+      throw new Error(`Question with id ${questionId} not found`);
+    }
+
+    return question;
+  }
+
   public getRounds(): Round[] {
     return this.rounds;
   }
@@ -36,4 +59,5 @@ export class RoundService {
   public deleteRound(round: Round): void {
     this.rounds = this.rounds.filter((r) => r.id !== round.id);
   }
+
 }

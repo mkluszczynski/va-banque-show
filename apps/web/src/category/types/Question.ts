@@ -4,4 +4,5 @@ export type Question = {
   answer: string;
   value: number;
   isAnswered: boolean;
+  isBonus: boolean;
 };

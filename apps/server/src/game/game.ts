@@ -186,7 +186,6 @@ export class Game {
     return currentRoundIndex < this.rounds.length - 1;
   }
 
-
   getWinningTeam(): Team {
     if (!this.currentRound) throw new Error(`Round not found`);
 
@@ -195,5 +194,33 @@ export class Game {
     );
 
     return winningTeam;
+  }
+
+  getRoundById(roundId: string): Round {
+    const round = this.rounds.find((round) => round.id === roundId);
+
+    if (!round) {
+      throw new Error(`Round with id ${roundId} not found`);
+    }
+
+    return round;
+  }
+
+  getQuestionById(questionId: string): Question {
+    const round = this.rounds.find((round) =>
+      round.doseQuestionExist(questionId)
+    );
+
+    if (!round) {
+      throw new Error(`Question with id ${questionId} not found`);
+    }
+
+    const question = round.getQuestionById(questionId);
+
+    if (!question) {
+      throw new Error(`Question with id ${questionId} not found`);
+    }
+
+    return question;
   }
 }

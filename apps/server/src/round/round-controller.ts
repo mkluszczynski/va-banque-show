@@ -49,4 +49,21 @@ export const roundController = (
     socket.to(game.id).emit("update", { game });
     socket.emit("update", { game });
   }
+
+  socket.on("round:question:bonus", markQuestionAsBonus);
+  function markQuestionAsBonus(dto: { gameId: string, roundId: string, questionId: string }) {
+    const game: Game = gameService.getGameById(dto.gameId);
+
+    const round = game.getRoundById(dto.roundId);
+
+    round.setQuestionAsBonus(dto.questionId);
+
+    logger
+      .context("round:question:bonus")
+      .context(round.id)
+      .log(`Question ${dto.questionId} marked as bonus.`);
+
+    socket.to(round.id).emit("update", { game });
+    socket.emit("update", { game});
+  }
 };

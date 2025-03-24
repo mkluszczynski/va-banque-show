@@ -14,6 +14,8 @@ import { AddCategoryButton } from "./AddCategoryButton";
 import { useCategoryList } from "./CategoryListContext";
 import { Category } from "./types/Category";
 import { Question } from "./types/Question";
+import { SetBonusButton } from "./SetBonusButton";
+import { Round } from "@/round/Round";
 
 export function CategorySettingsView() {
   const categoryContext = useCategoryList();
@@ -68,15 +70,22 @@ function CategorySettingsListItem({ category }: { category: Category }) {
   );
 }
 
-export function QuestionListItem({ question }: { question: Question }) {
+export function QuestionListItem({
+  round,
+  question,
+}: {
+  round?: Round;
+  question: Question;
+}) {
   return (
     <div key={question.id} className="flex justify-between items-center m-1">
       <div className="flex flex-col gap-0.5">
         <div className="text-sm font-semibold">{question.question}</div>
         <div className="text-xs font-extralight">{question.answer}</div>
       </div>
-      <div className="flex items-center">
+      <div className="flex items-center justify-center gap-4">
         <div className="text-xs font-extralight">{question.value}</div>
+        {round && <SetBonusButton question={question} round={round} />}
       </div>
     </div>
   );

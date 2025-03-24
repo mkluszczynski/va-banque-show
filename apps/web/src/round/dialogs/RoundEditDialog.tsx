@@ -81,7 +81,10 @@ export function RoundEditDialog(round: Round) {
                         {category.questions.map((question, index) => (
                           <>
                             {index > 0 && <Separator />}
-                            <QuestionListItem question={question} />
+                            <QuestionListItem
+                              round={round}
+                              question={question}
+                            />
                           </>
                         ))}
                       </AccordionItem>

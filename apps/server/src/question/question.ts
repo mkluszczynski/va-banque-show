@@ -1,17 +1,17 @@
-import { QuestionValue } from "../types/question-value";
 
 export class Question {
   public id: string;
   public question: string;
   public answer: string;
-  public value: QuestionValue;
+  public value: number;
   public isAnswered: boolean = false;
+  public isBonus: boolean = false;
 
   constructor(
     id: string,
     question: string,
     answer: string,
-    value: QuestionValue
+    value:number 
   ) {
     this.id = id;
     this.question = question;
@@ -21,6 +21,10 @@ export class Question {
 
   markAsAnswered() {
     this.isAnswered = true;
+  }
+
+  setAsBonus() {
+    this.isBonus = true;
   }
 
   static fromJSON(data: Question): Question {

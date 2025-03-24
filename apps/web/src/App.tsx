@@ -14,7 +14,9 @@ import { useWinner, WinnerProvider } from "./game/WinnerContext";
 import { WinnerView } from "./game/views/WinnerView";
 
 export default function App() {
-  const apiUrl = "https://va-banque-api.mkluszczynski.dev";
+  // const apiUrl = "https://va-banque-api.mkluszczynski.dev";
+  const apiUrl = "http://localhost:3010";
+
   const socket = io(apiUrl, {
     transports: ["websocket"],
   });

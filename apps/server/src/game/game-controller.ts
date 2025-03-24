@@ -127,8 +127,7 @@ export const gameController = (
   socket.on("game:question:select", selectQuestion);
   function selectQuestion(dto: SelectQuestionDto) {
     const game = gameService.getGameById(dto.gameId);
-    const round = roundService.getRoundById(dto.roundId);
-    const category = categoryService.getCategoryById(dto.categoryId);
+    const round = game.getRoundById(dto.roundId);
 
     if (game.currentQuestion) return;
 
@@ -138,7 +137,7 @@ export const gameController = (
         .context(game.id)
         .error(`Category with id ${dto.categoryId} not found`);
 
-    const question = category.getQuestionById(dto.questionId);
+    const question = round.getQuestionById(dto.questionId);
 
     game.setCurrentQuestion(question);
 
@@ -273,4 +272,27 @@ export const gameController = (
     socket.to(game.id).emit("update", { game: null });
     socket.emit("update", { game: null });
   }
+
+  socket.on("round:question:bonus", setQuestionAsBonus);
+  function setQuestionAsBonus(dto: {
+    gameId: string;
+    questionId: string;
+    bonusScore: number
+  }) {
+    const game = gameService.getGameById(dto.gameId);
+    const question = game.getQuestionById(dto.questionId);
+
+    if (game?.currentQuestion?.id !== question.id) return;
+    question.value = dto.bonusScore;
+    game.currentQuestion.value = dto.bonusScore;
+
+    logger
+      .context("round:question:bonus")
+      .context(game.id)
+      .log(`Question ${question.id} set as bonus`);
+
+    socket.to(game.id).emit("update", { game });
+    socket.emit("update", { game });
+  }
+
 };

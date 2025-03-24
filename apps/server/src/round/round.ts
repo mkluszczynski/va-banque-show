@@ -17,6 +17,20 @@ export class Round {
     this.categories.push(category);
   }
 
+  getQuestionById(questionId: string) {
+    const category = this.categories.find((category) =>
+      category.questions.some((question) => question.id === questionId)
+    );
+
+    if (!category) throw new Error("Question not found");
+
+    const question = category.questions.find((question) => question.id === questionId);
+    
+    if (!question) throw new Error("Question not found");
+
+    return question;
+  }
+
   checkIfCategoryExist(categoryId: string) {
     return this.categories.some((category) => category.id === categoryId);
   }
@@ -41,5 +55,17 @@ export class Round {
     this.categories = this.categories.filter(
       (category) => category.id !== categoryId
     );
+  }
+
+  markRandomQuestionAsBonus(){
+    const randomCategory = this.categories[Math.floor(Math.random() * this.categories.length)];
+    const randomQuestion = randomCategory.questions[Math.floor(Math.random() * randomCategory.questions.length)];
+    if(randomQuestion.isBonus) this.markRandomQuestionAsBonus();
+    randomQuestion.isBonus = true;
+  }
+
+  setQuestionAsBonus(questionId: string){
+    const question = this.getQuestionById(questionId);
+    question.isBonus = !question.isBonus;
   }
 }

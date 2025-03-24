@@ -1,4 +1,4 @@
 - [] Questions widget
-- [] Move player to another team.
+- [+] Move player to another team.
 - [] Final round
-- [] Bonus points
+- [+] Bonus points

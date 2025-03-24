@@ -6,9 +6,11 @@ import { useGameCommands } from "./useGameCommands";
 export function CategoryTable({
   round,
   canSelect,
+  showBonus,
 }: {
   round: Round;
   canSelect?: boolean;
+  showBonus?: boolean;
 }) {
   const { selectQuestion } = useGameCommands();
   return (
@@ -28,6 +30,7 @@ export function CategoryTable({
                   if (!canSelect) return;
                   selectQuestion(category.id, question.id);
                 }}
+                className={showBonus && question.isBonus ? "bg-yellow-300" : ""}
               >
                 {question.value}
               </Button>

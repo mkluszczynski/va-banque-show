@@ -8,10 +8,13 @@ export const createGameRouter = (gameService: GameService) => {
     router.get("/:id/can-start", canGameStart);
     function canGameStart(req: Request, res: Response){ 
         const gameId = req.params.id;
-        const game = gameService.getGameById(gameId);
-
-        res.send(game.canGameStart());
-
+        try {
+            const game = gameService.getGameById(gameId);
+            res.send(game.canGameStart());
+        } catch(e) {
+            res.send(false).status(404);
+            console.error(e);
+        }
     }
 
     router.get("/:id/has-more-rounds", nextRound);
