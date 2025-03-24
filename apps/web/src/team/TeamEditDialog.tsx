@@ -11,12 +11,23 @@ import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { useTeamCommands } from "@/team/useTeamCommands";
 import { Label } from "@radix-ui/react-label";
-import { Edit } from "lucide-react";
+import { Edit, LogOut, Move } from "lucide-react";
 import { useState } from "react";
 import { Team } from "./Team";
+import { Player } from "@/player/Player";
+import { useGame } from "@/game/GameContext";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 export function TeamEditDialog(team: Team) {
-  const { kickPlayer, editTeam } = useTeamCommands();
+  const { editTeam } = useTeamCommands();
   const [name, setName] = useState(team.name);
   const [score, setScore] = useState(team.score);
 
@@ -67,15 +78,7 @@ export function TeamEditDialog(team: Team) {
             {team.players.map((player, index) => (
               <>
                 {index > 0 && <Separator />}
-                <div className="flex  justify-between items-center gap-4">
-                  <div key={player.id}> - {player.nickname}</div>
-                  <Button
-                    variant="destructive"
-                    onClick={() => kickPlayer(team.id, player.id)}
-                  >
-                    Kick
-                  </Button>
-                </div>
+                <TeamPlayerListItem key={index} team={team} player={player} />
               </>
             ))}
           </div>
@@ -86,6 +89,73 @@ export function TeamEditDialog(team: Team) {
             Save
           </Button>
         </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+}
+
+function TeamPlayerListItem({ team, player }: { team: Team; player: Player }) {
+  const { kickPlayer } = useTeamCommands();
+  return (
+    <div className="flex  justify-between items-center gap-4">
+      <div key={player.id}> - {player.nickname}</div>
+      <div className="flex justify-center items-center gap-4">
+        <MovePlayerDialog player={player} />
+        <Button
+          variant="destructive"
+          onClick={() => kickPlayer(team.id, player.id)}
+        >
+          <LogOut size={12} />
+        </Button>
+      </div>
+    </div>
+  );
+}
+
+function MovePlayerDialog({ player }: { player: Player }) {
+  const { game } = useGame();
+  const { movePlayer } = useTeamCommands();
+
+  const defaultTeam = game?.teams.find((team) =>
+    team.players.some((p) => p.id === player.id)
+  )?.id;
+
+  const onTeamSelect = (selectedTeamId: string) => {
+    if (!game) return;
+    movePlayer(selectedTeamId, player.id);
+  };
+
+  if (!game) return null;
+
+  return (
+    <Dialog>
+      <DialogTrigger asChild>
+        <Button variant="ghost" className="p-0">
+          <Move size={12} />
+        </Button>
+      </DialogTrigger>
+      <DialogContent className="flex flex-col justify-center w-64">
+        <DialogHeader className="">
+          <DialogTitle>Select team</DialogTitle>
+        </DialogHeader>
+
+        <div className="flex flex-col gap-4">
+          <Select defaultValue={defaultTeam} onValueChange={onTeamSelect}>
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder="Select team" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectLabel>Teams</SelectLabel>
+                {game.teams.map((team) => (
+                  <SelectItem key={team.id} value={team.id}>
+                    {team.name}
+                  </SelectItem>
+                ))}
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+        </div>
       </DialogContent>
     </Dialog>
   );

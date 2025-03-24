@@ -47,5 +47,13 @@ export function useTeamCommands() {
         teamId,
       });
     },
+    movePlayer: (teamId: string, playerId: string) => {
+      if (!gameContext.game) return;
+      socket.emit("team:join", {
+        gameId: gameContext.game.id,
+        teamId,
+        playerId: playerId,
+      });
+    },
   };
 }
