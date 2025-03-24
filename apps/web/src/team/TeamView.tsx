@@ -11,7 +11,7 @@ import { cn } from "@/lib/utils";
 import { JSX } from "react";
 import { useGame } from "@/game/GameContext";
 import { Button } from "@/components/ui/button";
-import { Hand } from "lucide-react";
+import { Crown, Hand } from "lucide-react";
 import { useGameCommands } from "@/game/useGameCommands";
 import { Player } from "@/player/Player";
 
@@ -52,6 +52,9 @@ export function TeamView({
         {team.players.map((player) => (
           <div className="flex justify-between items-center gap-4">
             <div key={player.id} className="flex items-center gap-2">
+              {team?.capitan?.id === player.id && (
+                <Crown className="text-yellow-400" />
+              )}
               <Avatar>
                 <AvatarFallback>{player.nickname[0]}</AvatarFallback>
               </Avatar>
