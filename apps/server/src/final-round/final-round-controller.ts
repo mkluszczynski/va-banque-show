@@ -26,4 +26,24 @@ export const finalRoundController = (
     socket.to(game.id).emit("update", { game });
     socket.emit("update", { game });
   }
+
+  socket.on("final:round:answer", answerFinalRound);
+  function answerFinalRound(dto: { gameId: string, teamId: string, answer: string, value: number}) {
+    const game = gameService.getGameById(dto.gameId);
+    const finalRound = game.getFinalRound();
+
+    finalRound.addAnswer({
+        teamId: dto.teamId,
+        answer: dto.answer,
+        value: dto.value,
+        isValidated: false
+    })
+
+    logger
+      .context("final:round:answer")
+      .log(`Final round answer set in game ${game.id}.`);
+
+    socket.to(game.id).emit("update", { game });
+    socket.emit("update", { game });
+  }
 }

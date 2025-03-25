@@ -7,6 +7,14 @@ export function useTeamCommands() {
   const playerContext = usePlayer();
   const gameContext = useGame();
   return {
+    getPlayerTeam: () => {
+      if (!gameContext.game) return;
+      if (!playerContext.player) return;
+      const playerTeam = gameContext.game.teams.find((team) =>
+        team.players.some((player) => player.id === playerContext.player?.id)
+      );
+      return playerTeam || null;
+    },
     joinTeam: (teamId: string) => {
       if (!gameContext.game) return;
       if (!playerContext.player) return;

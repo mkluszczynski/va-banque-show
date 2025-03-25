@@ -6,19 +6,17 @@ import { Button } from "@/components/ui/button";
 import { Player } from "@/player/Player";
 import { useGameCommands } from "../useGameCommands";
 import { useEffect, useState } from "react";
-import { Team } from "@/team/Team";
 import { QuestionView } from "./QuestionView";
 import { IncorrectAnswerButton } from "../buttons/IncorrectAnswerButton";
 import { CorrectAnswerButton } from "../buttons/CorrectAnswerButton";
 
 export function AdminGameView() {
   const { game } = useGame();
-  const { nextRound, hasMoreRounds, getWinningTeam, finishGame } =
+  const { nextRound, hasMoreRounds, isFinalRoundOver, setFinalRoundLive } =
     useGameCommands();
 
   const [allQuestionsAnswered, setAllQuestionsAnswered] = useState(false);
   const [hasMoreRoundsState, setHasMoreRoundsState] = useState(false);
-  const [winningTeam, setWinningTeam] = useState<Team | null>(null);
 
   useEffect(() => {
     if (!game?.currentRound) return;
@@ -29,7 +27,6 @@ export function AdminGameView() {
       )
     );
     hasMoreRounds().then(setHasMoreRoundsState);
-    getWinningTeam().then((team) => setWinningTeam(team ?? null));
   }, [game?.currentRound]);
 
   if (!game?.currentRound) return <ErrorView />;
@@ -60,17 +57,18 @@ export function AdminGameView() {
           </TeamView>
         ))}
       </div>
-      {allQuestionsAnswered && hasMoreRoundsState && !game.currentQuestion && (
-        <Button onClick={() => nextRound()}>Next Round</Button>
-      )}
-      {allQuestionsAnswered && !hasMoreRoundsState && !game.currentQuestion && (
-        <>
-          <div className="text-amber-600 dark:text-amber-500">
-            Winning Team: {winningTeam?.name}
-          </div>
-          <Button onClick={() => finishGame()}>End Game</Button>
-        </>
-      )}
+      {allQuestionsAnswered &&
+        hasMoreRoundsState &&
+        !game.currentQuestion &&
+        !isFinalRoundOver() && (
+          <Button onClick={() => nextRound()}>Next Round</Button>
+        )}
+      {allQuestionsAnswered &&
+        !hasMoreRoundsState &&
+        !isFinalRoundOver() &&
+        !game.currentQuestion && (
+          <Button onClick={() => setFinalRoundLive()}>Start final round</Button>
+        )}
     </div>
   );
 }

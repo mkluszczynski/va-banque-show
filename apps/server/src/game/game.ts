@@ -156,6 +156,40 @@ export class Game {
     this.removeAnsweringPlayer();
     this.removeQuestion();
   }
+
+  validateFinalAnswer(team: Team, isAnswerValid: boolean): void {
+    if (!this.finalRound) throw new Error(`Final round not found`);
+
+    const teamAnswer = this.finalRound.getTeamAnswer(team.id);
+
+    if(this.didAllTeamsFinalAnswered()){
+      this.finalRound.finalQuestion.isAnswered = true;
+    }
+
+    if (isAnswerValid) {
+      team.addScore(teamAnswer.value);
+      teamAnswer.isValidated = true;
+      return;
+    }
+
+    teamAnswer.isValidated = true;
+    team.removeScore(teamAnswer.value);
+  }
+
+  didAllFinalAnswersValidated(): boolean {
+    if (!this.finalRound) throw new Error(`Final round not found`);
+
+    return this.finalRound.answers.every((answer) => answer.isValidated);
+  }
+
+  didAllTeamsFinalAnswered(): boolean {
+    if (!this.finalRound) throw new Error(`Final round not found`);
+
+    return this.teams.every((team) =>
+      this.finalRound?.answers.some((answer) => answer.teamId === team.id)
+    );
+  }
+
   canGameStart(): boolean {
     const isTeamValid = this.teams.every((team) => team.players.length >= 1);
     const isRoundValid = this.rounds.length >= 1;

@@ -12,6 +12,7 @@ import { usePlayerCommands } from "./player/usePlayerCommands";
 import { GameView } from "./game/views/GameView";
 import { useWinner, WinnerProvider } from "./game/WinnerContext";
 import { WinnerView } from "./game/views/WinnerView";
+import { FinalRoundView } from "./final-round/FinalRoundView";
 
 export default function App() {
   // const apiUrl = "https://va-banque-api.mkluszczynski.dev";
@@ -60,6 +61,7 @@ function CurrentView() {
   if (!playerContext?.player) return <PlayerRegister />;
   if (!gameContext?.game) return <MainMenu />;
   if (!gameContext.game.currentRound) return <LobbyView />;
+  if (gameContext.game.finalRound?.isLive) return <FinalRoundView />;
 
   return <GameView />;
 }

@@ -210,6 +210,24 @@ export const gameController = (
     socket.emit("update", { game });
   }
 
+  socket.on("game:answer:final:validate", validateFinalAnswer);
+  function validateFinalAnswer(dto: { gameId: string; teamId: string; isValid: boolean }) {
+    const game = gameService.getGameById(dto.gameId);
+    const team = teamService.getTeamById(dto.teamId);
+
+    game.validateFinalAnswer(team, dto.isValid);
+
+    logger
+      .context("game:answer:final:validate")
+      .context(game.id)
+      .log(
+        `Final answer ${dto.isValid ? "correct" : "incorrect"} in game: ${game.id}`
+      );
+
+    socket.to(game.id).emit("update", { game });
+    socket.emit("update", { game });
+  }
+
   socket.on("game:question:skip", skipQuestion);
   function skipQuestion(gameId: string) {
     const game = gameService.getGameById(gameId);
@@ -247,6 +265,22 @@ export const gameController = (
       .context("game:next-round")
       .context(game.id)
       .log(`Next round in game: ${game.id}`);
+
+    socket.to(game.id).emit("update", { game });
+    socket.emit("update", { game });
+  }
+
+  socket.on("game:round:final", setFinalRoundQuestion);
+  function setFinalRoundQuestion(dto: { gameId: string }) {
+    const game = gameService.getGameById(dto.gameId);
+    const finalRound = game.getFinalRound();
+
+    finalRound.isLive = true;
+
+    logger
+      .context("game:round:final")
+      .context(game.id)
+      .log(`Final round in game: ${game.id}`);
 
     socket.to(game.id).emit("update", { game });
     socket.emit("update", { game });

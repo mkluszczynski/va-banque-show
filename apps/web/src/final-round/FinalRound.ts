@@ -4,10 +4,12 @@ export type FinalRoundAnswer = {
     teamId: string;
     value: number;
     answer: string;
+    isValidated: boolean;
 }
   
 export class FinalRound {
     public id: string;
+    public isLive: boolean = false;
     public finalQuestion: Question;
     public answers: FinalRoundAnswer[] = [];
 

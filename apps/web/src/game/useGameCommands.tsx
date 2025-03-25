@@ -115,6 +115,14 @@ export function useGameCommands() {
         isValid,
       });
     },
+    validateFinalAnswer: (teamId: string, isValid: boolean) => {
+      if (!gameContext.game) return;
+      socket.emit("game:answer:final:validate", {
+        gameId: gameContext.game.id,
+        teamId,
+        isValid,
+      });
+    },
     skipQuestion: () => {
       if (!gameContext.game) return;
       socket.emit("game:question:skip", gameContext.game.id);
@@ -129,6 +137,22 @@ export function useGameCommands() {
         `/games/${gameContext.game.id}/has-more-rounds`
       );
       return hasMoreRounds;
+    },
+    isFinalRoundOver: () => {
+      if (!gameContext.game) return false;
+
+      const isFinalRoundOver =
+        gameContext.game.finalRound?.finalQuestion.isAnswered;
+
+      return isFinalRoundOver;
+    },
+    setFinalRoundLive: () => {
+      if (!gameContext.game) return;
+      socket.emit("game:round:final", { gameId: gameContext.game.id });
+    },
+    isFinalRoundLive: () => {
+      if (!gameContext.game) return false;
+      return gameContext.game.finalRound?.isLive;
     },
     getWinningTeam: async () => {
       if (!gameContext.game) return;
@@ -158,6 +182,15 @@ export function useGameCommands() {
         gameId,
         questionId,
         bonusScore,
+      });
+    },
+    submitFinalAnswer: (teamId: string, answer: string, value: number) => {
+      if (!gameContext.game) return;
+      socket.emit("final:round:answer", {
+        gameId: gameContext.game.id,
+        teamId,
+        answer,
+        value,
       });
     },
   };

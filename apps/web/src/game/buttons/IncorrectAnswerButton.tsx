@@ -9,3 +9,15 @@ export function IncorrectAnswerButton() {
     </Button>
   );
 }
+
+export function IncorrectFinalAnswerButton({ teamId }: { teamId: string }) {
+  const { validateFinalAnswer } = useGameCommands();
+  return (
+    <Button
+      variant="destructive"
+      onClick={() => validateFinalAnswer(teamId, false)}
+    >
+      Incorrect
+    </Button>
+  );
+}
